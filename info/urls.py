@@ -4,7 +4,8 @@ from info import views
 
 urlpatterns = [
     path('info/bio/', views.BioListApiView.as_view()),
-    path('info/linkedIn/', views.LinkedInListApiView.as_view()),
+    path('info/github/', views.GitHubListApiView.as_view()),
+    path('info/linkedin/', views.LinkedInListApiView.as_view()),
     path('info/twitterX/', views.TwitterXListApiView.as_view())
 ]
 

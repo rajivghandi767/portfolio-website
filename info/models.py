@@ -8,15 +8,22 @@ class Bio(models.Model):
         verbose_name_plural = "bio"
 
 
+class GitHub(models.Model):
+    url = models.URLField()
+
+    class Meta:
+        verbose_name_plural = "GitHub"
+
+
 class LinkedIn(models.Model):
     url = models.URLField()
 
     class Meta:
-        verbose_name_plural = "linkedIn"
+        verbose_name_plural = "LinkedIn"
 
 
 class TwitterX(models.Model):
     url = models.URLField()
 
     class Meta:
-        verbose_name_plural = "twitter"
+        verbose_name_plural = "Twitter/X"

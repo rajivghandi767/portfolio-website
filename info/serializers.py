@@ -1,11 +1,17 @@
 from rest_framework import serializers
-from .models import Bio, LinkedIn, TwitterX
+from .models import Bio, GitHub, LinkedIn, TwitterX
 
 
 class BioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bio
-        fields = ["body"]
+        fields = ["id", "body"]
+
+
+class GitHubSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GitHub
+        fields = ["url"]
 
 
 class LinkedInSerializer(serializers.ModelSerializer):
