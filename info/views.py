@@ -1,23 +1,18 @@
-from rest_framework import generics
-from .models import Bio, GitHub, LinkedIn, TwitterX
-from .serializers import BioSerializer, GitHubSerializer, LinkedInSerializer, TwitterXSerializer
+from rest_framework import viewsets
+from .models import Bio, GitHub, LinkedIn
+from .serializers import BioSerializer, GitHubSerializer, LinkedInSerializer
 
 
-class BioListApiView(generics.ListCreateAPIView):
+class BioViewSet(viewsets.ModelViewSet):
     queryset = Bio.objects.all()
     serializer_class = BioSerializer
 
 
-class GitHubListApiView(generics.ListCreateAPIView):
+class GitHubViewSet(viewsets.ModelViewSet):
     queryset = GitHub.objects.all()
     serializer_class = GitHubSerializer
 
 
-class LinkedInListApiView(generics.ListCreateAPIView):
+class LinkedInViewSet(viewsets.ModelViewSet):
     queryset = LinkedIn.objects.all()
     serializer_class = LinkedInSerializer
-
-
-class TwitterXListApiView(generics.ListCreateAPIView):
-    queryset = TwitterX.objects.all()
-    serializer_class = TwitterXSerializer

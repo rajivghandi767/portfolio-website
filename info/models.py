@@ -20,10 +20,3 @@ class LinkedIn(models.Model):
 
     class Meta:
         verbose_name_plural = "LinkedIn"
-
-
-class TwitterX(models.Model):
-    url = models.URLField()
-
-    class Meta:
-        verbose_name_plural = "Twitter/X"
