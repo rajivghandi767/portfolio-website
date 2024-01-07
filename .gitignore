@@ -164,6 +164,12 @@ cython_debug/
 .vscode
 .DS_Store
 .env
+.vscode/* 
+!.vscode/settings.json 
+!.vscode/tasks.json 
+!.vscode/launch.json 
+!.vscode/extensions.json 
+.history
 
 # Django #
 *.log
@@ -295,18 +301,12 @@ Control.ca-bundle
 Control.system-ca-bundle 
 GitHub.sublime-settings 
 
-# Visual Studio Code # 
-.vscode/* 
-!.vscode/settings.json 
-!.vscode/tasks.json 
-!.vscode/launch.json 
-!.vscode/extensions.json 
-.history
-
 # React #
 
 # dependencies
-reactfolio/node_modules
+*/node_modules
+*.config.js
+*.cjs
 
 /.pnp
 .pnp.js
@@ -318,7 +318,6 @@ reactfolio/node_modules
 /build
 
 # misc
-.DS_Store
 .env.local
 .env.development.local
 .env.test.local
