@@ -1,13 +1,22 @@
-import './App.css'
+import "./App.css";
+import NavBar from "./components/NavBar";
+import Bio from "./components/Bio";
+import Projects from "./components/Projects";
+import Blog from "./components/Blog";
+import Wallet from "./components/Wallet";
 
 function App() {
   return (
     <>
-    <h1 className='w-1/2 mx-auto text-center text-2xl'>
-      Hello!
-    </h1>
+      <NavBar />
+      <div>
+        <Bio />
+        <Projects />
+        <Blog />
+        <Wallet />
+      </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
