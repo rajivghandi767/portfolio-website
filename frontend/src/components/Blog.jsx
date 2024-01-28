@@ -1,6 +1,6 @@
 import React from "react";
 
-const posts = ["Article 1"];
+const posts = ["Article 1", "Article 1", "Article 1"];
 
 const Blog = () => {
   const blogPosts = posts.map((item) => (
@@ -22,11 +22,13 @@ const Blog = () => {
     </div>
   ));
   return (
-    <div className="w-2/4 mx-auto mt-5 mb-2">
+    <div>
       <div>
-        <h1 className="text-4xl mb-3">Blog Posts</h1>
+        <h1 className="text-4xl m-8 text-center">Blog Posts</h1>
       </div>
-      <div>{blogPosts}</div>
+      <div className="flex-auto grid grid-cols-1 gap-4 justify-items-center">
+        {blogPosts}
+      </div>
     </div>
   );
 };

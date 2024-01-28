@@ -23,11 +23,13 @@ const Wallet = () => {
   ));
 
   return (
-    <div className="w-2/4 mx-auto mt-5 mb-2">
+    <div>
       <div>
-        <h1 className="text-4xl mb-3">Wallet</h1>
+        <h1 className="text-4xl m-8 text-center">Wallet</h1>
       </div>
-      <div>{cardList}</div>
+      <div className="flex flex-wrap justify-center justify-items-center gap-4">
+        {cardList}
+      </div>
     </div>
   );
 };

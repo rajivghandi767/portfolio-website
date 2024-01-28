@@ -1,6 +1,6 @@
 import React from "react";
 
-const projects = ["Project 1"];
+const projects = ["Project 1", "Project 2", "Project 3", "P4"];
 
 const Projects = () => {
   const projectList = projects.map((item) => (
@@ -23,11 +23,13 @@ const Projects = () => {
   ));
 
   return (
-    <div className="w-2/4 mx-auto mt-5 mb-2">
+    <div>
       <div>
-        <h1 className="text-4xl mb-3">Projects</h1>
+        <h1 className="text-4xl m-8 text-center">Projects</h1>
       </div>
-      <div>{projectList}</div>
+      <div className="flex flex-wrap justify-center justify-items-center gap-4">
+        {projectList}
+      </div>
     </div>
   );
 };

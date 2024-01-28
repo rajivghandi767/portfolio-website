@@ -2,11 +2,11 @@ import React from "react";
 
 const Contact = () => {
   return (
-    <div className="w-2/4 mx-auto mt-5 mb-2">
+    <div className="">
       <div>
-        <h1 className="text-4xl mb-3">Contact</h1>
+        <h1 className="text-4xl m-8 text-center">Contact</h1>
       </div>
-      <div class="flex items-center justify-center p-12">
+      <div class="flex items-center justify-center">
         <div class="mx-auto w-full max-w-[550px]">
           <form action="https://formbold.com/s/FORM_ID" method="POST">
             <div class="mb-5">
