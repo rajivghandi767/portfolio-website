@@ -22,7 +22,7 @@ const Blog = () => {
     </div>
   ));
   return (
-    <div>
+    <div id="blog">
       <div>
         <h1 className="text-4xl m-8 text-center">Blog Posts</h1>
       </div>

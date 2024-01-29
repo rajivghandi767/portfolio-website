@@ -23,7 +23,7 @@ const Wallet = () => {
   ));
 
   return (
-    <div>
+    <div id="wallet">
       <div>
         <h1 className="text-4xl m-8 text-center">Wallet</h1>
       </div>

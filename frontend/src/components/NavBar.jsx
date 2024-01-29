@@ -1,8 +1,11 @@
 import React from "react";
+import { useRef } from "react";
 
 const sections = ["Home", "Projects", "Blog", "Wallet", "Contact"];
 
 const NavBar = () => {
+  const scrollToRef = useRef();
+
   const navBarItems = sections.map((item) => (
     <li className="mx-6 my-5 text-slate-900 hover:text-slate-700 transition">
       {item}

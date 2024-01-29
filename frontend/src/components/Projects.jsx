@@ -23,7 +23,7 @@ const Projects = () => {
   ));
 
   return (
-    <div>
+    <div id="projects">
       <div>
         <h1 className="text-4xl m-8 text-center">Projects</h1>
       </div>
