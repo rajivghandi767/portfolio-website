@@ -2,10 +2,10 @@ import React from "react";
 
 const Bio = () => {
   return (
-    <div className="h-screen">
-      <div className="flex space-between w-2/4 mt-4 m-auto border rounded-lg p-4 shadow">
+    <div className="md:h-screen pt-4">
+      <div className="flex md:flex-row flex-col space-between md:w-2/4 w-10/12 m-auto border rounded-lg p-4 shadow">
         <img
-          className="object-contain rounded-full w-64 h-64"
+          className="rounded-full w-64 h-64"
           src="./bio_photo.jpg"
           alt="profile"
         />

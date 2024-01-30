@@ -19,7 +19,7 @@ const Blog = () => {
     </div>
   ));
   return (
-    <div id="blog" className="h-screen">
+    <div id="blog" className="md:h-screen">
       <div className="m-8">
         <h1 className="text-4xl text-center">Blog Posts</h1>
       </div>

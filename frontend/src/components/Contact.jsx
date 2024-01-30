@@ -2,13 +2,13 @@ import React from "react";
 
 const Contact = () => {
   return (
-    <div id="contact" classname="h-screen">
-      <div className="w-2/4 m-auto border rounded-lg p-4 `shadow">
+    <div id="contact" classname="md:h-screen">
+      <div className="justify-center">
         <div className="m-8">
           <h1 className="text-4xl text-center">Contact</h1>
         </div>
         <div>
-          <div className="mx-auto w-full max-w-[550px] m-2`">
+          <div className="mx-auto w-full max-w-[550px] m-2">
             <form action="https://formbold.com/s/FORM_ID" method="POST">
               <div class="mb-5">
                 <label
