@@ -2,18 +2,16 @@ import React from "react";
 
 const Bio = () => {
   return (
-    <div className="flex justify-center mt-5">
-      <div className="flex flex-col justify-center rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700 md:max-w-xl md:flex-row py-5">
+    <div className="h-screen">
+      <div className="flex space-between w-2/4 mt-4 m-auto border rounded-lg p-4 shadow">
         <img
-          className="rounded-full w-59 h-64 mx-4"
+          className="object-contain rounded-full w-64 h-64"
           src="./bio_photo.jpg"
           alt="profile"
         />
-        <div className="flex flex-col justify-start p-6">
-          <h5 className="mb-2 text-xl font-medium text-neutral-800 dark:text-neutral-50">
-            Hello!
-          </h5>
-          <p className="mb-4 text-base text-neutral-600 dark:text-neutral-200">
+        <div className="p-4">
+          <h5 className="mb-2 text-2xl font-medium border-b-2">Hello!</h5>
+          <p className="pt-3">
             This is a wider card with supporting text below as a natural lead-in
             to additional content. This content is a little bit longer.
           </p>
