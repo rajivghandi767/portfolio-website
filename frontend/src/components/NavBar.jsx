@@ -19,7 +19,7 @@ const NavBar = () => {
   return (
     <>
       <div className="hidden md:block sticky top-0">
-        <div className="flex justify-center text-center bg-gray-50">
+        <div className="flex justify-center text-center bg-gray-50 pb-4">
           <text>
             <h1 className="text-5xl">Rajiv Wallace</h1>
             <h2 className="text-3xl">Software Engineer</h2>
@@ -31,8 +31,8 @@ const NavBar = () => {
           </ul>
         </div>
       </div>
-      <div className="md:hidden block">
-        <div className="flex justify-center text-center bg-gray-50">
+      <div className="md:hidden block sticky top-0">
+        <div className="flex justify-center text-center bg-gray-50 pb-4">
           <text>
             <h1 className="text-5xl">Rajiv Wallace</h1>
             <h2 className="text-3xl">Software Engineer</h2>
