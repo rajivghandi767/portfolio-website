@@ -2,7 +2,7 @@ import React from "react";
 
 const Bio = () => {
   return (
-    <div className="md:h-screen pt-4">
+    <div className="flex justify-center items-center md:h-screen pt-4">
       <div className="flex md:flex-row flex-col space-between md:w-2/4 w-10/12 m-auto border rounded-lg p-4 shadow">
         <img
           className="rounded-full w-64 h-64"

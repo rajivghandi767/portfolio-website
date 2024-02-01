@@ -21,7 +21,7 @@ const Wallet = () => {
       <div className="m-8">
         <h1 className="text-4xl text-center">Wallet</h1>
       </div>
-      <div className="grid md:grid-cols-4 grid-cols-1 gap-4 mx-5">
+      <div className="grid md:grid-cols-4 grid-cols-1 gap-4 mx-5 ">
         {cardList}
       </div>
     </div>
