@@ -7,7 +7,7 @@ const Contact = () => {
         <div className="m-8">
           <h1 className="text-4xl text-center">Contact</h1>
         </div>
-        <div className="flex justify-center m-4">
+        <div className="flex justify-center items-center md:flex-row flex-col space-between md:w-1/4 w-1/12 m-auto border rounded-lg p-4 shadow">
           <form>
             <label className="text-xl">
               Name

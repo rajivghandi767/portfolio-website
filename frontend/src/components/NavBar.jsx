@@ -1,18 +1,51 @@
 import React from "react";
 import { useState } from "react";
 
-const sections = ["Home", "Projects", "Blog", "Wallet", "Contact"];
+const siteSections = [
+  {
+    section: "Home",
+    ref: "homeRef",
+  },
+  {
+    section: "Projects",
+    ref: "projectsRef",
+  },
+  {
+    section: "Blog",
+    ref: "blogRef",
+  },
+  {
+    section: "Wallet",
+    ref: "walletRef",
+  },
+  {
+    section: "Contact",
+    ref: "contactRef",
+  },
+];
 
-const NavBar = () => {
+const NavBar = ({ homeRef, projectsRef, blogRef, walletRef, contactRef }) => {
   const [toggleMenu, setToggleMenu] = useState(false);
   const navIconHandler = (e) => {
     e.preventDefault();
     setToggleMenu(!toggleMenu);
   };
 
-  const navBarItems = sections.map((item) => (
-    <li className="mx-5 my-5 text-2xl text-gray-950 hover:text-grey-500 transition">
-      {item}
+  const scrollToSection = (ref) => {
+    if (ref && ref.current) {
+      ref.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
+
+  const navBarItems = siteSections.map((siteSection) => (
+    <li
+      onClick={() => scrollToSection(siteSection.ref)}
+      className="mx-5 my-5 text-2xl text-gray-950 hover:text-grey-500 transition"
+    >
+      {siteSection.section}
     </li>
   ));
 
