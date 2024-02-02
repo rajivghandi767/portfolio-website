@@ -1,20 +1,8 @@
 from rest_framework import serializers
-from .models import Bio, GitHub, LinkedIn
+from .models import Info
 
 
-class BioSerializer(serializers.ModelSerializer):
+class InfoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Bio
-        fields = ["id", "body"]
-
-
-class GitHubSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = GitHub
-        fields = ["id", "url"]
-
-
-class LinkedInSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = LinkedIn
-        fields = ["id", "url"]
+        model = Info
+        fields = ["id", "body", "github", "linkedIn"]

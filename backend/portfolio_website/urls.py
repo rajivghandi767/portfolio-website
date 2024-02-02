@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 
-from info.views import BioViewSet, GitHubViewSet, LinkedInViewSet
+from info.views import InfoViewSet
 from projects.views import ProjectViewSet
 from blog.views import CategoryViewSet, PostViewSet, CommentViewSet
 from wallet.views import CardViewSet
@@ -9,9 +9,7 @@ from wallet.views import CardViewSet
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register('bio', BioViewSet)
-router.register('github', GitHubViewSet)
-router.register('linkedin', LinkedInViewSet)
+router.register('info', InfoViewSet)
 
 router.register('projects', ProjectViewSet)
 

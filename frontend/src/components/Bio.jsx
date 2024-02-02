@@ -1,6 +1,13 @@
 import React from "react";
+import { useEffect, useState } from "react";
 
 const Bio = () => {
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {};
+
   return (
     <div className="md:h-screen pt-4">
       <div className="flex md:flex-row flex-col space-between md:w-2/4 w-10/12 m-auto border rounded-lg p-4 shadow">

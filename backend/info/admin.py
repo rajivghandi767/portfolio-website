@@ -1,19 +1,9 @@
 from django.contrib import admin
-from .models import Bio, GitHub, LinkedIn
+from .models import Info
 
 
-class BioAdmin(admin.ModelAdmin):
+class InfoAdmin(admin.ModelAdmin):
     pass
 
 
-class GitHubAdmin(admin.ModelAdmin):
-    pass
-
-
-class LinkedInAdmin(admin.ModelAdmin):
-    pass
-
-
-admin.site.register(Bio, BioAdmin)
-admin.site.register(GitHub, GitHubAdmin)
-admin.site.register(LinkedIn, LinkedInAdmin)
+admin.site.register(Info, InfoAdmin)

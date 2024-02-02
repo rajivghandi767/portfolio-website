@@ -1,5 +1,5 @@
 import "./App.css";
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import NavBar from "./components/NavBar";
 import Bio from "./components/Bio";
 import Projects from "./components/Projects";
@@ -8,17 +8,11 @@ import Wallet from "./components/Wallet";
 import Contact from "./components/Contact";
 
 function App() {
-  useEffect(() => {
-    getData();
-  }, []);
-
   const homeRef = useRef(null);
   const projectsRef = useRef(null);
   const blogRef = useRef(null);
   const walletRef = useRef(null);
   const contactRef = useRef(null);
-
-  const getData = async () => {};
 
   return (
     <>
