@@ -4,7 +4,7 @@ const projects = ["Project 1", "Project 2", "Project 3", "P4"];
 
 const Projects = () => {
   const projectList = projects.map((item) => (
-    <div className="flex space-between border rounded-lg p-2 m-auto shadow">
+    <div className="flex justify-center space-between border rounded-lg p-2 m-auto shadow">
       <img
         className="object-contain square-full w-64 h-64"
         src="https://tecdn.b-cdn.net/wp-content/uploads/2020/06/vertical.jpg"
@@ -23,13 +23,11 @@ const Projects = () => {
   ));
 
   return (
-    <div id="projects" className="md:h-screen">
+    <div id="projects" className="md:h-screen pt-4">
       <div className="m-8">
         <h1 className="text-4xl text-center">Projects</h1>
       </div>
-      <div className="grid md:grid-cols-3 grid-cols-1 gap-4 mx-5">
-        {projectList}
-      </div>
+      <div className="flex grid lg:grid-cols-2 gap-4 mx-5">{projectList}</div>
     </div>
   );
 };

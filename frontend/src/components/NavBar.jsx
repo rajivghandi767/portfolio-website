@@ -51,26 +51,19 @@ const NavBar = ({ homeRef, projectsRef, blogRef, walletRef, contactRef }) => {
 
   return (
     <>
-      <div className="hidden md:block sticky top-0">
-        <div className="flex justify-center text-center bg-gray-50 pb-4">
-          <text>
-            <h1 className="text-5xl">Rajiv Wallace</h1>
-            <h2 className="text-3xl">Software Engineer</h2>
-          </text>
-        </div>
+      {/* View settings for large screens */}
+
+      <div className="">
         <div>
           <ul className="flex bg-gray-200 cursor-pointer justify-center">
             {navBarItems}
           </ul>
         </div>
       </div>
+
+      {/* View settings for small screens */}
+
       <div className="md:hidden block sticky top-0">
-        <div className="flex justify-center text-center bg-gray-50 pb-4">
-          <text>
-            <h1 className="text-5xl">Rajiv Wallace</h1>
-            <h2 className="text-3xl">Software Engineer</h2>
-          </text>
-        </div>
         <div className="flex justify-between w-100 bg-gray-200 cursor-pointer">
           <div>
             <div className="grid grid-cols-1 bg-gray-200 cursor-pointer">

@@ -17,7 +17,7 @@ const Wallet = () => {
   ));
 
   return (
-    <div id="wallet" className="md:h-screen">
+    <div id="wallet" className="md:h-screen pt-4">
       <div className="m-8">
         <h1 className="text-4xl text-center">Wallet</h1>
       </div>

@@ -10,7 +10,7 @@ const Bio = () => {
 
   return (
     <div className="md:h-screen pt-4">
-      <div className="flex md:flex-row flex-col space-between md:w-2/4 w-10/12 m-auto border rounded-lg p-4 shadow">
+      <div className="flex items-center md:flex-row flex-col space-between md:w-2/4 m-auto border rounded-lg p-4 shadow">
         <img
           className="rounded-full w-64 h-64"
           src="./bio_photo.jpg"
