@@ -2,11 +2,19 @@ import React from "react";
 import { useEffect, useState } from "react";
 
 const Bio = () => {
+  const [info, setInfo] = useState([]);
+
   useEffect(() => {
     getData();
   }, []);
 
-  const getData = async () => {};
+  const getData = async () => {
+    const infoResponse = await fetch("http://localhost:8000/info");
+    const infoData = await infoResponse.json();
+    setInfo(infoData);
+
+    console.log(infoData);
+  };
 
   return (
     <div className="md:h-screen pt-4">

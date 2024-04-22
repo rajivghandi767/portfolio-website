@@ -3,7 +3,7 @@ import React from "react";
 const Contact = () => {
   return (
     <>
-      <div id="contact" classname="md:h-screen pt-4">
+      <div id="contact" className="md:h-screen pt-4">
         <div className="m-8">
           <h1 className="text-4xl text-center">Contact</h1>
         </div>

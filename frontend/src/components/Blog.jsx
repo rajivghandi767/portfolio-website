@@ -1,9 +1,24 @@
 import React from "react";
-
-const posts = ["Article 1", "Article 1", "Article 1"];
+import { useEffect, useState } from "react";
 
 const Blog = () => {
-  const blogPosts = posts.map((item) => (
+  const [blog, setBlog] = useState([]);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    const blogResponse = await fetch("http://localhost:8000/post");
+    const blogData = await blogResponse.json();
+    setBlog(blogData);
+
+    console.log(blogData);
+  };
+
+  const eachPost = ["Article 1", "Article 1", "Article 1"];
+
+  const blogPosts = eachPost.map((item) => (
     <div className="flex space-between border rounded-lg p-2 m-auto shadow">
       <img
         className="object-fill w-64 h-64"

@@ -1,9 +1,24 @@
 import React from "react";
-
-const projects = ["Project 1", "Project 2", "Project 3", "P4"];
+import { useEffect, useState } from "react";
 
 const Projects = () => {
-  const projectList = projects.map((item) => (
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    const projectsResponse = await fetch("http://localhost:8000/projects");
+    const projectsData = await projectsResponse.json();
+    setProjects(projectsData);
+
+    console.log(projectsData);
+  };
+
+  const eachProject = ["Project 1", "Project 2", "Project 3", "P4"];
+
+  const projectList = eachProject.map((item) => (
     <div className="flex justify-center space-between border rounded-lg p-2 m-auto shadow">
       <img
         className="object-contain square-full w-64 h-64"

@@ -1,9 +1,24 @@
 import React from "react";
-
-const cards = ["CSP", "Bilt", "CSR", "Cap1"];
+import { useEffect, useState } from "react";
 
 const Wallet = () => {
-  const cardList = cards.map((item) => (
+  const [cards, setCards] = useState([]);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    const cardsResponse = await fetch("http://localhost:8000/cards");
+    const cardsData = await cardsResponse.json();
+    setCards(cardsData);
+
+    console.log(cardsData);
+  };
+
+  const wallet = ["CSP", "Bilt", "CSR", "Cap1"];
+
+  const cardList = wallet.map((item) => (
     <div className="flex space-between border rounded-lg p-2 m-auto shadow">
       <img
         className="object-fill square-full w-40 h-40"
