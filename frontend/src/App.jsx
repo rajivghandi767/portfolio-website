@@ -9,31 +9,17 @@ import Wallet from "./components/Wallet";
 import Contact from "./components/Contact";
 
 function App() {
-  const homeRef = useRef(null);
-  const projectsRef = useRef(null);
-  const blogRef = useRef(null);
-  const walletRef = useRef(null);
-  const contactRef = useRef(null);
-
   return (
     <>
-      <div className="h-screen my-4">
-        <div className="block sticky top-0">
-          <Banner />
-          <NavBar
-            homeRef={homeRef}
-            projectsRef={projectsRef}
-            blogRef={blogRef}
-            walletRef={walletRef}
-            contactRef={contactRef}
-          />
-        </div>
-        <Bio />
-        <Projects />
-        <Blog />
-        <Wallet />
-        <Contact />
+      <div className="block sticky top-0">
+        <Banner />
+        <NavBar />
       </div>
+      <Bio />
+      <Projects />
+      <Blog />
+      <Wallet />
+      <Contact />
     </>
   );
 }

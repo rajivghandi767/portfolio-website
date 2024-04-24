@@ -3,11 +3,10 @@ import React from "react";
 const Contact = () => {
   return (
     <>
-      <div id="contact" className="md:h-screen pt-4">
-        <div className="m-8">
-          <h1 className="text-4xl text-center">Contact</h1>
-        </div>
-        <div className="flex justify-center items-center md:flex-row flex-col space-between md:w-1/4 w-1/12 m-auto border rounded-lg p-4 shadow">
+      <div id="contact" className="m-3">
+        <h1 className="p-2 text-4xl text-center">Contact</h1>
+
+        <div className="flex items-center justify-center w-1/4 mx-auto space-between border rounded-lg p-3 shadow">
           <form>
             <label className="text-xl">
               Name

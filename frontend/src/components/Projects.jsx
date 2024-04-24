@@ -38,11 +38,9 @@ const Projects = () => {
   ));
 
   return (
-    <div id="projects" className="md:h-screen pt-4">
-      <div className="m-8">
-        <h1 className="text-4xl text-center">Projects</h1>
-      </div>
-      <div className="flex grid lg:grid-cols-2 gap-4 mx-5">{projectList}</div>
+    <div id="projects" className="m-3">
+      <h1 className="p-2 text-4xl text-center">Projects</h1>
+      <div className="flex grid gap-4 mx-5">{projectList}</div>
     </div>
   );
 };

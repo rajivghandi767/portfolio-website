@@ -19,7 +19,7 @@ const Wallet = () => {
   const wallet = ["CSP", "Bilt", "CSR", "Cap1"];
 
   const cardList = wallet.map((item) => (
-    <div className="flex space-between border rounded-lg p-2 m-auto shadow">
+    <div className="flex justify-center space-between border rounded-lg p-2 m-auto shadow">
       <img
         className="object-fill square-full w-40 h-40"
         src="https://tecdn.b-cdn.net/wp-content/uploads/2020/06/vertical.jpg"
@@ -32,13 +32,9 @@ const Wallet = () => {
   ));
 
   return (
-    <div id="wallet" className="md:h-screen pt-4">
-      <div className="m-8">
-        <h1 className="text-4xl text-center">Wallet</h1>
-      </div>
-      <div className="grid md:grid-cols-4 grid-cols-1 gap-4 mx-5 ">
-        {cardList}
-      </div>
+    <div id="wallet" className="m-3">
+      <h1 className="p-2 text-4xl text-center">Wallet</h1>
+      <div className="grid grid-cols-4 grid-cols-1 gap-4 mx-5">{cardList}</div>
     </div>
   );
 };

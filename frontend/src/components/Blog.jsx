@@ -19,7 +19,7 @@ const Blog = () => {
   const eachPost = ["Article 1", "Article 1", "Article 1"];
 
   const blogPosts = eachPost.map((item) => (
-    <div className="flex space-between border rounded-lg p-2 m-auto shadow">
+    <div className="flex justify-center space-between border rounded-lg p-2 m-auto shadow">
       <img
         className="object-fill w-64 h-64"
         src="https://tecdn.b-cdn.net/wp-content/uploads/2020/06/vertical.jpg"
@@ -34,10 +34,8 @@ const Blog = () => {
     </div>
   ));
   return (
-    <div id="blog" className="md:h-screen">
-      <div className="m-8">
-        <h1 className="text-4xl text-center">Blog Posts</h1>
-      </div>
+    <div id="blog" className="m-3">
+      <h1 className="p-2 text-4xl text-center">Blog Posts</h1>
       <div className="grid grid-row-1 gap-4 mx-5">{blogPosts}</div>
     </div>
   );
