@@ -26,7 +26,11 @@ const Wallet = () => {
       />
       <div className="p-4">
         <h5 className="mb-2 text-2xl font-medium border-b-2">Credit Card</h5>
-        <p className="pt-3">Description and benefits of card</p>
+        <h5>AF</h5>
+        <p className="pt-1">Description and benefits of card</p>
+        <h5 className="pt-1 text-blue-500 hover:text-blue-700 transition cursor-pointer">
+          Referral Link
+        </h5>
       </div>
     </div>
   ));
