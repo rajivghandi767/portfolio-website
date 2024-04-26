@@ -16,20 +16,12 @@ const Blog = () => {
     console.log(blogData);
   };
 
-  const eachPost = ["Article 1", "Article 1", "Article 1"];
-
-  const blogPosts = eachPost.map((item) => (
+  const blogPosts = blog.map((post) => (
     <div className="flex justify-center space-between border rounded-lg p-2 m-auto shadow">
-      <img
-        className="object-fill w-64 h-64"
-        src="https://tecdn.b-cdn.net/wp-content/uploads/2020/06/vertical.jpg"
-      />
+      <img className="object-fill w-64 h-64" src={post.image} />
       <div className="p-4">
-        <h5 className="mb-2 text-2xl font-medium border-b-2">Blog Title</h5>
-        <p className="pt-3">
-          This is a wider card with supporting text below as a natural lead-in
-          to additional content. This content is a little bit longer.
-        </p>
+        <h5 className="mb-2 text-2xl font-medium border-b-2">{post.title}</h5>
+        <p className="pt-3">{post.body}</p>
       </div>
     </div>
   ));

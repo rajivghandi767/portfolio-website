@@ -7,7 +7,7 @@ class Project(models.Model):
     technology = models.CharField(max_length=50)
     repo = models.URLField(("Link to Repo"))
     link_if_deployed = models.URLField(("Link to Deployed App"), blank=True)
-    image = models.FileField(upload_to="project_images/", blank=True)
+    thumbnail = models.ImageField(upload_to="project_images/", blank=True)
 
     def __str__(self):
         return self.title

@@ -5,4 +5,5 @@ from .models import Info
 class InfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Info
-        fields = ["id", "body", "github", "linkedIn"]
+        fields = ["id", "profile_photo",
+                  "greeting", "bio", "github", "linkedIn"]

@@ -16,20 +16,17 @@ const Wallet = () => {
     console.log(cardsData);
   };
 
-  const wallet = ["CSP", "Bilt", "CSR", "Cap1"];
-
-  const cardList = wallet.map((item) => (
+  const cardList = cards.map((card) => (
     <div className="flex justify-center space-between border rounded-lg p-2 m-auto shadow">
-      <img
-        className="object-fill square-full w-40 h-40"
-        src="https://tecdn.b-cdn.net/wp-content/uploads/2020/06/vertical.jpg"
-      />
+      <img className="object-fill square-full w-40 h-40" src="" />
       <div className="p-4">
-        <h5 className="mb-2 text-2xl font-medium border-b-2">Credit Card</h5>
-        <h5>AF</h5>
-        <p className="pt-1">Description and benefits of card</p>
+        <h5 className="mb-2 text-2xl font-medium border-b-2">
+          {card.card_name}
+        </h5>
+        <h5>{card.annual_fee}</h5>
+        <p className="pt-1">{card.description}</p>
         <h5 className="pt-1 text-blue-500 hover:text-blue-700 transition cursor-pointer">
-          Referral Link
+          <a href={card.referral_link}>Referral Link</a>
         </h5>
       </div>
     </div>
