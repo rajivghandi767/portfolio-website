@@ -21,11 +21,7 @@ const Bio = () => {
       id="bio"
       className="flex items-center space-between w-2/4 m-auto border rounded-lg p-3 shadow"
     >
-      <img
-        className="rounded-full w-64 h-64"
-        src="./public/bio_photo.jpg"
-        alt="profile_photo"
-      />
+      <img className="w-64 h-64" src="bio_photo.jpg" alt="profile_photo" />
       <div className="p-4">
         <h5 className="text-2xl font-medium border-b-2">{info.greeting}</h5>
         <p className="pt-3">{info.bio} </p>

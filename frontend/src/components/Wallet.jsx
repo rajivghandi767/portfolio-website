@@ -35,7 +35,7 @@ const Wallet = () => {
   return (
     <div id="wallet" className="m-3">
       <h1 className="p-2 text-4xl text-center">Wallet</h1>
-      <div className="grid grid-cols-4 grid-cols-1 gap-4 mx-5">{cardList}</div>
+      <div className="grid grid-cols-3 gap-4 mx-5">{cardList}</div>
     </div>
   );
 };
