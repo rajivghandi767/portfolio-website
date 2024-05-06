@@ -28,7 +28,7 @@ const NavBar = () => {
   const navBarItems = siteSections.map((siteSection) => (
     <li
       onClick={() => scrollToSection(siteSection.ref)}
-      className="mx-5 my-5 text-2xl text-gray-950 hover:text-grey-500 transition"
+      className="mx-4 my-4 text-xl text-white"
     >
       {siteSection.section}
     </li>
@@ -38,9 +38,9 @@ const NavBar = () => {
     <>
       {/* View settings for large screens */}
 
-      <div className="mb-4">
+      <div className="mb-2">
         <div>
-          <ul className="flex bg-gray-200 cursor-pointer justify-center">
+          <ul className="flex bg-black cursor-pointer justify-center dark:border-b-2 dark:border-t-2">
             {navBarItems}
           </ul>
         </div>

@@ -7,6 +7,7 @@ import Projects from "./components/Projects";
 import Blog from "./components/Blog";
 import Wallet from "./components/Wallet";
 import Contact from "./components/Contact";
+import Footer from "./components/Footer";
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -25,13 +26,13 @@ function App() {
 
   return (
     <>
-      <div className="bg-slate-50 m-auto dark:bg-black text-black dark:text-white">
+      <div className="bg-slate-50 m-auto font-mono dark:bg-black text-black dark:text-white pt-2 pb-2">
         <div className="block sticky top-0">
           <button
-            className="absolute w-10 h-10 right-2 top-2 bg-slate-950 dark:bg-slate-50 rounded-full text-white dark:text-black"
+            className="absolute w-10 h-10 right-2 top-2 bg-black dark:bg-white rounded-full text-white dark:text-black"
             onClick={toggleDarkMode}
           >
-            {darkMode === "dark" ? "*" : "🌙"}
+            {darkMode === "dark" ? "☀️" : "🌙"}
           </button>
           <Banner />
           <NavBar />
@@ -41,6 +42,7 @@ function App() {
         <Blog />
         <Wallet />
         <Contact />
+        <Footer />
       </div>
     </>
   );

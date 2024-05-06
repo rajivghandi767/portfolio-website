@@ -4,9 +4,9 @@ const Contact = () => {
   return (
     <>
       <div id="contact" className="pt-3">
-        <h1 className="p-2 text-4xl text-center">Contact</h1>
+        <h1 className="p-2 text-3xl text-center">Contact</h1>
 
-        <div className="flex items-center justify-center w-1/4 mx-auto space-between border rounded-lg p-3 shadow">
+        <div className="flex items-center justify-center w-1/4 mx-auto space-between border-2 border-black dark:border-white p-3">
           <form>
             <label className="text-xl">
               Name
@@ -28,7 +28,7 @@ const Contact = () => {
             <br />
             <button
               type="submit"
-              className="flex mx-auto m-2 bg-gray-900 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+              className="flex mx-auto m-2 bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
             >
               Submit
             </button>
