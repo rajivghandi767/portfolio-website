@@ -28,7 +28,7 @@ const NavBar = () => {
   const navBarItems = siteSections.map((siteSection) => (
     <li
       onClick={() => scrollToSection(siteSection.ref)}
-      className="mx-4 my-4 text-xl text-white"
+      className="mx-4 my-4 text-xl text-white hover:bg-gray-700 rounded"
     >
       {siteSection.section}
     </li>

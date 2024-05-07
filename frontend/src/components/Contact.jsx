@@ -17,7 +17,7 @@ const Contact = () => {
             <label className="text-xl">
               Email
               <br />
-              <input type="email" className="border rounded" />
+              <input type="email" className="border rounded " />
             </label>
             <br />
             <label className="text-xl">
@@ -28,7 +28,7 @@ const Contact = () => {
             <br />
             <button
               type="submit"
-              className="flex mx-auto m-2 bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+              className="flex mx-auto m-2 bg-black dark:border border-white hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
             >
               Submit
             </button>

@@ -26,7 +26,7 @@ const Bio = () => {
         <h5 className="text-xl font-medium border-b-2 border-black dark:border-white">
           {info.greeting}
         </h5>
-        <p className="pt-3">{info.bio} </p>
+        <p className="container grid grid-cols-1 pt-3">{info.bio} </p>
       </div>
     </div>
   ));

@@ -23,7 +23,7 @@ const Projects = () => {
         <h3 className="mb-2 text-xl font-medium border-b-2 border-black dark:border-white">
           {project.title}
         </h3>
-        <h5 className="text-base text-blue-500 hover:text-blue-700 transition cursor-pointer">
+        <h5 className="text-blue-500 hover:text-blue-700 transition cursor-pointer">
           <a href={project.repo}>View Code</a>
         </h5>
         <p className="pt-2">{project.description}</p>
@@ -34,7 +34,9 @@ const Projects = () => {
   return (
     <div id="projects" className="m-3">
       <h1 className="p-2 text-3xl text-center">Projects</h1>
-      <div className="flex grid grid-cols-3 gap-4 mx-5">{projectList}</div>
+      <div className="container mx-auto grid grid-cols-3 gap-4">
+        {projectList}
+      </div>
     </div>
   );
 };

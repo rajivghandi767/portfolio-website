@@ -17,14 +17,14 @@ const Wallet = () => {
   };
 
   const cardList = cards.map((card) => (
-    <div className="flex justify-center space-between border-2 border-black dark:border-white p-2 m-auto">
+    <div className="flex border-2 border-black dark:border-white p-2 m-auto">
       <img className="object-fill square-full w-40 h-40" src="" />
       <div className="p-4">
-        <h5 className="mb-2 text-xl font-medium border-b-2 border-black dark:border-white">
+        <h5 className="mb-2 text-s font-medium border-b-2 border-black dark:border-white">
           {card.card_name}
         </h5>
-        <h5>{card.annual_fee}</h5>
-        <p className="pt-1">{card.description}</p>
+        <h5 className="text-xs">{card.annual_fee}</h5>
+        <p className="pt-1 text-xs">{card.description}</p>
         <h5 className="pt-1 text-blue-500 hover:text-blue-700 transition cursor-pointer">
           <a href={card.referral_link}>Referral Link</a>
         </h5>
@@ -35,7 +35,7 @@ const Wallet = () => {
   return (
     <div id="wallet" className="m-3">
       <h1 className="p-2 text-3xl text-center">Wallet</h1>
-      <div className="grid grid-cols-3 gap-4 mx-5">{cardList}</div>
+      <div className="container grid grid-cols-3 gap-3">{cardList}</div>
     </div>
   );
 };
