@@ -6,7 +6,7 @@ const Contact = () => {
       <div id="contact" className="pt-3">
         <h1 className="p-2 text-3xl text-center">Contact</h1>
 
-        <div className="flex items-center justify-center w-1/4 mx-auto space-between border-2 border-black dark:border-white p-3">
+        <div className="flex item-center w-2/3 border-2 border-black dark:border-white p-3">
           <form>
             <label className="text-xl">
               Name

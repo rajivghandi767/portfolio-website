@@ -18,7 +18,7 @@ const Blog = () => {
 
   const blogPosts = blog.map((post) => (
     <div className="flex justify-center space-between border-2 border-black dark:border-white p-2 m-auto shadow">
-      <img className="object-fill w-64 h-64" src={post.image} />
+      <img className="object-contain w-64 h-64" src={post.image} />
       <div className="p-4">
         <h5 className="mb-2 text-xl font-medium border-b-2 border-black dark:border-white">
           {post.title}

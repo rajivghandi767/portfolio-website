@@ -34,7 +34,7 @@ const Projects = () => {
   return (
     <div id="projects" className="m-3">
       <h1 className="p-2 text-3xl text-center">Projects</h1>
-      <div className="container mx-auto grid grid-cols-3 gap-4">
+      <div className="flex space-between grid grid-row-3 gap-3">
         {projectList}
       </div>
     </div>
