@@ -19,7 +19,7 @@ const Bio = () => {
   return info.map((info) => (
     <div
       id="bio"
-      className="flex items-center space-between mx-20 border-2 border-black dark:border-white p-3"
+      className="flex items-center mx-auto w-3/4 border-2 border-black dark:border-white p-3"
     >
       <img
         className="object-contain w-64 h-64"
@@ -30,7 +30,7 @@ const Bio = () => {
         <h5 className="text-xl font-medium border-b-2 border-black dark:border-white">
           {info.greeting}
         </h5>
-        <p className="container grid grid-cols-1 pt-3">{info.bio} </p>
+        <p className="pt-3">{info.bio} </p>
       </div>
     </div>
   ));

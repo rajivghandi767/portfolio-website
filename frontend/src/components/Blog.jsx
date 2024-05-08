@@ -28,9 +28,9 @@ const Blog = () => {
     </div>
   ));
   return (
-    <div id="blog" className="mx-20">
+    <div id="blog" className="mx-auto">
       <h1 className="p-2 text-3xl text-center">Blog Posts</h1>
-      <div className="container grid grid-row-1 gap-4">{blogPosts}</div>
+      <div className="mx-20 grid grid-row-1 gap-4">{blogPosts}</div>
     </div>
   );
 };

@@ -17,7 +17,7 @@ const Projects = () => {
   };
 
   const projectList = projects.map((project) => (
-    <div className="flex justify-center space-between border-2 border-black dark:border-white p-2 m-auto shadow">
+    <div className="flex w-full h-80 border-2 border-black dark:border-white p-2 m-auto shadow">
       <img className="object-contain square-full w-64 h-64" src="" />
       <div className="p-4">
         <h3 className="mb-2 text-xl font-medium border-b-2 border-black dark:border-white">
@@ -34,9 +34,7 @@ const Projects = () => {
   return (
     <div id="projects" className="m-3">
       <h1 className="p-2 text-3xl text-center">Projects</h1>
-      <div className="flex space-between grid grid-row-3 gap-3">
-        {projectList}
-      </div>
+      <div className="grid grid-cols-3 gap-3">{projectList}</div>
     </div>
   );
 };

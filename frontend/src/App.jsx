@@ -9,6 +9,8 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 
 function App() {
+  // Dark Mode Toggle
+
   const [darkMode, setDarkMode] = useState(false);
 
   const toggleDarkMode = () => {

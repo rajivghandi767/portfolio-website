@@ -25,6 +25,8 @@ const siteSections = [
 ];
 
 const NavBar = () => {
+  // Jump to Section Logic
+
   const navBarItems = siteSections.map((siteSection) => (
     <li
       onClick={() => scrollToSection(siteSection.ref)}

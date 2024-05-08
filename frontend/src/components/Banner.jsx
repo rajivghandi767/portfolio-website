@@ -6,7 +6,7 @@ const Banner = () => {
       <div className="flex justify-center bg-white text-center dark:bg-black">
         <text className="">
           <h1 className="text-2xl">Rajiv Wallace</h1>
-          <h2 className="text-base">Software Engineer & Web Developer </h2>
+          <h2>Software Engineer & Web Developer </h2>
         </text>
       </div>
     </>
