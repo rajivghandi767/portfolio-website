@@ -30,13 +30,13 @@ function App() {
       <div className="bg-white m-auto font-mono dark:bg-black text-black dark:text-white pt-2 pb-2">
         <div className="block sticky top-0">
           <button
-            className="absolute w-10 h-10 right-2 top-2 bg-black dark:bg-slate-300 rounded-full text-white dark:text-black"
+            className="absolute w-8 h-8 left-1 top-0.5 bg-black dark:bg-slate-300 rounded-full text-white dark:text-black"
             onClick={toggleDarkMode}
           >
             {darkMode === "dark" ? "☀️" : "🌙"}
           </button>
           <Banner />
-          <NavBar />
+          {/* <NavBar /> */}
         </div>
         <Bio />
         <Projects />

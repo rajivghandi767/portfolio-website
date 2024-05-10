@@ -40,7 +40,7 @@ const NavBar = () => {
     <>
       {/* View settings for large screens */}
 
-      <div className="mb-2">
+      <div className="mb-2 w-screen mx-auto">
         <div>
           <ul className="flex bg-black cursor-pointer justify-center dark:border-b-2 dark:border-t-2">
             {navBarItems}

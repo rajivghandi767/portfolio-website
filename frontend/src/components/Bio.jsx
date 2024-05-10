@@ -19,15 +19,15 @@ const Bio = () => {
   return info.map((info) => (
     <div
       id="bio"
-      className="flex items-center mx-auto w-3/4 border-2 border-black dark:border-white p-3"
+      className="mx-5 items-center border-2 border-black dark:border-white p-3"
     >
       <img
-        className="object-contain w-64 h-64"
+        className="mx-auto object-cover object-top w-44 h-44 rounded-full"
         src="bio_photo.jpg"
         alt="profile_photo"
       />
-      <div className="p-4">
-        <h5 className="text-xl font-medium border-b-2 border-black dark:border-white">
+      <div className="">
+        <h5 className="text-xl font-medium underline underline-offset-8 decoration-2 dark:border-white">
           {info.greeting}
         </h5>
         <p className="pt-3">{info.bio} </p>

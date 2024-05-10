@@ -17,13 +17,13 @@ const Projects = () => {
   };
 
   const projectList = projects.map((project) => (
-    <div className="flex w-full h-80 border-2 border-black dark:border-white p-2 m-auto shadow">
-      <img className="object-contain square-full w-64 h-64" src="" />
+    <div className="mx-5 border-2 border-black inline-block dark:border-white">
+      <img className="" src="" />
       <div className="p-4">
-        <h3 className="mb-2 text-xl font-medium border-b-2 border-black dark:border-white">
+        <h3 className="mb-2 text-xl text-center underline underline-offset-8 decoration-2 font-medium border-black dark:border-white">
           {project.title}
         </h3>
-        <h5 className="text-blue-500 hover:text-blue-700 transition cursor-pointer">
+        <h5 className="text-center text-blue-500 hover:text-blue-700 transition cursor-pointer">
           <a href={project.repo}>View Code</a>
         </h5>
         <p className="pt-2">{project.description}</p>
@@ -33,8 +33,8 @@ const Projects = () => {
 
   return (
     <div id="projects" className="m-3">
-      <h1 className="p-2 text-3xl text-center">Projects</h1>
-      <div className="grid grid-cols-3 gap-3">{projectList}</div>
+      <h1 className="p-1 text-3xl text-center mx-auto">Projects</h1>
+      <div className="grid grid-rows-3 gap-2">{projectList}</div>
     </div>
   );
 };

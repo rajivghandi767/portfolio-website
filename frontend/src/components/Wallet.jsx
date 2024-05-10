@@ -17,8 +17,8 @@ const Wallet = () => {
   };
 
   const cardList = cards.map((card) => (
-    <div className="flex w-full h-full border-2 border-black dark:border-white p-2 m-auto">
-      <img className="object-contain square-full w-40 h-40" src="" />
+    <div className="mx-5 inline-block border-2 border-black dark:border-white p-2 m-auto">
+      <img className="" src="" />
       <div className="p-4">
         <h5 className="mb-2 text-s font-medium border-b-2 border-black dark:border-white">
           {card.card_name}
@@ -35,7 +35,7 @@ const Wallet = () => {
   return (
     <div id="wallet" className="m-3">
       <h1 className="p-2 text-3xl text-center">Wallet</h1>
-      <div className="grid gap-3 grid-cols-3">{cardList}</div>
+      <div className="grid gap-3">{cardList}</div>
     </div>
   );
 };

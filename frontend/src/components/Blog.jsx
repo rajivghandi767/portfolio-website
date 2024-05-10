@@ -17,8 +17,8 @@ const Blog = () => {
   };
 
   const blogPosts = blog.map((post) => (
-    <div className="flex justify-center space-between border-2 border-black dark:border-white p-2 m-auto shadow">
-      <img className="object-contain w-64 h-64" src={post.image} />
+    <div className="mx-5 border-2 border-black inline-block dark:border-white">
+      <img className="object-cover object-top" src={post.image} />
       <div className="p-4">
         <h5 className="mb-2 text-xl font-medium border-b-2 border-black dark:border-white">
           {post.title}
@@ -30,7 +30,7 @@ const Blog = () => {
   return (
     <div id="blog" className="mx-auto">
       <h1 className="p-2 text-3xl text-center">Blog Posts</h1>
-      <div className="mx-20 grid grid-row-1 gap-4">{blogPosts}</div>
+      <div className="grid gap-4">{blogPosts}</div>
     </div>
   );
 };
