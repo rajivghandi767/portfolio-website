@@ -17,7 +17,7 @@ const Blog = () => {
   };
 
   const blogPosts = blog.map((post) => (
-    <div className="mx-5 border-2 border-black inline-block dark:border-white">
+    <div className="mx-5 border-2 border-black dark:border-white">
       <img className="object-cover object-top" src={post.image} />
       <div className="p-4">
         <h5 className="mb-2 text-xl font-medium border-b-2 border-black dark:border-white">
@@ -29,7 +29,7 @@ const Blog = () => {
   ));
   return (
     <div id="blog" className="mx-auto">
-      <h1 className="p-2 text-3xl text-center">Blog Posts</h1>
+      <h1 className="p-1 text-3xl text-center mx-auto">Blog Posts</h1>
       <div className="grid gap-4">{blogPosts}</div>
     </div>
   );
