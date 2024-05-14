@@ -30,7 +30,7 @@ const Blog = () => {
   return (
     <div id="blog" className="mx-auto">
       <h1 className="p-1 text-3xl text-center mx-auto">Blog Posts</h1>
-      <div className="grid gap-4">{blogPosts}</div>
+      <div className="grid grid-rows gap-2">{blogPosts}</div>
     </div>
   );
 };
