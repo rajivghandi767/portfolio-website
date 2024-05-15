@@ -6,12 +6,13 @@ const Contact = () => {
       <div id="contact-form" className="pt-3">
         <h1 className="p-1 text-3xl text-center mx-auto">Contact</h1>
 
-        <div className="mx-16 items-center justify-center border-2 border-black dark:border-white p-3">
+        <div className="flex mx-auto items-center justify-center border-2 border-black w-72 h-72 dark:border-white p-3">
           <form>
             <label className="text-xl">
               Name
               <br />
               <input
+                id="name"
                 type="text"
                 className="border-2 border-black p-0.5 dark:border-white"
                 placeholder="Name"
@@ -22,6 +23,7 @@ const Contact = () => {
               Email
               <br />
               <input
+                id="email"
                 type="email"
                 className="border-2 border-black p-0.5 dark:border-white"
                 placeholder="name@example.com"
@@ -32,6 +34,7 @@ const Contact = () => {
               Message
               <br />
               <textarea
+                id="message"
                 className="border-2 border-black p-0.5 dark:border-white"
                 placeholder="Type message here..."
               />
