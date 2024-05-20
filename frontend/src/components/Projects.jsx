@@ -34,7 +34,7 @@ const Projects = () => {
   return (
     <div id="projects" className="m-3">
       <h1 className="p-1 text-3xl text-center mx-auto"> Coding Projects</h1>
-      <div className="grid grid-rows-3 gap-2">{projectList}</div>
+      <div className="grid grid-rows md:grid-cols-3 gap-2">{projectList}</div>
     </div>
   );
 };

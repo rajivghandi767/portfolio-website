@@ -36,7 +36,7 @@ function App() {
             {darkMode === "dark" ? "☀️" : "🌙"}
           </button>
           <Banner />
-          {/* <NavBar /> */}
+          <NavBar />
         </div>
         <Bio />
         <Projects />
