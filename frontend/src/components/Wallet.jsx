@@ -17,25 +17,28 @@ const Wallet = () => {
   };
 
   const cardList = cards.map((card) => (
-    <div className="size-full border-2 border-black dark:border-white p-2 m-auto">
+    <div className="mx-auto border-2 w-64 border-black dark:border-white">
       <img className="" src="" />
-      <div className="p-4">
-        <h5 className="mb-2 text-s font-medium border-b-2 border-black dark:border-white">
+      <div className="p-2">
+        <h1 className="mb-2 text-s font-medium border-b-2 border-black dark:border-white">
           {card.card_name}
-        </h5>
-        <h5 className="text-xs">{card.annual_fee}</h5>
-        <p className="pt-1 text-xs">{card.description}</p>
-        <h5 className="pt-1 text-blue-500 hover:text-blue-700 transition cursor-pointer">
+        </h1>
+        <h2 className="text-xs">{card.annual_fee}</h2>
+
+        {/* <p className="pt-1 text-sm">{card.description}</p> */}
+        <h1 className="text-sm text-blue-500 hover:text-blue-700 transition cursor-pointer">
           <a href={card.referral_link}>Referral Link</a>
-        </h5>
+        </h1>
       </div>
     </div>
   ));
 
   return (
     <div id="wallet" className="m-3">
-      <h1 className="p-1 text-3xl text-center mx-auto">Wallet</h1>
-      <div className="grid grid-rows md:grid-cols-3 gap-2">{cardList}</div>
+      <h1 className="p-1 text-2xl text-center mx-auto">Wallet</h1>
+      <div className="lg:mx-auto lg:w-4/6 grid grid-rows md:grid-cols-3 gap-2">
+        {cardList}
+      </div>
     </div>
   );
 };

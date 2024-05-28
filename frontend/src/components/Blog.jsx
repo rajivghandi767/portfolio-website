@@ -23,13 +23,13 @@ const Blog = () => {
         <h5 className="mb-2 text-xl font-medium border-b-2 border-black dark:border-white">
           {post.title}
         </h5>
-        <p className="pt-3">{post.body}</p>
+        <p className="pt-3 line-clamp-3">{post.body}</p>
       </div>
     </div>
   ));
   return (
     <div id="blog" className="mx-auto">
-      <h1 className="p-1 text-3xl text-center mx-auto">Blog Posts</h1>
+      <h1 className="p-1 text-2xl text-center mx-auto">Blog Posts</h1>
       <div className="grid grid-rows gap-2">{blogPosts}</div>
     </div>
   );

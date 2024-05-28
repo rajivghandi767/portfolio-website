@@ -19,7 +19,7 @@ const Bio = () => {
   return info.map((info) => (
     <div
       id="bio"
-      className="mx-5 md:mx-auto p-2 justify-center items-center md:flex md:w-5/6 lg:w-3/4 border-2 border-black dark:border-white"
+      className="mx-auto p-2 md:flex md:w-5/6 lg:w-7/12 md:border-2 border-black dark:border-white"
     >
       <img
         className="mx-auto object-cover object-top size-44 rounded-full shrink-0 grow-0"
@@ -27,10 +27,10 @@ const Bio = () => {
         alt="profile_photo"
       />
       <div className="md:ml-3">
-        <h5 className="text-xl font-medium underline underline-offset-8 decoration-2 dark:border-white">
+        <h5 className="text-l font-medium underline underline-offset-8 decoration-2 dark:border-white">
           {info.greeting}
         </h5>
-        <p className="pt-3">{info.bio}</p>
+        <p className="pt-3 text-sm">{info.bio}</p>
         <h5 className="mt-2 text-center md:text-left text-blue-500 hover:text-blue-700 transition cursor-pointer">
           <a href="">View Resume</a>
         </h5>
