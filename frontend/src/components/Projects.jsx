@@ -17,7 +17,7 @@ const Projects = () => {
   };
 
   const projectList = projects.map((project) => (
-    <div className="mx-5 border-2 border-black inline-block dark:border-white">
+    <div className="size-full border-2 border-black inline-block dark:border-white">
       <img className="" src="" />
       <div className="p-4">
         <h3 className="mb-2 text-xl text-center underline underline-offset-8 decoration-2 font-medium border-black dark:border-white">
