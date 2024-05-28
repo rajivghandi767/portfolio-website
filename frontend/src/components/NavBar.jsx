@@ -38,16 +38,14 @@ const NavBar = () => {
 
   return (
     <>
-      {/* View settings for mobile screens */}
+      {/* View settings for md+ screens contained here*/}
+      {/* View settings for mobile screens contained in Banner Component*/}
 
-      <div className="mb-2 w-screen mx-auto">
+      <div className="hidden md:block mb-2 w-screen mx-auto">
         <ul className="flex bg-black cursor-pointer justify-center dark:border-b-2 dark:border-t-2">
           {navBarItems}
         </ul>
       </div>
-
-      {/* View settings for sm+ screens */}
-      <div className=""></div>
     </>
   );
 };
