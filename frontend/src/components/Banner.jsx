@@ -1,16 +1,32 @@
-import React from "react";
+import { React, useState, useEffect } from "react";
 
 const Banner = () => {
+  // Dark Mode Toggle
+
+  const [darkMode, setDarkMode] = useState(false);
+
+  const toggleDarkMode = () => {
+    setDarkMode(darkMode === "dark" ? "" : "dark");
+  };
+
+  useEffect(() => {
+    if (darkMode === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [darkMode]);
+
   return (
     <>
-      <div className="flex md:block bg-white text-center justify-center items-center mx-auto dark:bg-black">
+      <div className="flex bg-white text-center items-center mx-auto dark:bg-black">
         <button
-          className="w-8 h-8 m-3 bg-black dark:bg-slate-300 rounded-full text-white dark:text-black"
-          // onClick={toggleDarkMode}
+          className="md:absolute w-8 h-8 m-3 bg-black dark:bg-slate-300 rounded-full shrink-0 grow-0 text-white dark:text-black"
+          onClick={toggleDarkMode}
         >
-          {/* {darkMode === "dark" ? "☀️" : "🌙"} */}
+          {darkMode === "dark" ? "☀️" : "🌙"}
         </button>
-        <text>
+        <text className="mx-auto">
           <h1 className="text-2xl">Rajiv Wallace</h1>
           <h2 classnam>Software Engineer & Web Developer</h2>
         </text>
