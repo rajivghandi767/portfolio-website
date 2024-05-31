@@ -32,7 +32,9 @@ const Bio = () => {
         </h5>
         <p className="pt-3 text-sm">{info.bio}</p>
         <h5 className="mt-2 text-center md:text-left text-blue-500 hover:text-blue-700 transition cursor-pointer">
-          <a href="">View Resume</a>
+          <a href="" target="_blank">
+            View Resume
+          </a>
         </h5>
       </div>
     </div>

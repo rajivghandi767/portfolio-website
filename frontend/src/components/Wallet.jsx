@@ -27,7 +27,9 @@ const Wallet = () => {
 
         {/* <p className="pt-1 text-sm">{card.description}</p> */}
         <h1 className="text-sm text-blue-500 hover:text-blue-700 transition cursor-pointer">
-          <a href={card.referral_link}>Referral Link</a>
+          <a href={card.referral_link} target="_blank">
+            Referral Link
+          </a>
         </h1>
       </div>
     </div>

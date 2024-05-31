@@ -24,7 +24,9 @@ const Projects = () => {
           {project.title}
         </h3>
         <h5 className="text-center text-blue-500 hover:text-blue-700 transition cursor-pointer">
-          <a href={project.repo}>View Code</a>
+          <a href={project.repo} target="_blank">
+            View Code
+          </a>
         </h5>
         <p className="pt-2 text-sm">{project.description}</p>
       </div>
