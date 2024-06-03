@@ -5,6 +5,14 @@ const Banner = () => {
 
   const [darkMode, setDarkMode] = useState(false);
 
+  useEffect(() => {
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      setDarkMode("dark");
+    } else {
+      setDarkMode("");
+    }
+  }, []);
+
   const toggleDarkMode = () => {
     setDarkMode(darkMode === "dark" ? "" : "dark");
   };
@@ -19,7 +27,7 @@ const Banner = () => {
 
   return (
     <>
-      <div className="flex bg-white text-center items-center mx-auto dark:bg-black">
+      <div className="flex bg-white text-center items-center mx-auto dark:bg-stone-950">
         <button
           className="md:absolute w-8 h-8 m-3 bg-black dark:bg-slate-300 rounded-full shrink-0 grow-0 text-white dark:text-black"
           onClick={toggleDarkMode}

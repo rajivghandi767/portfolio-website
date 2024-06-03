@@ -17,18 +17,21 @@ const Projects = () => {
   };
 
   const projectList = projects.map((project) => (
-    <div className="mx-auto border-2 w-64 border-black inline-block dark:border-white">
+    <div className="mx-auto border-2 w-64 border-black inline-block dark:border-white rounded-md">
       <img className="" src="" />
       <div className="p-2">
-        <h3 className="mb-2 text-l text-center underline underline-offset-8 decoration-2 font-medium border-black dark:border-white">
+        <h1 className="mb-1 text-l text-center underline underline-offset-8 decoration-2 font-medium border-black dark:border-white">
           {project.title}
-        </h3>
-        <h5 className="text-center text-blue-500 hover:text-blue-700 transition cursor-pointer">
+        </h1>
+        <h2 className="text-center text-blue-500 hover:text-blue-700 transition cursor-pointer">
           <a href={project.repo} target="_blank" rel="noreferrer">
             View Code
           </a>
-        </h5>
-        <p className="pt-2 text-sm">{project.description}</p>
+        </h2>
+        <p className="py-1 text-sm">{project.description}</p>
+        <h2 className="text-xs font-bold text-left">
+          Tech Stack: {project.stack}
+        </h2>
       </div>
     </div>
   ));

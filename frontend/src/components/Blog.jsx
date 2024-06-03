@@ -17,7 +17,7 @@ const Blog = () => {
   };
 
   const blogPosts = blog.map((post) => (
-    <div className="mx-5 md:mx-auto p-2 justify-center items-center md:flex md:w-5/6 lg:w-3/4 border-2 border-black dark:border-white">
+    <div className="mx-5 md:mx-auto p-2 justify-center items-center md:flex md:w-5/6 lg:w-3/4 border-2 border-black dark:border-white rounded-md">
       <img className="object-cover object-top" src={post.image} />
       <div className="p-4">
         <h5 className="mb-2 text-xl font-medium border-b-2 border-black dark:border-white">

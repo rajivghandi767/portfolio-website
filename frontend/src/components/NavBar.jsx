@@ -42,7 +42,7 @@ const NavBar = () => {
       {/* View settings for mobile screens contained in Banner Component*/}
 
       <div className="hidden md:block mb-2 w-screen mx-auto">
-        <ul className="flex bg-black cursor-pointer justify-center dark:border-b-2 dark:border-t-2">
+        <ul className="flex bg-stone-950 cursor-pointer justify-center dark:border-b-2 dark:border-t-2">
           {navBarItems}
         </ul>
       </div>

@@ -17,10 +17,7 @@ const Bio = () => {
   };
 
   return info.map((info) => (
-    <div
-      id="bio"
-      className="mx-auto p-2 md:flex md:w-5/6 lg:w-7/12 md:border-2 border-black dark:border-white"
-    >
+    <div id="bio" className="mx-auto p-2 md:flex md:w-5/6 lg:w-7/12">
       <img
         className="mx-auto object-cover object-top size-44 rounded-full shrink-0 grow-0"
         src="bio_photo.jpg"
@@ -32,7 +29,7 @@ const Bio = () => {
         </h5>
         <p className="pt-3 text-sm">{info.bio}</p>
         <h5 className="mt-2 text-center md:text-left text-blue-500 hover:text-blue-700 transition cursor-pointer">
-          <a href="" target="_blank">
+          <a href="" target="_blank" rel="noreferrer">
             View Resume
           </a>
         </h5>

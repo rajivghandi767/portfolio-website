@@ -17,7 +17,7 @@ const Wallet = () => {
   };
 
   const cardList = cards.map((card) => (
-    <div className="mx-auto border-2 w-64 border-black dark:border-white">
+    <div className="mx-auto border-2 w-64 border-black dark:border-white rounded-md">
       <img className="" src="" />
       <div className="p-2">
         <h1 className="mb-2 text-s font-medium border-b-2 border-black dark:border-white">

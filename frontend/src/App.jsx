@@ -11,7 +11,7 @@ import Footer from "./components/Footer";
 function App() {
   return (
     <>
-      <div className="bg-white m-auto font-mono scroll-smooth dark:bg-black text-black dark:text-white pt-2 pb-2">
+      <div className="bg-white m-auto font-mono scroll-smooth text-black dark:bg-stone-950 dark:text-white pt-2 pb-2">
         <div className="block sticky top-0">
           <Banner />
           <NavBar />
