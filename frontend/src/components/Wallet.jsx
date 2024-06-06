@@ -37,7 +37,7 @@ const Wallet = () => {
 
   return (
     <div id="wallet" className="m-3">
-      <h1 className="p-1 text-2xl text-center mx-auto">Wallet</h1>
+      <h1 className="p-3 font-semibold text-2xl text-center mx-auto">Wallet</h1>
       <div className="lg:mx-auto lg:w-4/6 grid grid-rows md:grid-cols-3 gap-2">
         {cardList}
       </div>

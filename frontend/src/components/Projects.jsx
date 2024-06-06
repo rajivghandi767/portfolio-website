@@ -18,9 +18,13 @@ const Projects = () => {
 
   const projectList = projects.map((project) => (
     <div className="mx-auto border-2 w-64 border-black inline-block dark:border-white rounded-md">
-      <img className="" src="" />
+      {/* <img
+        className="w-full h-36 md:h-44 object-cover cursor-pointer"
+        src=""
+        alt="project_thumbnail"
+      /> */}
       <div className="p-2">
-        <h1 className="mb-1 text-l text-center underline underline-offset-8 decoration-2 font-medium border-black dark:border-white">
+        <h1 className="mb-1 text-l text-center underline underline-offset-8 decoration-2 font-semibold border-black dark:border-white">
           {project.title}
         </h1>
         <h2 className="text-center text-blue-500 hover:text-blue-700 transition cursor-pointer">
@@ -38,7 +42,9 @@ const Projects = () => {
 
   return (
     <div id="projects" className="mx-auto">
-      <h1 className="p-1 text-2xl text-center mx-auto">Coding Projects</h1>
+      <h1 className="p-3 font-semibold text-2xl text-center mx-auto">
+        Coding Projects
+      </h1>
       <div className="mx-auto lg:w-4/6 grid grid-rows md:grid-cols-3 gap-2">
         {projectList}
       </div>

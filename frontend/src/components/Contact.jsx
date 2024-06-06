@@ -3,7 +3,9 @@ import React from "react";
 const Contact = () => {
   return (
     <div id="contact-form" className="pt-3">
-      <h1 className="p-1 text-2xl text-center mx-auto">Contact</h1>
+      <h1 className="p-3 font-semibold text-2xl text-center mx-auto">
+        Contact
+      </h1>
 
       <div className="flex mx-auto items-center justify-center border-2 border-black size-fit dark:border-white p-3 rounded-md">
         <form action="" method="POST">

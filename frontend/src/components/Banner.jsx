@@ -35,7 +35,7 @@ const Banner = () => {
           {darkMode === "dark" ? "☀️" : "🌙"}
         </button>
         <text className="mx-auto">
-          <h1 className="text-2xl">Rajiv Wallace</h1>
+          <h1 className="text-2xl">Rajiv Wallace 🇩🇲</h1>
           <h2 classnam>Software Engineer & Web Developer</h2>
         </text>
         <div className="text-l hover:transition md:hidden">

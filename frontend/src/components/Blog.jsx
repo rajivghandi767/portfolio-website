@@ -17,7 +17,7 @@ const Blog = () => {
   };
 
   const blogPosts = blog.map((post) => (
-    <div className="mx-5 md:mx-auto p-2 justify-center items-center md:flex md:w-5/6 lg:w-3/4 border-2 border-black dark:border-white rounded-md">
+    <div className="mx-5 md:mx-auto p-2 justify-center items-center md:flex md:w-5/6 lg:w-3/4 border-2 border-black dark:border-white">
       <img className="object-cover object-top" src={post.image} />
       <div className="p-4">
         <h5 className="mb-2 text-xl font-medium border-b-2 border-black dark:border-white">
@@ -29,7 +29,9 @@ const Blog = () => {
   ));
   return (
     <div id="blog" className="mx-auto">
-      <h1 className="p-1 text-2xl text-center mx-auto">Blog Posts</h1>
+      <h1 className="p-3 font-semibold text-2xl text-center mx-auto">
+        Blog Posts
+      </h1>
       <div className="grid grid-rows gap-2">{blogPosts}</div>
     </div>
   );

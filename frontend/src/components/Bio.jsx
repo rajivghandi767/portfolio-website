@@ -24,9 +24,9 @@ const Bio = () => {
         alt="profile_photo"
       />
       <div className="md:ml-3">
-        <h5 className="text-l font-medium underline underline-offset-8 decoration-2 dark:border-white">
+        <h1 className="text-xl font-semibold underline underline-offset-8 decoration-2 dark:border-white">
           {info.greeting}
-        </h5>
+        </h1>
         <p className="pt-3 text-sm">{info.bio}</p>
         <h5 className="mt-2 text-center md:text-left text-blue-500 hover:text-blue-700 transition cursor-pointer">
           <a href="" target="_blank" rel="noreferrer">
