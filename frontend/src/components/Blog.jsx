@@ -9,7 +9,7 @@ const Blog = () => {
   }, []);
 
   const getData = async () => {
-    const blogResponse = await fetch("http://localhost:8000/post");
+    const blogResponse = await fetch("http://localhost:8000/api/post");
     const blogData = await blogResponse.json();
     setBlog(blogData);
 

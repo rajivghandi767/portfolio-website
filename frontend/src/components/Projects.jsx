@@ -9,7 +9,7 @@ const Projects = () => {
   }, []);
 
   const getData = async () => {
-    const projectsResponse = await fetch("http://localhost:8000/projects");
+    const projectsResponse = await fetch("http://localhost:8000/api/projects");
     const projectsData = await projectsResponse.json();
     setProjects(projectsData);
 

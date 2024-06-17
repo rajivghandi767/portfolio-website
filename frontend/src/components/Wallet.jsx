@@ -9,7 +9,7 @@ const Wallet = () => {
   }, []);
 
   const getData = async () => {
-    const cardsResponse = await fetch("http://localhost:8000/cards");
+    const cardsResponse = await fetch("http://localhost:8000/api/cards");
     const cardsData = await cardsResponse.json();
     setCards(cardsData);
 

@@ -9,7 +9,7 @@ const Bio = () => {
   }, []);
 
   const getData = async () => {
-    const infoResponse = await fetch("http://localhost:8000/info");
+    const infoResponse = await fetch("http://localhost:8000/api/info");
     const infoData = await infoResponse.json();
     setInfo(infoData);
 
