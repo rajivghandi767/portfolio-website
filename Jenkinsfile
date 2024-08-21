@@ -1,8 +1,9 @@
 pipeline {
-    stage('Build Docker Image') {  
-    steps{                     
-    sh 'docker-compose build'     
-    echo 'Docker-compose-build Build Image Completed'                
-    }           
-}
+    stages {
+        stage(‘Build and Test’) {
+            steps {
+                sh 'docker-compose --version'
+            }
+        } 
+    }
 }
