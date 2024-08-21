@@ -2,12 +2,14 @@ pipeline {
     agent any
     stages {
         stage('Verify Tools') {
-            sh '''
+            steps {
+                sh '''
                 docker version
                 docker info
                 docker compose version
                 curl --version
             '''
+            }       
         }
     }
 }
