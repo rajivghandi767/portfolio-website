@@ -1,15 +1,8 @@
 pipeline {
-    agent any
-    stages {
-        stage('Verify Tools') {
-            steps {
-                sh '''
-                docker --version
-                docker info
-                docker compose version
-                curl --version
-            '''
-            }       
-        }
-    }
+    stage('Build Docker Image') {  
+    steps{                     
+    sh 'docker-compose build'     
+    echo 'Docker-compose-build Build Image Completed'                
+    }           
+}
 }
