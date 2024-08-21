@@ -9,6 +9,5 @@ pipeline {
                 curl --version
             '''
         }
-
     }
 }
