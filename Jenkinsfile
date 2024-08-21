@@ -1,6 +1,7 @@
 pipeline {
+    agent any
     stages {
-        stage(‘Build and Test’) {
+        stage('Build') {
             steps {
                 sh 'docker-compose --version'
             }
