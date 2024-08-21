@@ -1,11 +1,14 @@
 pipeline {
     agent any
-
     stages {
-        stage('Hello') {
-            steps {
-                echo 'Hello World'
-            }
+        stage('Verify Tools') {
+            sh '''
+                docker version
+                docker info
+                docker compose version
+                curl --version
+            '''
         }
+
     }
 }
