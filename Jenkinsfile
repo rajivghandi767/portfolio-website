@@ -7,12 +7,13 @@ pipeline {
                 docker version
                 docker info
                 docker ps
+                docker compose version
                 '''
             }
         }
         stage('Start Container') {
             steps {
-                sh 'docker compose up'
+                sh 'docker compose up -d --wait'
                 sh 'docker ps'
             }
         }
