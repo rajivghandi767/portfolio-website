@@ -17,8 +17,11 @@ pipeline {
             }
         }
         stage('Start Container'){
-            sh 'docker compose up -d --no-colour --wait'
-            sh 'docker compose ps'
+            steps{
+                sh 'docker compose up -d --no-colour --wait'
+                sh 'docker compose ps'
+            }
+            
         }
     }
 }
