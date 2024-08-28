@@ -11,10 +11,14 @@ pipeline {
                 '''
             }
         }
-        stage('Start Container') {
+        stage('Prune Docker Data') {
             steps {
-                sh 'docker compose up'
+                sh 'docker system prune -a --volumes -f'
             }
+        }
+        stage('Start Container'){
+            sh 'docker compose up -d --no-colour --wait'
+            sh 'docker compose ps'
         }
     }
 }
