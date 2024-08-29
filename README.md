@@ -40,7 +40,6 @@ The website is built with a Django REST backend and a React.js frontend, and is 
 ```bash
 .
 ├── backend/
-|--
 │   ├── manage.py            # Django management script
 │   ├── portfolio-website/   # Django project settings and URLs
 │   ├── app_name/            # Django app with models, views, and serializers
