@@ -1,4 +1,6 @@
-# My Portfolio Website [www.rajivwallace.com](https://rajivwallace.com)
+<center># My Portfolio Website</center>
+
+[www.rajivwallace.com](https://rajivwallace.com)
 
 <img width="831" alt="Screen Shot 2024-08-22 at 16 22 01" src="https://github.com/user-attachments/assets/3cb885c3-b298-4d47-b10a-935ac35e1763">
 
