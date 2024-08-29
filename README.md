@@ -1,6 +1,6 @@
 # My Portfolio Website
 
-https://github.com/rajivghandi767/portfolio-website/issues/1#issue-2494341567
+<img width="831" alt="Screen Shot 2024-08-22 at 16 22 01" src="https://github.com/user-attachments/assets/3cb885c3-b298-4d47-b10a-935ac35e1763">
 
 ## 🚀 Overview
 
