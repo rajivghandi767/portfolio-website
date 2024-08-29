@@ -1,6 +1,6 @@
 # My Portfolio Website
 
-![Website Screenshot](path-to-your-screenshot.png)
+https://github.com/rajivghandi767/portfolio-website/issues/1#issue-2494341567
 
 ## 🚀 Overview
 
