@@ -1,4 +1,4 @@
-# My Portfolio Website
+# My Portfolio Website (www.rajivwallace.com)
 
 <img width="831" alt="Screen Shot 2024-08-22 at 16 22 01" src="https://github.com/user-attachments/assets/3cb885c3-b298-4d47-b10a-935ac35e1763">
 
@@ -39,30 +39,38 @@ The website is built with a Django REST backend and a React.js frontend, and is 
 
 ```bash
 .
-├── backend/
-│   ├── manage.py            # Django management script
-│   ├── portfolio-website/   # Django project settings and URLs
-│   ├── app_name/            # Django app with models, views, and serializers
-│   ├── Dockerfile           # Dockerfile for backend
-│   └── requirements.txt     # Python dependencies
-├── frontend/
-│   ├── public/
-│   │   └── index.html       # Main HTML file
-│   ├── src/
-│   │   ├── components/      # Reusable React components
-│   │   ├── pages/           # React pages (Home, About, Projects, etc.)
-│   │   ├── styles/          # CSS/SCSS files
-│   │   ├── App.js           # Main React app component
-│   │   └── index.js         # Entry point for the React app
-│   ├── Dockerfile           # Dockerfile for frontend
-│   ├── .gitignore
-│   └── package.json         # Frontend dependencies and scripts
-├── jenkins/
-│   ├── Jenkinsfile          # Jenkins pipeline configuration
-├── docker-compose.yml       # Docker Compose configuration
-├── .gitignore
-├── README.md                # This file
-└── LICENSE                  # License file
+└── 📁portfolio-website
+    └── 📁backend
+        └── 📁blog                # Django app with models, views, and serializers
+        └── 📁info                # Django app with models, views, and serializers
+        └── 📁portfolio_website   # Django project settings and URLs
+        └── 📁projects            # Django app with models, views, and serializers
+        └── 📁wallet              # Django app with models, views, and serializers
+        └── db.sqlite3
+        └── Dockerfile            # Dockerfile for backend
+        └── manage.py             # Django management script
+        └── requirements.txt      # Python dependencies
+    └── 📁frontend
+        └── 📁src
+            └── 📁components      # Reusable React components
+                └── Banner.jsx
+                └── Bio.jsx
+                └── Blog.jsx
+                └── Contact.jsx
+                └── Footer.jsx
+                └── NavBar.jsx
+                └── Projects.jsx
+                └── Wallet.jsx
+            └── App.jsx           # Main React app component
+            └── index.css         # Entry point for the React app
+            └── main.jsx
+        └── Dockerfile            # Dockerfile for frontend
+        └── index.html            # Main HTML file
+        └── package.json          # Frontend dependencies and scripts
+    └── docker-compose.yaml       # Docker Compose configuration
+    └── Jenkinsfile               # Jenkins pipeline configuration
+    └── LICENSE                   # License file
+    └── README.md                 # This file
 ```
 
 ## 🚀 Getting Started
