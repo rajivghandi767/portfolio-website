@@ -1,4 +1,4 @@
-<center># My Portfolio Website</center>
+<h1 align="center"># My Portfolio Website</h1>
 
 [www.rajivwallace.com](https://rajivwallace.com)
 
