@@ -41,7 +41,7 @@ The website is built with a Django REST backend and a React.js frontend, and is 
 .
 ├── backend/
 │   ├── manage.py            # Django management script
-│   ├── project_name/        # Django project settings and URLs
+│   ├── portfolio-website/   # Django project settings and URLs
 │   ├── app_name/            # Django app with models, views, and serializers
 │   ├── Dockerfile           # Dockerfile for backend
 │   └── requirements.txt     # Python dependencies
@@ -126,7 +126,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 **Rajiv Wallace**  
 [LinkedIn](https://www.linkedin.com/in/rajiv-wallace) • [Email](mailto:rajivghandi972@gmail.com)
-
-```
-
-```
