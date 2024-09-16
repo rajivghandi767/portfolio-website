@@ -85,5 +85,5 @@ npm-debug.log*
 
 /nginx
 
-docker-compose.dev.yaml
-Dockerfile.dev
+*docker-compose.dev.yaml
+*Dockerfile.dev
