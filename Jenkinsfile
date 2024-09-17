@@ -18,7 +18,7 @@ pipeline {
         }
         stage('Start Container'){
             steps{
-                sh 'docker compose up -d --no-color --wait'
+                sh 'docker compose -f docker-compose.prod.yaml up -d'
                 sh 'docker compose ps'
             }
             
