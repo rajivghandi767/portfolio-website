@@ -54,9 +54,11 @@ __pycache__
 media
 local_settings.py
 db.sqlite3-journal
+db.sqlite3
 
 # Backup files # 
 *.bak 
+datadump.json
 
 # Generated files
 .idea/**/contentModel.xml
