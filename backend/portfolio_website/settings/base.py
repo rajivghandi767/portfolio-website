@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv()
 SECRET_KEY = os.environ.get('SECRET_KEY')
-DEBUG = True
+DEBUG = os.environ.get('DEBUG') == 'True'
 
 
 INSTALLED_APPS = [
