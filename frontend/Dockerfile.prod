@@ -1,13 +1,15 @@
-FROM node:current-alpine
+FROM node:lts-alpine
 
 WORKDIR /frontend
-COPY package*.json .
+
+COPY package*.json ./
+
+RUN npm install -g npm@latest
 RUN npm install
+
 COPY . .
 
 RUN npm run build
-
-USER node
 
 EXPOSE 4000
 

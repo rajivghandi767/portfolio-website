@@ -5,7 +5,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile.prod
     ports:
-      - "4040:8000"
+      - "8000:8000"
     volumes:
       - ./backend:/backend
   frontend:
