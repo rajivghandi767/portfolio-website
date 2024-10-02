@@ -98,7 +98,7 @@ Ensure you have Docker & Docker Compose installed on your machine. Jenkins insta
    Build and start the containers using Docker Compose:
 
    ```bash
-   docker-compose up --build
+   docker compose up -d
    ```
 
    This command will set up both the Django backend and the React frontend.
@@ -119,7 +119,7 @@ Ensure you have Docker & Docker Compose installed on your machine. Jenkins insta
 To stop the application, run:
 
 ```bash
-docker-compose down
+docker compose down
 ```
 
 ## 🚀 Deployment
