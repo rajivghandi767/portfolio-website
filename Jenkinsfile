@@ -5,7 +5,9 @@ pipeline {
             steps {
                 sh '''
                 docker version
+                docker compose version
                 docker info
+                docker ps
                 '''
             }
         }
@@ -14,24 +16,21 @@ pipeline {
                 sh 'docker system prune -a --volumes -f'
             }
         }
-        stage('Start Backend'){
+        stage('Kill Running Portfolio Website  Backend/Frontend') {
             steps{
                 sh '''
-                docker build -t portfolio-backend -f Dockerfile.prod .
-                docker run -d -p 8000:8000 portfolio-backend
+                docker kill backend
+                docker kill frontend
                 docker ps
                 '''
             }
-            
-        }
-        stage('Start Frontend'){
+        stage('Deploy Portfolio Website'){
             steps{
                 sh '''
-                docker build -t portfolio-frontend -f Dockerfile.prod .
-                docker run -d -p 4000:4000 portfolio-backend
+                docker compose up -d
                 docker ps
                 '''
-            }
+            }  
         }
     }
 }
