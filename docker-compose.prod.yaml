@@ -1,23 +1,76 @@
 services:
-  backend:
-    container_name: backend
+  # Django Backend Service
+  django-backend:
     build:
-      context: ./backend
+      context: ./backend # Assuming Django files are in 'backend' directory
       dockerfile: Dockerfile.prod
+    container_name: portfolio-backend
+    restart: unless-stopped
+    env_file: ./backend/.env
     ports:
-      - "8000:8000"
+      - "8000:8000" # Expose port 8000 for Django
+    depends_on:
+      - db
+    networks:
+      - web
     volumes:
-      - ./backend:/backend
-  frontend:
-    container_name: frontend
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.prod
+      - ./backend/staticfiles:/portfolio_website/staticfiles
+    environment:
+      - DEBUG=0
+      - ALLOWED_HOSTS=your.domain.com
+      - DATABASE_URL=postgres://postgres:password@db:5432/postgres
+      - DJANGO_SECRET_KEY=your-secret-key
+
+  # PostgreSQL Database Service
+  db:
+    image: postgres:15-alpine
+    container_name: portfolio-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - web
+
+  # Vite React Frontend Service
+  vite-frontend:
+    build: ./frontend # Assuming Vite files are in 'frontend' directory
+    container_name: portfolio-frontend
+    restart: unless-stopped
     ports:
-      - "4000:4000"
+      - "3000:80" # Expose port 3000 for the frontend
+    networks:
+      - web
+    environment:
+      - NODE_ENV=production
+
+  # Vault Agent Service
+  vault-agent:
+    image: vault:latest
+    container_name: vault-agent
+    environment:
+      VAULT_ADDR: http://vault:8200 # Vault server address
     volumes:
-      - ./frontend:/frontend
-      - node_modules:/frontend/node_modules
+      - ./vault/agent-config.hcl:/etc/vault/config/agent-config.hcl # Vault agent configuration
+    networks:
+      - web
+
+networks:
+  web:
+    external: true # Nginx Proxy Manager network
 
 volumes:
-  node_modules:
+  postgres_data:
+
+secrets:
+  django_secret_key:
+    external: true
+  django_allowed_hosts:
+    external: true
+  database_url:
+    external: true
+  frontend_env:
+    external: true
