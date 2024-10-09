@@ -8,12 +8,18 @@ from portfolio_website.settings import base
 def main():
     """Run administrative tasks."""
 
-    if base.DEBUG:
-        os.environ.setdefault('DJANGO_SETTINGS_MODULE',
-                              'portfolio_website.settings.local')
-    else:
-        os.environ.setdefault('DJANGO_SETTINGS_MODULE',
-                              'portfolio_website.settings.production')
+    os.environ.setdefault(
+        'DJANGO_SETTINGS_MODULE',
+        'portfolio_website.settings.production' if os.getenv(
+            'DJANGO_ENV') == 'production' else 'portfolio_website.settings.local'
+    )
+
+    # if base.DEBUG:
+    #     os.environ.setdefault('DJANGO_SETTINGS_MODULE',
+    #                           'portfolio_website.settings.local')
+    # else:
+    #     os.environ.setdefault('DJANGO_SETTINGS_MODULE',
+    #                           'portfolio_website.settings.production')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
