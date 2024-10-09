@@ -6,10 +6,7 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 SECRET_KEY = os.environ.get('SECRET_KEY')
-DEBUG = os.environ.get('DEBUG') == 'True'
-
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -70,16 +67,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'portfolio_website.wsgi.application'
-
-
-# SQLite
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
 # PostgreSQL
 
