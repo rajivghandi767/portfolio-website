@@ -4,6 +4,19 @@ DEBUG = False
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS')
 
+# PostgreSQL
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'portfolio-backend',
+        'USER': os.environ.get('POSTGRESQL_USER'),
+        'PASSWORD': os.environ.get('POSTGRESQL_PASSWORD'),
+        'PORT': '5432',
+        'HOST': os.environ.get('POSTGRESQL_HOST')
+    }
+}
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
