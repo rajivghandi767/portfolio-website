@@ -2,18 +2,18 @@ from .base import *
 
 DEBUG = False
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS')
 
 # PostgreSQL
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'portfolio-backend',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'portfolio-db',
         'USER': os.environ.get('POSTGRESQL_USER'),
         'PASSWORD': os.environ.get('POSTGRESQL_PASSWORD'),
         'PORT': '5432',
-        'HOST': os.environ.get('POSTGRESQL_HOST')
+        'HOST': 'postgres'
     }
 }
 

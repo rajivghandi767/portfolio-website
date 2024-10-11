@@ -6,7 +6,7 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -67,19 +67,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'portfolio_website.wsgi.application'
-
-# PostgreSQL
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'portfolio-backend',
-        'USER': os.environ.get('POSTGRESQL_USER'),
-        'PASSWORD': os.environ.get('POSTGRESQL_PASSWORD'),
-        'PORT': '5432',
-        'HOST': os.environ.get('POSTGRESQL_HOST')
-    }
-}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
