@@ -15,7 +15,7 @@ DEBUG = True
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'portfolio-db',
         'USER': os.environ.get('POSTGRESQL_USER'),
         'PASSWORD': os.environ.get('POSTGRESQL_PASSWORD'),

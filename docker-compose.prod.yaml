@@ -1,53 +1,60 @@
 services:
-  # PostgreSQL Database Service
-  db:
-    image: postgres:17-alpine
-    container_name: portfolio-db
-    env_file: .env
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: $POSTGRESQL_USER
-      POSTGRES_PASSWORD: $POSTGRESQL_PASSWORD
-      POSTGRES_DB: portfolio-db
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - django-backend
-
   # Django Backend Service
   backend:
     build:
-      context: ./backend # Assuming Django files are in 'backend' directory
+      context: ./backend
       dockerfile: Dockerfile.prod
     container_name: portfolio-backend
     restart: unless-stopped
     env_file: .env
-    ports:
-      - "8000:8000" # Expose port 8000 for Django
+    environment:
+      - DJANGO_ENV=production
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - DATABASE_URL=postgres://postgres:password@db:5432/postgres
+      - DJANGO_ALLOWED_HOSTS=${ALLOWED_HOSTS}
     depends_on:
       - db
     networks:
-      - backend
+      - web
     volumes:
-      - ./backend:/portfolio_website
-    expose:
-      - "8000"
+      - ./backend/staticfiles:/portfolio_website/staticfiles
+    ports:
+      - "4040:4040"
+
+  # PostgreSQL Database Service
+  db:
+    image: postgres:17-alpine
+    container_name: portfolio-db
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - POSTGRES_DB=${POSTGRESQL_DB}
+      - POSTGRES_USER=${POSTGRESQL_USER}
+      - POSTGRES_PASSWORD=${POSTGRESQL_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - web
 
   # Vite React Frontend Service
   frontend:
-    build: ./frontend # Assuming Vite files are in 'frontend' directory
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
     container_name: portfolio-frontend
     restart: unless-stopped
+    env_file: .env
+    environment:
+      - NODE_ENV=production
+      - VITE_API_URL=${VITE_API_URL}
     networks:
-      - frontend
-    expose:
-      - "80"
-    depends_on:
-      - backend
+      - web
+    ports:
+      - "4000:80"
+
+networks:
+  web:
+    # external: true
 
 volumes:
   postgres_data:
-
-networks:
-  backend:
-  frontend:

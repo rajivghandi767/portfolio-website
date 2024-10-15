@@ -1,13 +1,10 @@
 FROM python:3.13-slim
 
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBFFERED 1
+WORKDIR /backend
 
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     && rm -rf /var/lib/apt/lists/*
-
-WORKDIR /backend
 
 COPY requirements.txt .
 
@@ -16,8 +13,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBFFERED 1
+ENV DJANGO_SETTINGS_MODULE portfolio_website.settings.production
+
 RUN python manage.py collectstatic --noinput
 
 EXPOSE 4040
 
-CMD ["gunicorn", "portfolio_website.wsgi:application","--bind", "0.0.0.0:4040". "--workers", "4"]
+CMD ["gunicorn", "--workers", "4", "--bind", "0.0.0.0:4040", "portfolio_website.wsgi:application"]

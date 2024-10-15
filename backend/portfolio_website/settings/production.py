@@ -2,7 +2,7 @@ from .base import *
 
 DEBUG = False
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS')
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
 
 # PostgreSQL
 
@@ -13,13 +13,9 @@ DATABASES = {
         'USER': os.environ.get('POSTGRESQL_USER'),
         'PASSWORD': os.environ.get('POSTGRESQL_PASSWORD'),
         'PORT': '5432',
-        'HOST': 'postgres'
+        'HOST': 'portfolio-db'
     }
 }
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
