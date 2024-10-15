@@ -1,4 +1,5 @@
 import React from "react";
+import apiBaseUrl from "./ApiConfig";
 import { useEffect, useState } from "react";
 
 const Bio = () => {
@@ -9,7 +10,7 @@ const Bio = () => {
   }, []);
 
   const getData = async () => {
-    const infoResponse = await fetch("http://localhost:8000/api/info");
+    const infoResponse = await fetch({ apiBaseUrl } / info);
     const infoData = await infoResponse.json();
     setInfo(infoData);
 

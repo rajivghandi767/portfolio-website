@@ -1,8 +1,6 @@
 from .base import *
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = True
-
 
 # SQLite
 
@@ -12,3 +10,16 @@ DEBUG = True
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+# PostgreSQL
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'portfolio-db',
+        'USER': os.environ.get('POSTGRESQL_USER'),
+        'PASSWORD': os.environ.get('POSTGRESQL_PASSWORD'),
+        'PORT': '5432',
+        'HOST': 'db.rajivwallace.com'
+    }
+}

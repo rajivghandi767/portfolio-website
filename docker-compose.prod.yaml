@@ -1,76 +1,60 @@
 services:
   # Django Backend Service
-  django-backend:
+  backend:
     build:
-      context: ./backend # Assuming Django files are in 'backend' directory
+      context: ./backend
       dockerfile: Dockerfile.prod
     container_name: portfolio-backend
     restart: unless-stopped
-    env_file: ./backend/.env
-    ports:
-      - "8000:8000" # Expose port 8000 for Django
+    env_file: .env
+    environment:
+      - DJANGO_ENV=production
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - DATABASE_URL=postgres://postgres:password@db:5432/postgres
+      - DJANGO_ALLOWED_HOSTS=${ALLOWED_HOSTS}
     depends_on:
       - db
     networks:
       - web
     volumes:
       - ./backend/staticfiles:/portfolio_website/staticfiles
-    environment:
-      - DEBUG=0
-      - ALLOWED_HOSTS=your.domain.com
-      - DATABASE_URL=postgres://postgres:password@db:5432/postgres
-      - DJANGO_SECRET_KEY=your-secret-key
+    ports:
+      - "4040:4040"
 
   # PostgreSQL Database Service
   db:
-    image: postgres:15-alpine
+    image: postgres:17-alpine
     container_name: portfolio-db
     restart: unless-stopped
+    env_file: .env
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: postgres
+      - POSTGRES_DB=${POSTGRESQL_DB}
+      - POSTGRES_USER=${POSTGRESQL_USER}
+      - POSTGRES_PASSWORD=${POSTGRESQL_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - web
 
   # Vite React Frontend Service
-  vite-frontend:
-    build: ./frontend # Assuming Vite files are in 'frontend' directory
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
     container_name: portfolio-frontend
     restart: unless-stopped
-    ports:
-      - "3000:80" # Expose port 3000 for the frontend
-    networks:
-      - web
+    env_file: .env
     environment:
       - NODE_ENV=production
-
-  # Vault Agent Service
-  vault-agent:
-    image: vault:latest
-    container_name: vault-agent
-    environment:
-      VAULT_ADDR: http://vault:8200 # Vault server address
-    volumes:
-      - ./vault/agent-config.hcl:/etc/vault/config/agent-config.hcl # Vault agent configuration
+      - VITE_API_URL=${VITE_API_URL}
     networks:
       - web
+    ports:
+      - "4000:80"
 
 networks:
   web:
-    external: true # Nginx Proxy Manager network
+    # external: true
 
 volumes:
   postgres_data:
-
-secrets:
-  django_secret_key:
-    external: true
-  django_allowed_hosts:
-    external: true
-  database_url:
-    external: true
-  frontend_env:
-    external: true
