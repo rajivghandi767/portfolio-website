@@ -3,22 +3,27 @@ import { useRef } from "react";
 
 const siteSections = [
   {
+    id: 1,
     section: "Bio",
     ref: "bioRef",
   },
   {
+    id: 2,
     section: "Projects",
     ref: "projectsRef",
   },
   {
+    id: 3,
     section: "Blog",
     ref: "blogRef",
   },
   {
+    id: 4,
     section: "Wallet",
     ref: "walletRef",
   },
   {
+    id: 5,
     section: "Contact",
     ref: "contactRef",
   },

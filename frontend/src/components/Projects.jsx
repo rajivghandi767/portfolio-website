@@ -1,5 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import API_URL from "./ApiConfig";
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
@@ -9,7 +10,7 @@ const Projects = () => {
   }, []);
 
   const getData = async () => {
-    const projectsResponse = await fetch("http://localhost:8000/api/projects");
+    const projectsResponse = await fetch(`${API_URL}${"/projects"}`);
     const projectsData = await projectsResponse.json();
     setProjects(projectsData);
 

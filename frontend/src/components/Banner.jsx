@@ -87,10 +87,10 @@ const Banner = () => {
         >
           {darkMode === "dark" ? sun : moon}
         </button>
-        <text className="mx-auto">
+        <div className="mx-auto">
           <h1 className="text-2xl">Rajiv Wallace 🇩🇲</h1>
-          <h2 classnam>Software Engineer & Web Developer</h2>
-        </text>
+          <h2 className="text-l">Software Engineer & Web Developer</h2>
+        </div>
         <div className="text-l hover:transition md:hidden">{mobileMenu}</div>
       </div>
     </>
