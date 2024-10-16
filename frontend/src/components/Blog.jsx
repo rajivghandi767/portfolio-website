@@ -1,5 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import API_URL from "./ApiConfig";
 
 const Blog = () => {
   const [blog, setBlog] = useState([]);
@@ -9,7 +10,7 @@ const Blog = () => {
   }, []);
 
   const getData = async () => {
-    const blogResponse = await fetch("http://localhost:8000/api/post");
+    const blogResponse = await fetch(`${API_URL}${"/post"}`);
     const blogData = await blogResponse.json();
     setBlog(blogData);
 

@@ -54,7 +54,7 @@ services:
 
 networks:
   web:
-    # external: true
+    external: true
 
 volumes:
   postgres_data:

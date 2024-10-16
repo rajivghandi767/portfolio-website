@@ -1,5 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import API_URL from "./ApiConfig";
 
 const Wallet = () => {
   const [cards, setCards] = useState([]);
@@ -9,7 +10,7 @@ const Wallet = () => {
   }, []);
 
   const getData = async () => {
-    const cardsResponse = await fetch("http://localhost:8000/api/cards");
+    const cardsResponse = await fetch(`${API_URL}${"/cards"}`);
     const cardsData = await cardsResponse.json();
     setCards(cardsData);
 
