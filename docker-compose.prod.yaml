@@ -7,15 +7,15 @@ services:
     container_name: portfolio-backend
     restart: unless-stopped
     env_file: .env
-    environment:
-      - DJANGO_ENV=production
-      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
-      - DATABASE_URL=postgres://postgres:password@db:5432/postgres
-      - DJANGO_ALLOWED_HOSTS=${ALLOWED_HOSTS}
+    # environment:
+    #   - DJANGO_ENV=production
+    #   - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+    #   - DATABASE_URL=postgres://postgres:password@db:5432/postgres
+    #   - DJANGO_ALLOWED_HOSTS=${ALLOWED_HOSTS}
     depends_on:
       - db
     networks:
-      - web
+      - portfolio-network
     volumes:
       - ./backend/staticfiles:/portfolio_website/staticfiles
     ports:
@@ -27,14 +27,14 @@ services:
     container_name: portfolio-db
     restart: unless-stopped
     env_file: .env
-    environment:
-      - POSTGRES_DB=${POSTGRESQL_DB}
-      - POSTGRES_USER=${POSTGRESQL_USER}
-      - POSTGRES_PASSWORD=${POSTGRESQL_PASSWORD}
+    # environment:
+    #   - POSTGRES_DB=${POSTGRESQL_DB}
+    #   - POSTGRES_USER=${POSTGRESQL_USER}
+    #   - POSTGRES_PASSWORD=${POSTGRESQL_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - web
+      - portfolio-network
 
   # Vite React Frontend Service
   frontend:
@@ -43,18 +43,22 @@ services:
       dockerfile: Dockerfile.prod
     container_name: portfolio-frontend
     restart: unless-stopped
-    env_file: .env
-    environment:
-      - NODE_ENV=production
-      - VITE_API_URL=${VITE_API_URL}
+    env_file: .env.production
+    # environment:
+    #   - NODE_ENV=production
+    #   - VITE_API_URL=${VITE_API_URL}
     networks:
-      - web
+      - portfolio-network
     ports:
       - "4000:80"
 
-networks:
-  web:
-    external: true
-
 volumes:
   postgres_data:
+
+# networks:
+#   web:
+#     external: true
+
+networks:
+  portfolio-network:
+    driver: bridge
