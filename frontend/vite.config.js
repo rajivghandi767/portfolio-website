@@ -4,12 +4,14 @@ import react from "@vitejs/plugin-react-swc";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  server: {
-    host: true,
-    port: 5173,
+  build: {
+    outDir: "dist",
+    minify: "terser",
+    terserOptions: {
+      compress: {
+        drop_console: true, // Remove console logs in production
+      },
+    },
   },
-  preview: {
-    host: true,
-    port: 4000,
-  },
+  base: "/", // Base URL for the application
 });
