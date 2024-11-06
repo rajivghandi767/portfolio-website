@@ -14,6 +14,7 @@ const Projects = () => {
     const projectsData = await projectsResponse.json();
     setProjects(projectsData);
 
+    console.log("Backend API URL:", API_URL);
     console.log(projectsData);
   };
 

@@ -10,10 +10,12 @@ const Bio = () => {
   }, []);
 
   const getData = async () => {
-    const infoResponse = await fetch(`${API_URL}${"/info"}`);
+    // const infoResponse = await fetch(`${API_URL}${"/info"}`);
+    const infoResponse = await fetch(`http://localhost:4040/info`);
     const infoData = await infoResponse.json();
     setInfo(infoData);
 
+    console.log("Backend API URL:", API_URL);
     console.log(infoData);
   };
 
