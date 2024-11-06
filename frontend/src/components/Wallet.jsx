@@ -14,6 +14,7 @@ const Wallet = () => {
     const cardsData = await cardsResponse.json();
     setCards(cardsData);
 
+    console.log("Backend API URL:", API_URL);
     console.log(cardsData);
   };
 

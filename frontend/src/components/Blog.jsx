@@ -14,6 +14,7 @@ const Blog = () => {
     const blogData = await blogResponse.json();
     setBlog(blogData);
 
+    console.log("Backend API URL:", API_URL);
     console.log(blogData);
   };
 
