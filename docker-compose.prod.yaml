@@ -14,7 +14,8 @@ services:
     networks:
       - portfolio-network
     volumes:
-      - ./backend/static:/portfolio_website/static
+      - static:/portfolio-website/backend/static
+      - media:/portfolio-website/backend/media
     ports:
       - "4040:4040"
 
@@ -40,10 +41,6 @@ services:
       dockerfile: Dockerfile.prod
     container_name: portfolio-frontend
     restart: unless-stopped
-    # env_file: .env
-    # environment:
-    #   # - NODE_ENV=production
-    #   - VITE_API_URL=${VITE_API_URL}
     networks:
       - portfolio-network
     ports:
@@ -51,7 +48,9 @@ services:
 
 volumes:
   postgres_data:
+  static:
+  media:
 
 networks:
   portfolio-network:
-    driver: bridge
+    external: true
