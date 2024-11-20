@@ -14,8 +14,8 @@ services:
     networks:
       - portfolio-network
     volumes:
-      - static:/portfolio-website/backend/static
-      - media:/portfolio-website/backend/media
+      - static:backend/portfolio_website/static
+      - media:backend/portfolio_website/media
     ports:
       - "4040:4040"
 
