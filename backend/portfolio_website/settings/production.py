@@ -15,29 +15,54 @@ DATABASES = {
     }
 }
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(' ')
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# CORS/CSRF Settings
+CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '').split(' ')
+CSRF_COOKIE_SECURE = True  # Use a secure cookie for CSRF
+CSRF_TRUSTED_ORIGINS = os.getenv(
+    'CSRF_TRUSTED_ORIGINS', '').split(' ')  # Trust your domain
+CSRF_USE_SESSIONS = True  # Store CSRF tokens in sessions instead of cookies
 
-# ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(' ')
-# CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '').split(' ')
+# HTTPS Settings
+SECURE_SSL_REDIRECT = True  # Redirect all HTTP to HTTPS
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO',
+                           'https')  # For reverse proxies
+
+# Enable HTTP Strict Transport Security (1 year)
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Include subdomains in HSTS
+SECURE_HSTS_PRELOAD = True  # Preload the HSTS policy
+SECURE_BROWSER_XSS_FILTER = True  # Enable XSS filtering
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevent browsers from MIME-type sniffing
+
+# Session Settings
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
+# Cookie Security
+SESSION_COOKIE_SECURE = True  # Use a secure cookie for sessions
+SESSION_COOKIE_HTTPONLY = True  # Prevent JavaScript access to the session cookie
+
+# X-Frame Options
+X_FRAME_OPTIONS = "DENY"  # Prevent the site from being embedded in an iframe
+
+# Referrer Policy
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': '/tmp/debug.log',
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "file": {
+            "level": "ERROR",
+            "class": "logging.FileHandler",
+            "filename": BASE_DIR / "errors.log",
         },
     },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
+    "loggers": {
+        "django": {
+            "handlers": ["file"],
+            "level": "ERROR",
+            "propagate": True,
         },
     },
 }
