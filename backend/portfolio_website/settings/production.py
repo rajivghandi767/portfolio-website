@@ -49,7 +49,7 @@ SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevent browsers from MIME-type sniffing
 X_FRAME_OPTIONS = "DENY"  # Prevent the site from being embedded in an iframe
 
 # Referrer Policy
-SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+# SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
 LOGGING = {
     "version": 1,
@@ -58,7 +58,7 @@ LOGGING = {
         "file": {
             "level": "ERROR",
             "class": "logging.FileHandler",
-            "filename": BASE_DIR / "errors.log",
+            "filename": "errors.log",
         },
     },
     "loggers": {

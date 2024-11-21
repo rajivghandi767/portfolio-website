@@ -4,8 +4,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 INSTALLED_APPS = [
@@ -84,11 +82,14 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images) & Media
 
-STATIC_URL = 'static/'
-STATIC_ROOT = 'static'
+# BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-MEDIA_URL = 'media/'
-MEDIA_ROOT = 'media'
+STATIC_URL = '/static/'
+STATIC_ROOT = '../static'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = '../media/'
 
 # Default primary key field type
 
