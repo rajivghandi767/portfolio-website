@@ -9,6 +9,7 @@ services:
     env_file: .env
     environment:
       - DJANGO_ENV=production
+      - STATIC_ROOT=/static
     depends_on:
       - db
     networks:
