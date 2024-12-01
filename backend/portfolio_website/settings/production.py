@@ -15,26 +15,25 @@ DATABASES = {
     }
 }
 
-ALLOWED_HOSTS = ["*"]
-CORS_ALLOW_ALL_ORIGINS = True
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
-# ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(' ')
+# CORS/CSRF Settings
+CORS_ALLOWED_ORIGINS = os.getenv(
+    'CORS_ALLOWED_ORIGINS', '').split(',')
+CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_SECURE = True  # Use a secure cookie for CSRF
+CSRF_TRUSTED_ORIGINS = os.getenv(
+    'CSRF_TRUSTED_ORIGINS', '').split(',')  # Trust your domain
+CSRF_USE_SESSIONS = True  # Store CSRF tokens in sessions instead of cookies
 
-# # CORS/CSRF Settings
-# CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '').split(' ')
-# CSRF_COOKIE_SECURE = True  # Use a secure cookie for CSRF
-# CSRF_TRUSTED_ORIGINS = os.getenv(
-#     'CSRF_TRUSTED_ORIGINS', '').split(' ')  # Trust your domain
-# CSRF_USE_SESSIONS = True  # Store CSRF tokens in sessions instead of cookies
-
-# # Session Settings
-# SESSION_ENGINE = "django.contrib.sessions.backends.db"
-# # Cookie Security
-# SESSION_COOKIE_SECURE = True  # Use a secure cookie for sessions
-# SESSION_COOKIE_HTTPONLY = True  # Prevent JavaScript access to the session cookie
+# Session Settings
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
+# Cookie Security
+SESSION_COOKIE_SECURE = True  # Use a secure cookie for sessions
+SESSION_COOKIE_HTTPONLY = True  # Prevent JavaScript access to the session cookie
 
 # # Referrer Policy
-# SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
 # HTTPS Settings
 SECURE_SSL_REDIRECT = True  # Redirect all HTTP to HTTPS
