@@ -16,7 +16,7 @@ DATABASES = {
 }
 
 ALLOWED_HOSTS = ["*"]
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_ALL_ORIGINS = True
 
 # ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(' ')
 
@@ -33,6 +33,9 @@ CORS_ORIGIN_ALLOW_ALL = True
 # SESSION_COOKIE_SECURE = True  # Use a secure cookie for sessions
 # SESSION_COOKIE_HTTPONLY = True  # Prevent JavaScript access to the session cookie
 
+# # Referrer Policy
+# SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+
 # HTTPS Settings
 SECURE_SSL_REDIRECT = True  # Redirect all HTTP to HTTPS
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO',
@@ -47,9 +50,6 @@ SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevent browsers from MIME-type sniffing
 
 # X-Frame Options
 X_FRAME_OPTIONS = "DENY"  # Prevent the site from being embedded in an iframe
-
-# Referrer Policy
-# SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
 LOGGING = {
     "version": 1,
