@@ -12,11 +12,11 @@ services:
       - STATIC_ROOT=/static
     depends_on:
       - db
-    networks:
-      - portfolio-network
+    # networks:
+    #   - portfolio-network
     volumes:
-      - static:/static
-      - media:/media
+      - ./portfolio_website/static:/portfolio-backend/static
+      - ./portfolio_website/media:/portfolio-backend/media
     ports:
       - "4040:4040"
 
@@ -32,8 +32,8 @@ services:
       - POSTGRES_PASSWORD=${POSTGRESQL_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks:
-      - portfolio-network
+    # networks:
+    #   - portfolio-network
 
   # Vite React Frontend Service
   frontend:
@@ -42,16 +42,13 @@ services:
       dockerfile: Dockerfile.prod
     container_name: portfolio-frontend
     restart: unless-stopped
-    networks:
-      - portfolio-network
+    # networks:
+    #   - portfolio-network
     ports:
       - "4000:80"
 
 volumes:
   postgres_data:
-  static:
-  media:
-
-networks:
-  portfolio-network:
-    external: true
+# networks:
+#   portfolio-network:
+#     external: true
