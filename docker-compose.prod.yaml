@@ -12,8 +12,8 @@ services:
     depends_on:
       - db
     volumes:
-      - ./portfolio_website/staticfiles:/portfolio-backend/static
-      - ./portfolio_website/media:/portfolio-backend/media
+      - ./portfolio_website/staticfiles:/app/static
+      - ./portfolio_website/media:/app/media
     ports:
       - "4040:4040"
 
