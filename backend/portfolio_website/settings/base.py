@@ -82,13 +82,11 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images) & Media
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = './staticfiles'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+MEDIA_ROOT = './mediafiles'
 
 # Default primary key field type
 
