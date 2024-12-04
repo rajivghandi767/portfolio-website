@@ -10,8 +10,8 @@ services:
     depends_on:
       - db
     volumes:
-      - ./portfolio_website/staticfiles:/app/static
-      - ./portfolio_website/media:/app/media
+      - ./staticfiles:./staticfiles
+      - ./mediafiles:./mediafiles
     ports:
       - "4040:4040"
 
