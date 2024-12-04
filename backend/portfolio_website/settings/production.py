@@ -2,11 +2,6 @@ from .base import *
 
 DEBUG = False
 
-STATICFILES_DIRS = [
-    # Replace "static" with the folder name where your static files are stored
-    BASE_DIR / "../staticfiles",
-]
-
 # PostgreSQL
 
 DATABASES = {
