@@ -20,8 +20,6 @@ env/
 # Backend (Django DRF) specific
 migrations/
 *.sqlite3
-/staticfiles/
-/media/
 
 # Frontend (React) specific
 node_modules/
