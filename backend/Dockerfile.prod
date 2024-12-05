@@ -11,12 +11,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 USER backend
 
 COPY --chown=backend:backend_group requirements.txt ./
-RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir --no-warn-script-location -r requirements.txt && rm requirements.txt
+RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r requirements.txt && rm requirements.txt
 COPY --chown=backend:backend_group . .
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBFFERED=1 \
+    PATH="/home/backend/.local/bin:$PATH" \
     DJANGO_SETTINGS_MODULE=portfolio_website.settings.production
+
 
 RUN python manage.py collectstatic --noinput
 
