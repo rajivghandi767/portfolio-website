@@ -11,7 +11,7 @@ USER frontend
 
 # Install dependencies, copy project files, build, and clean unnecessary files in one layer
 COPY --chown=frontend:frontend_group package*.json ./
-RUN npm ci npm@latest && npm ci && rm -rf /home/frontend/react/node_modules
+RUN npm ci npm@latest && npm ci --no-optional && rm -rf /home/frontend/react/node_modules
 COPY --chown=frontend:frontend_group . .
 RUN npm run build && rm -rf /home/frontend/react/*
 
