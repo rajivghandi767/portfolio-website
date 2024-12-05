@@ -12,7 +12,7 @@ services:
     volumes:
       - ./backend:/home/frontend/react
       - /var/www/django_static:/home/frontend/react/static
-      - /var/www/django_media:/home/frontend/react/static
+      - /var/www/django_media:/home/frontend/react/media
     user: "frontend:frontend_group"
     ports:
       - "4040:4040"
