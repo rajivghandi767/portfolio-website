@@ -2,7 +2,7 @@ services:
   # Django Backend Service
   backend:
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile.prod
     container_name: portfolio-backend
     restart: unless-stopped
@@ -33,7 +33,7 @@ services:
   # Vite React Frontend Service
   frontend:
     build:
-      context: .
+      context: ./frontend
       dockerfile: Dockerfile.prod
     container_name: portfolio-frontend
     user: "frontend:frontend_group"
