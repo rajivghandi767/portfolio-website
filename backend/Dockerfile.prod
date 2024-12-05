@@ -11,7 +11,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 USER backend
 
 COPY --chown=backend:backend_group requirements.txt ./
-RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir --no-warn-script-location -r requirements.txt && rm requirements.txt
+
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir --no-warn-script-location -r requirements.txt && \ 
+    rm requirements.txt
+
 COPY --chown=backend:backend_group . .
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -19,9 +23,12 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PATH="/home/backend/.local/bin:$PATH" \
     DJANGO_SETTINGS_MODULE=portfolio_website.settings.production
 
-
-RUN python manage.py collectstatic --noinput
+# Copy and prepare the entrypoint script
+COPY --chown=backend:backend_group entrypoint.sh /home/backend/entrypoint.sh
+RUN chmod +x /home/backend/entrypoint.sh
 
 EXPOSE 4040
+
+ENTRYPOINT ["/home/backend/entrypoint.sh"]
 
 CMD ["gunicorn", "--workers", "4", "--bind", "0.0.0.0:4040", "portfolio_website.wsgi:application"]
