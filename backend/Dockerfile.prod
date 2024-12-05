@@ -1,16 +1,24 @@
 FROM python:3.13-slim
 
-WORKDIR /backend
+RUN groupadd backend_group && useradd --create-home --gid backend_group backend && \
+    mkdir -p /home/backend/django && chown -R backend:backend_group /home/backend/django
+WORKDIR /home/backend/django
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt .
+USER backend
 
-RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r requirements.txt
+# WORKDIR /backend
 
-COPY . .
+COPY --chown=backend:backend_group requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt && rm requirements.txt
+COPY --chown=backend:backend_group . .
+
+# COPY requirements.txt .
+# RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r requirements.txt
+# COPY . .
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBFFERED=1 \
