@@ -2,7 +2,7 @@ services:
   # Django Backend Service
   backend:
     build:
-      context: ./backend
+      context: .
       dockerfile: Dockerfile.prod
     container_name: portfolio-backend
     restart: unless-stopped
@@ -10,10 +10,10 @@ services:
     depends_on:
       - db
     volumes:
-      - ./backend:/home/frontend/react
-      - /var/www/django_static:/home/frontend/react/static
-      - /var/www/django_media:/home/frontend/react/media
-    user: "frontend:frontend_group"
+      - ./backend:/home/backend/react
+      - /var/www/django_static:/home/backend/react/static
+      - /var/www/django_media:/home/backend/react/media
+    user: "backend:backend_group"
     ports:
       - "4040:4040"
 
@@ -33,9 +33,10 @@ services:
   # Vite React Frontend Service
   frontend:
     build:
-      context: ./frontend
+      context: .
       dockerfile: Dockerfile.prod
     container_name: portfolio-frontend
+    user: "frontend:frontend_group"
     restart: unless-stopped
     ports:
       - "4000:80"
