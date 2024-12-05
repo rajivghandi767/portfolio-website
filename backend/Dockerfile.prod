@@ -10,15 +10,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 USER backend
 
-# WORKDIR /backend
-
 COPY --chown=backend:backend_group requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt && rm requirements.txt
+RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir --no-warn-script-location -r requirements.txt && rm requirements.txt
 COPY --chown=backend:backend_group . .
-
-# COPY requirements.txt .
-# RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r requirements.txt
-# COPY . .
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBFFERED=1 \
