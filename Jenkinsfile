@@ -11,26 +11,29 @@ pipeline {
                 '''
             }
         }
-        stage('Prune Docker Data') {
+        stage('Prune Docker Data Before Build') {
             steps {
                 sh 'docker system prune -a --volumes -f'
             }
         }
-        stage('Kill Running Portfolio Website  Backend/Frontend') {
-            steps{
-                sh '''
-                docker kill backend
-                docker kill frontend
-                docker ps
-                '''
-            }
         stage('Deploy Portfolio Website'){
             steps{
                 sh '''
-                docker compose up -d
+                docker compose -f docker-compose.prod.yaml --no-cache
+                docker compose -f docker-compose.prod.yaml up -d --force-recreate
                 docker ps
                 '''
-            }  
+            } 
+        }
+        stage('Prune Docker Data After Build') {
+            steps {
+                sh 'docker system prune -a --volumes -f'
+            }
+        } 
+        stage('Confirm Deployment') {
+            steps {
+                sh 'docker ps'
+            }
         }
     }
 }
