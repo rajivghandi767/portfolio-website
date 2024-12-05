@@ -10,8 +10,10 @@ services:
     depends_on:
       - db
     volumes:
-      - /var/www/django_static:/staticfiles
-      - /var/www/django_media:/mediafiles
+      - ./backend:/home/frontend/react
+      - /var/www/django_static:/home/frontend/react/static
+      - /var/www/django_media:/home/frontend/react/static
+    user: "frontend:frontend_group"
     ports:
       - "4040:4040"
 
