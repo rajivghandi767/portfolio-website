@@ -8,8 +8,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
-USER backend
-
 COPY --chown=backend:backend_group requirements.txt ./
 
 RUN pip install --no-cache-dir --upgrade pip && \
@@ -24,11 +22,13 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     DJANGO_SETTINGS_MODULE=portfolio_website.settings.production
 
 # Copy and prepare the entrypoint script
-COPY --chown=backend:backend_group entrypoint.sh /home/backend/entrypoint.sh
-RUN chmod +x /home/backend/entrypoint.sh
+COPY --chown=backend:backend_group entrypoint.sh /home/backend/django/entrypoint.sh
+RUN chmod +x /home/backend/django/entrypoint.sh
 
 EXPOSE 4040
 
-ENTRYPOINT ["/home/backend/entrypoint.sh"]
+USER backend
+
+ENTRYPOINT ["/home/backend/django/entrypoint.sh"]
 
 CMD ["gunicorn", "--workers", "4", "--bind", "0.0.0.0:4040", "portfolio_website.wsgi:application"]

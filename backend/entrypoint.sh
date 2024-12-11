@@ -1,16 +1,16 @@
-#!/bin/bash
+#!/bin/sh
+
+# Exit on errors
 set -e
 
-mkdir -p /django/staticfiles
-chown backend:backend_group /django/staticfiles
+# Ensure static and media directories exist
+mkdir -p /django/staticfiles /django/mediafiles
+
+# Run database migrations
+python manage.py migrate --no-input
 
 # Collect static files
-echo "Collecting static files..."
-python manage.py collectstatic --noinput
+python manage.py collectstatic --no-input --clear
 
-# Apply database migrations
-echo "Applying database migrations..."
-python manage.py migrate --noinput
-
-# Run the original CMD (start Gunicorn)
+# Start the main process
 exec "$@"
