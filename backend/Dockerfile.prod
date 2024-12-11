@@ -29,7 +29,6 @@ EXPOSE 4040
 
 USER backend
 
-RUN python manage.py collectstatic --no-input --clear
-# ENTRYPOINT ["/home/backend/django/entrypoint.sh"]
+ENTRYPOINT ["/home/backend/django/entrypoint.sh"]
 
 CMD ["gunicorn", "--workers", "4", "--bind", "0.0.0.0:4040", "portfolio_website.wsgi:application"]
