@@ -10,8 +10,8 @@ services:
     depends_on:
       - db
     volumes:
-      - /var/www/django_static:/django/staticfiles
-      - /var/www/django_media:/django/mediafiles
+      - ./backend/staticfiles:/django/staticfiles
+      - ./backend/mediafiles:/django/mediafiles
     user: "backend:backend_group"
     ports:
       - "4040:4040"
