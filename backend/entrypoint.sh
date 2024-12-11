@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-mkdir -p /home/backend/django/staticfiles
-chown backend:backend_group /home/backend/django/staticfiles
+mkdir -p /django/staticfiles
+chown backend:backend_group /django/staticfiles
 
 # Collect static files
 echo "Collecting static files..."
