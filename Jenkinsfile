@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_COMPOSE_FILE = "docker-compose.prod.yaml"
+        DOCKER_COMPOSE_FILE = "docker-compose.prod.yml"
     }
 
     stages {
