@@ -39,9 +39,9 @@ services:
     ports:
       - "4000:80"
 
+#Volumes & Networks
 volumes:
   postgres_data:
-
 networks:
   default:
     external: true
