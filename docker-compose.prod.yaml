@@ -10,8 +10,8 @@ services:
     depends_on:
       - db
     volumes:
-      - ./backend/staticfiles:/staticfiles
-      - ./backend/mediafiles:/mediafiles
+      - /opt/portfolio-website/backend/staticfiles:/home/backend/django/staticfiles
+      - /opt/portfolio-website/backend/mediafiles:/home/backend/django/staticfiles
     user: "backend:backend_group"
     ports:
       - "4040:4040"
