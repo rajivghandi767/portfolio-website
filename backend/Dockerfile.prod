@@ -1,12 +1,12 @@
 FROM python:3.13-slim
 
 RUN groupadd backend_group && useradd --create-home --gid backend_group backend && \
-    mkdir -p /home/backend/django && chown -R backend:backend_group /home/backend/django
-WORKDIR /home/backend/django
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
+    mkdir -p /home/backend/django && chown -R backend:backend_group /home/backend/django \
+    apt-get update && apt-get install -y --no-install-recommends \
     libpq-dev \
     && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /home/backend/django
 
 COPY --chown=backend:backend_group requirements.txt ./
 
@@ -21,16 +21,9 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PATH="/home/backend/.local/bin:$PATH" \
     DJANGO_SETTINGS_MODULE=portfolio_website.settings.production
 
-# # Copy and prepare the entrypoint script
-# COPY --chown=backend:backend_group entrypoint.sh /home/backend/django/entrypoint.sh
-# RUN chmod +x /home/backend/django/entrypoint.sh
-
+USER backend
 RUN python manage.py collectstatic --no-input --clear
 
 EXPOSE 4040
-
-USER backend
-
-# ENTRYPOINT ["/home/backend/django/entrypoint.sh"]
 
 CMD ["gunicorn", "--workers", "4", "--bind", "0.0.0.0:4040", "portfolio_website.wsgi:application"]
