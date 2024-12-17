@@ -11,7 +11,7 @@ services:
       - db
     volumes:
       - /opt/portfolio-website/backend/staticfiles:/home/backend/django/staticfiles
-      - /opt/portfolio-website/backend/mediafiles:/home/backend/django/staticfiles
+      - /opt/portfolio-website/backend/mediafiles:/home/backend/django/mediafiles
     user: "backend:backend_group"
     ports:
       - "4040:4040"
