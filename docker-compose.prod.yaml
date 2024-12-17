@@ -10,8 +10,8 @@ services:
     depends_on:
       - db
     volumes:
-      - /opt/nginxproxymanager/django/staticfiles:/staticfiles
-      - /opt/nginxproxymanager/django/mediafiles:/mediafiles
+      - ./backend/staticfiles:/staticfiles
+      - ./backend/mediafiles:/mediafiles
     user: "backend:backend_group"
     ports:
       - "4040:4040"
@@ -41,3 +41,8 @@ services:
 
 volumes:
   postgres_data:
+
+networks:
+  default:
+    external: true
+    name: portfolio_backend_network
