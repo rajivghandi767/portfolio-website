@@ -90,3 +90,6 @@ npm-debug.log*
 
 *docker-compose.dev.yaml
 *Dockerfile.dev
+
+/backend/staticfiles
+/backend/mediafiles
