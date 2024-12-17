@@ -27,7 +27,7 @@ pip-delete-this-directory.txt
 
 # Environments
 .env
-.env.production
+*.env.production
 .venv
 env/
 venv/
@@ -89,6 +89,7 @@ npm-debug.log*
 /nginx
 
 *docker-compose.dev.yaml
+*docker-compose.dev.yml
 *Dockerfile.dev
 
 /backend/staticfiles
