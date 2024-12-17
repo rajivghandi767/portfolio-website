@@ -21,10 +21,10 @@ router.register('cards', CardViewSet)
 
 
 urlpatterns = [
-    # path('api/', include(router.urls)),
+    path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
-    path('', include('health_check.urls'))
+    path('api/health/', include('health_check.urls'))
 ]
 
 urlpatterns += router.urls
