@@ -9,16 +9,13 @@ from wallet.views import CardViewSet
 from rest_framework import routers
 
 router = routers.DefaultRouter()
+
 router.register('info', InfoViewSet)
-
 router.register('projects', ProjectViewSet)
-
 router.register('category', CategoryViewSet)
 router.register('post', PostViewSet)
 router.register('comment', CommentViewSet)
-
 router.register('cards', CardViewSet)
-
 
 urlpatterns = [
     path('api/', include(router.urls)),
