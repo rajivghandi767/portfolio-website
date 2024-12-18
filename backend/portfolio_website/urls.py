@@ -27,4 +27,4 @@ urlpatterns = [
     path('api/', include('health_check.urls'))
 ]
 
-urlpatterns += router.urls
+# urlpatterns += router.urls
