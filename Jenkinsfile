@@ -61,7 +61,14 @@ pipeline {
                 // sh "docker compose -f ${DOCKER_COMPOSE_FILE} up -d --force-recreate"
             }
         }
-
+        stage('Collect Static Files') {
+                    steps {
+                        echo "Collecting Django Static Files"
+                        sh """
+                            docker compose -f ${DOCKER_COMPOSE_FILE} exec backend python manage.py collectstatic --noinput --clear
+                        """
+                    }
+                }
         stage('Clean Up Unused Docker Resources') {
             steps {
                 echo "Cleaning up unused Docker resources"
