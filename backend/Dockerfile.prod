@@ -23,7 +23,6 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     DJANGO_SETTINGS_MODULE=portfolio_website.settings.production
 
 USER backend
-RUN python manage.py collectstatic --no-input --clear
 
 EXPOSE 4040
 
