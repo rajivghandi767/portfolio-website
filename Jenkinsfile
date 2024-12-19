@@ -87,7 +87,7 @@ pipeline {
                 sh "curl -f https://rajivwallace.com || exit 1"
 
                 echo "Testing Portfolio Website Backend"
-                sh "curl -f https://api.rajivwallace.com/health || exit 1"
+                sh "curl -f https://rajivwallace.com/api/health || exit 1"
             }
         }
     }
