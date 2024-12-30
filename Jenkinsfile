@@ -9,7 +9,18 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 echo "Checking out repository"
-                checkout scm
+                dir('/opt') {
+                    checkout scm
+                    }
+            }
+        }
+
+        stage('Fetch Vault Secrets') {
+            steps {
+                script {
+                    echo "Fetching Vault secrets"
+                    sh './fetch-vault-secrets.sh'
+                }
             }
         }
 
