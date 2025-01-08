@@ -51,7 +51,7 @@ pipeline {
                     ], 
                     vaultSecrets: [
                         [
-                            path: "secrets/country-trivia/${ENV}/db",
+                            path: "secrets/portfolio-website/${ENV}/db",
                             secretValues: [
                                 [envVar: 'DATABASE_URL', vaultKey: 'DATABASE_URL'],
                                 [envVar: 'POSTGRESQL_DB', vaultKey: 'POSTGRESQL_DB'],
@@ -61,7 +61,16 @@ pipeline {
                             ]
                         ],
                         [
-                            path: "secrets/country-trivia/${ENV}/frontend",
+                            path: "secrets/portfolio-website/${ENV}/backend",
+                            secretValues: [
+                                [envVar: 'DJANGO_SECRET_KEY', vaultKey: 'DJANGO_SECRET_KEY'],
+                                [envVar: 'ALLOWED_HOSTS', vaultKey: 'ALLOWED_HOSTS'],
+                                [envVar: 'CORS_ALLOWED_ORIGINS', vaultKey: 'CORS_ALLOWED_ORIGINS'],
+                                [envVar: 'CSRF_TRUSTED_ORIGINS', vaultKey: 'CSRF_TRUSTED_ORIGINS'],
+                            ]
+                        ],
+                        [
+                            path: "secrets/portfolio-website/${ENV}/frontend",
                             secretValues: [
                                 [envVar: 'VITE_URL_API', vaultKey: 'VITE_URL_API']
                             ]
