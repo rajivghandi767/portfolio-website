@@ -79,8 +79,7 @@ pipeline {
                         echo 'Secrets retrieved successfully!'
                     }
                 }
-
-        }
+            }
         }
 
         stage('Lint Code') {
@@ -169,7 +168,9 @@ pipeline {
             echo "Deployment completed successfully!"
         }
         failure {
-            echo "Deployment failed. Check the logs for more information."
+            echo "Deployment failed. Rolling back to previous version. Check the logs for more information."
+
+            sh 'docker compose rollback || true'
         }
     }
 }
