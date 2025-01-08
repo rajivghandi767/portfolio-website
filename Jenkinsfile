@@ -2,6 +2,11 @@ pipeline {
     agent any
 
     environment {
+
+        ENV = 'prod'
+        DOCKER_COMPOSE_FILE = "docker-compose.prod.yml"
+        
+        DB_HOST = 'https://db.rajivwallace.com'
         DOCKER_COMPOSE_FILE = "docker-compose.prod.yml"
     }
 
@@ -9,7 +14,71 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 echo "Checking out repository"
-                checkout scm
+                dir('/opt') {
+                    checkout scm
+                    }
+            }
+        }
+
+        stage('Infrastructure Check') {
+            steps {
+                script {
+                    sh '''
+                        curl -s ${VAULT_ADDR}/v1/sys/health || {
+                            echo "Vault is not accessible"
+                            exit 1
+                        }
+                    '''
+                    
+                    sh '''
+                        nc -zv ${DEPLOY_HOST} 5432 || {
+                            echo "PostgreSQL is not accessible"
+                            exit 1
+                        }
+                    '''
+                }
+            }
+        }
+
+        stage('Get Secrets') {
+            steps {
+                script {
+
+                    withVault(configuration: [
+                        timeout: 60,
+                        vaultCredentialId: 'vault-approle',
+                        engineVersion: 2
+                    ], 
+                    vaultSecrets: [
+                        [
+                            path: "secrets/portfolio-website/${ENV}/db",
+                            secretValues: [
+                                [envVar: 'DATABASE_URL', vaultKey: 'DATABASE_URL'],
+                                [envVar: 'POSTGRESQL_DB', vaultKey: 'POSTGRESQL_DB'],
+                                [envVar: 'POSTGRESQL_DB_PORT', vaultKey: 'POSTGRESQL_DB_PORT'],
+                                [envVar: 'POSTGRESQL_USER', vaultKey: 'POSTGRESQL_USER'],
+                                [envVar: 'POSTGRESQL_PASSWORD', vaultKey: 'POSTGRESQL_PASSWORD'],
+                            ]
+                        ],
+                        [
+                            path: "secrets/portfolio-website/${ENV}/backend",
+                            secretValues: [
+                                [envVar: 'DJANGO_SECRET_KEY', vaultKey: 'DJANGO_SECRET_KEY'],
+                                [envVar: 'ALLOWED_HOSTS', vaultKey: 'ALLOWED_HOSTS'],
+                                [envVar: 'CORS_ALLOWED_ORIGINS', vaultKey: 'CORS_ALLOWED_ORIGINS'],
+                                [envVar: 'CSRF_TRUSTED_ORIGINS', vaultKey: 'CSRF_TRUSTED_ORIGINS'],
+                            ]
+                        ],
+                        [
+                            path: "secrets/portfolio-website/${ENV}/frontend",
+                            secretValues: [
+                                [envVar: 'VITE_URL_API', vaultKey: 'VITE_URL_API']
+                            ]
+                        ]
+                    ]) {
+                        echo 'Secrets retrieved successfully!'
+                    }
+                }
             }
         }
 
@@ -61,14 +130,16 @@ pipeline {
                 // sh "docker compose -f ${DOCKER_COMPOSE_FILE} up -d --force-recreate"
             }
         }
+        
         stage('Collect Static Files') {
-                    steps {
-                        echo "Collecting Django Static Files"
-                        sh """
-                            docker compose -f ${DOCKER_COMPOSE_FILE} exec backend python manage.py collectstatic --noinput --clear
-                        """
-                    }
-                }
+            steps {
+                echo "Collecting Django Static Files"
+                sh """
+                    docker compose -f ${DOCKER_COMPOSE_FILE} exec backend python manage.py collectstatic --noinput --clear
+                """
+            }
+        }
+        
         stage('Clean Up Unused Docker Resources') {
             steps {
                 echo "Cleaning up unused Docker resources"
@@ -97,7 +168,9 @@ pipeline {
             echo "Deployment completed successfully!"
         }
         failure {
-            echo "Deployment failed. Check the logs for more information."
+            echo "Deployment failed. Rolling back to previous version. Check the logs for more information."
+
+            sh 'docker compose rollback || true'
         }
     }
 }
