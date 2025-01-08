@@ -4,10 +4,11 @@ pipeline {
     environment {
 
         ENV = 'prod'
+        DOCKER_BACKEND = 'portfolio-backend'
+        DOCKER_FRONTEND = 'portfolio-frontend'
         DOCKER_COMPOSE_FILE = "docker-compose.prod.yml"
         
         DB_HOST = 'https://db.rajivwallace.com'
-        DOCKER_COMPOSE_FILE = "docker-compose.prod.yml"
     }
 
     stages {
@@ -22,6 +23,7 @@ pipeline {
 
         stage('Infrastructure Check') {
             steps {
+                echo "Checking if Vault and PostgreSQL are accessible"
                 script {
                     sh '''
                         curl -s ${VAULT_ADDR}/v1/sys/health || {
@@ -42,6 +44,7 @@ pipeline {
 
         stage('Get Secrets') {
             steps {
+                echo "Retrieving secrets from Vault"
                 script {
 
                     withVault(configuration: [
@@ -97,29 +100,40 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
+        stage('Build & Test Backend') {
             steps {
-                echo "Running Tests"
-                dir('frontend') {
-                    sh 'npm run test'
-                }
+                echo "Building and Testing Backend"
                 dir('backend') {
+
                     sh 'pip install -r requirements.txt'
                     sh 'python manage.py test'
+                    
+                    script {
+                        docker.build(DOCKER_BACKEND)
+                    }
+                }
+            }
+        }
+        
+        stage('Build & Test Frontend') {
+            steps {
+                echo "Building and Testing Frontend"
+                dir('frontend') {
+                    
+                    sh 'npm install'
+                    
+                    sh 'npm test'
+                    
+                    sh 'npm run build'
+                    
+                    script {
+                        docker.build(DOCKER_FRONTEND)
+                    }
                 }
             }
         }
 
-        stage('Build Docker Images') {
-            steps {
-                echo "Building Frontend and Backend Docker Images"
-                sh "docker compose -f ${DOCKER_COMPOSE_FILE} build"
-                // Uncomment below for forced rebuild with no cache
-                // sh "docker compose -f ${DOCKER_COMPOSE_FILE} build --no-cache"
-            }
-        }
-
-        stage('Deploy Locally') {
+        stage('Deploy Application Locally') {
             steps {
                 echo "Deploying Services Locally"
                 sh """
