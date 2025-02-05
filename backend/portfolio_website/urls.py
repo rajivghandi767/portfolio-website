@@ -5,6 +5,7 @@ from info.views import InfoViewSet
 from projects.views import ProjectViewSet
 from blog.views import CategoryViewSet, PostViewSet, CommentViewSet
 from wallet.views import CardViewSet
+from contacts.views import ContactViewSet
 
 from rest_framework import routers
 
@@ -16,6 +17,7 @@ router.register('category', CategoryViewSet)
 router.register('post', PostViewSet)
 router.register('comment', CommentViewSet)
 router.register('cards', CardViewSet)
+router.register('contact', ContactViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),
