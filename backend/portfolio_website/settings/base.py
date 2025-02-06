@@ -94,3 +94,14 @@ MEDIA_ROOT = BASE_DIR / 'mediafiles'
 # Default primary key field type
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Email
+
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = 'contact@rajivwallace.com'
+CONTACT_EMAIL = os.environ.get('CONTACT_EMAIL')
+
+# Helps identify emails from your site
+EMAIL_SUBJECT_PREFIX = '[Portfolio Contact]'
+SERVER_EMAIL = 'server@rajivwallace.com'  # For error notifications
