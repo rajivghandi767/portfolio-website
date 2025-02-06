@@ -1,7 +1,6 @@
-import React from "react";
-import { useRef } from "react";
+import { SiteSection } from "../types/index.ts";
 
-const siteSections = [
+const siteSections: SiteSection[] = [
   {
     id: 1,
     section: "Bio",
@@ -32,8 +31,16 @@ const siteSections = [
 const NavBar = () => {
   // Jump to Section Logic
 
+  const scrollToSection = (ref: string) => {
+    const section = document.getElementById(ref);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   const navBarItems = siteSections.map((siteSection) => (
     <li
+      key={siteSection.id}
       onClick={() => scrollToSection(siteSection.ref)}
       className="mx-4 my-4 text-xl text-white hover:bg-gray-700 rounded"
     >

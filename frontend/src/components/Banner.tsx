@@ -5,20 +5,12 @@ const Banner = () => {
 
   const [darkMode, setDarkMode] = useState(false);
 
-  useEffect(() => {
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      setDarkMode("dark");
-    } else {
-      setDarkMode("");
-    }
-  }, []);
-
   const toggleDarkMode = () => {
-    setDarkMode(darkMode === "dark" ? "" : "dark");
+    setDarkMode(!darkMode);
   };
 
   useEffect(() => {
-    if (darkMode === "dark") {
+    if (darkMode === true) {
       document.documentElement.classList.add("dark");
     } else {
       document.documentElement.classList.remove("dark");
@@ -85,7 +77,7 @@ const Banner = () => {
           className="md:absolute p-1 m-3 bg-black dark:bg-slate-300 rounded-lg text-white dark:text-black"
           onClick={toggleDarkMode}
         >
-          {darkMode === "dark" ? sun : moon}
+          {darkMode === true ? sun : moon}
         </button>
         <div className="mx-auto">
           <h1 className="text-2xl">Rajiv Wallace 🇩🇲</h1>
