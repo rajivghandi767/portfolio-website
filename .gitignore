@@ -94,4 +94,3 @@ npm-debug.log*
 
 /backend/staticfiles
 /backend/mediafiles
-/frontend-ts
