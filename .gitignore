@@ -94,3 +94,4 @@ npm-debug.log*
 
 /backend/staticfiles
 /backend/mediafiles
+/frontend/README.md
