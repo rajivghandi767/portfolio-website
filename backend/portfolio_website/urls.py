@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 
-from info.views import InfoViewSet
+from info.views import InfoViewSet, ResumeViewSet
 from projects.views import ProjectViewSet
 from blog.views import CategoryViewSet, PostViewSet, CommentViewSet
 from wallet.views import CardViewSet
@@ -12,6 +12,7 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 
 router.register('info', InfoViewSet)
+router.register('resume', ResumeViewSet)
 router.register('projects', ProjectViewSet)
 router.register('category', CategoryViewSet)
 router.register('post', PostViewSet)

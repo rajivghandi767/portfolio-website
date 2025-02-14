@@ -58,4 +58,8 @@ export interface BannerProps {
   setDarkMode: (darkMode: boolean) => void;
 }
 
-
+export interface ResumeModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  pdfUrl: string;
+}
