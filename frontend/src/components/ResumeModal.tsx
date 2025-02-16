@@ -1,6 +1,5 @@
 import { ResumeModalProps } from "../types";
 
-// components/ResumeModal.tsx
 import {
   Dialog,
   DialogContent,
@@ -13,7 +12,7 @@ const ResumeModal = ({ isOpen, onClose, pdfUrl }: ResumeModalProps) => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl w-11/12 h-[80vh]">
         <DialogHeader>
-          <DialogTitle>Resume</DialogTitle>
+          <DialogTitle>Rajiv Wallace Resume</DialogTitle>
         </DialogHeader>
         <div className="flex-1 w-full h-full min-h-[60vh]">
           <iframe

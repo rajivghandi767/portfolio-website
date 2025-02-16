@@ -43,7 +43,6 @@ const Bio = () => {
     }
   };
 
-  // Return a single JSX element that contains both the mapped info and the modal
   return (
     <>
       {info.map((infoItem) => (

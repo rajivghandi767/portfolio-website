@@ -81,6 +81,19 @@ USE_I18N = True
 
 USE_TZ = True
 
+# PostgreSQL
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'portfolio-db',
+        'USER': os.environ.get('POSTGRESQL_USER'),
+        'PASSWORD': os.environ.get('POSTGRESQL_PASSWORD'),
+        'PORT': os.environ.get('POSTGRESQL_PORT'),
+        'HOST': os.environ.get('POSTGRESQL_HOST'),
+    }
+}
+
 # Static files (CSS, JavaScript, Images) & Media
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
