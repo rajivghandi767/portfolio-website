@@ -27,7 +27,7 @@ const Bio = () => {
     try {
       setIsLoading(true);
 
-      const response = await fetch(`${API_URL}/resume/view/`);
+      const response = await fetch(`${API_URL}/resume`);
 
       if (!response.ok) {
         throw new Error("Failed to fetch resume");
