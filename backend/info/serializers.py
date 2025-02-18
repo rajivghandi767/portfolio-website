@@ -11,39 +11,21 @@ class InfoSerializer(serializers.ModelSerializer):
 
 
 class ResumeSerializer(serializers.ModelSerializer):
-    """
-    Serializer for the Resume model, handling how resume data is
-    converted to/from JSON in the API.
-    """
-    file_url = serializers.SerializerMethodField()
-    file_name = serializers.SerializerMethodField()
+    view_url = serializers.SerializerMethodField()
+    download_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Resume
-        fields = [
-            'id',
-            'title',
-            'file_url',
-            'file_name',
-            'is_active',
-            'created_at',
-            'updated_at',
-            'version'
-        ]
-        read_only_fields = ['file_url', 'file_name',
-                            'created_at', 'updated_at', 'version']
+        fields = ['id', 'view_url', 'download_url', 'uploaded_at']
 
-    def get_file_url(self, obj):
-        """
-        Generates a URL for accessing the resume file.
-        """
+    def get_view_url(self, obj):
         request = self.context.get('request')
-        if request and obj.file:
+        if obj.file and hasattr(obj.file, 'url'):
             return request.build_absolute_uri(obj.file.url)
         return None
 
-    def get_file_name(self, obj):
-        """
-        Returns the original filename of the resume.
-        """
-        return obj.file.name.split('/')[-1] if obj.file else None
+    def get_download_url(self, obj):
+        request = self.context.get('request')
+        if obj.file and hasattr(obj.file, 'url'):
+            return request.build_absolute_uri(obj.file.url) + '?download=true'
+        return None
