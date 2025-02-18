@@ -3,13 +3,18 @@ from .models import Info
 from .models import Resume
 
 
+@admin.register(Info)
 class InfoAdmin(admin.ModelAdmin):
     pass
 
 
+@admin.register(Resume)
 class ResumeAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['id', 'uploaded_at', 'is_active']
+    list_filter = ['is_active']
 
-
-admin.site.register(Info, InfoAdmin)
-admin.site.register(Resume, ResumeAdmin)
+    def save_model(self, request, obj, form, change):
+        if obj.is_active:
+            # Deactivate all other resumes
+            Resume.objects.exclude(pk=obj.pk).update(is_active=False)
+        super().save_model(request, obj, form, change)

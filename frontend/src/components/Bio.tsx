@@ -1,13 +1,11 @@
+import { React, useEffect, useState } from "react";
 import { Info } from "../types/index.ts";
 import ResumeModal from "./ResumeModal";
-import { React, useEffect, useState } from "react";
 import API_URL from "./ApiConfig";
 
 const Bio = () => {
   const [info, setInfo] = useState<Info[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [pdfUrl, setPdfUrl] = useState<string>("");
 
   useEffect(() => {
     getData();
@@ -23,27 +21,6 @@ const Bio = () => {
     }
   };
 
-  const handleViewResume = async () => {
-    try {
-      setIsLoading(true);
-
-      const response = await fetch(`${API_URL}/resume/view/`);
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch resume");
-      }
-
-      const data = await response.json();
-      setPdfUrl(data.file_url);
-      setIsModalOpen(true);
-    } catch (error) {
-      console.error("Error fetching resume:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Return a single JSX element that contains both the mapped info and the modal
   return (
     <>
       {info.map((infoItem) => (
@@ -64,11 +41,10 @@ const Bio = () => {
             <p className="pt-3 text-sm">{infoItem.bio}</p>
             <h5 className="mt-2 text-center md:text-left">
               <button
-                onClick={handleViewResume}
-                disabled={isLoading}
-                className="text-blue-500 hover:text-blue-700 transition cursor-pointer hover:underline focus:outline-none disabled:opacity-50"
+                onClick={() => setIsModalOpen(true)}
+                className="text-blue-500 hover:text-blue-700 transition cursor-pointer hover:underline focus:outline-none"
               >
-                {isLoading ? "Loading..." : "View Resume"}
+                View Resume
               </button>
             </h5>
           </div>
@@ -77,7 +53,7 @@ const Bio = () => {
       <ResumeModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        pdfUrl={pdfUrl}
+        apiUrl={API_URL}
       />
     </>
   );

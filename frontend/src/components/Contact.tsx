@@ -1,6 +1,6 @@
 import { ContactForm, NotificationType } from "../types/index.ts";
 import { React, useState } from "react";
-import API_URL from "./ApiConfig.tsx";
+import API_URL from "./ApiConfig";
 
 const Contact = () => {
   const [formData, setFormData] = useState<ContactForm>({

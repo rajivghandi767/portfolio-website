@@ -1,91 +1,75 @@
 import { React, useState, useEffect } from "react";
+import { BannerProps } from "../types/index.ts";
+import { Sun, Moon, Menu, X } from "lucide-react";
 
-const Banner = () => {
-  // Dark Mode Toggle
-
+const Banner = ({ isMenuOpen, toggleMenu }: BannerProps) => {
   const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+    setDarkMode(prefersDark);
+  }, []);
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
   };
 
   useEffect(() => {
-    if (darkMode === true) {
+    if (darkMode) {
       document.documentElement.classList.add("dark");
     } else {
       document.documentElement.classList.remove("dark");
     }
   }, [darkMode]);
 
-  // Toggle Icons
-
-  const sun = (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      strokeWidth={1.5}
-      stroke="currentColor"
-      className="size-6"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
-      />
-    </svg>
-  );
-
-  const moon = (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      strokeWidth={1.5}
-      stroke="currentColor"
-      className="size-6"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
-      />
-    </svg>
-  );
-
-  // Mobile Menu Icon
-
-  const mobileMenu = (
-    <svg
-      className="w-9 h-8 m-3"
-      x-show="!showMenu"
-      fill="none"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path d="M4 6h16M4 12h16M4 18h16M4"></path>
-    </svg>
-  );
-
   return (
-    <>
-      <div className="flex bg-white text-center items-center mx-auto dark:bg-stone-950">
-        <button
-          className="md:absolute p-1 m-3 bg-black dark:bg-slate-300 rounded-lg text-white dark:text-black"
-          onClick={toggleDarkMode}
-        >
-          {darkMode === true ? sun : moon}
-        </button>
-        <div className="mx-auto">
-          <h1 className="text-2xl">Rajiv Wallace 🇩🇲</h1>
-          <h2 className="text-l">Software Engineer & Web Developer</h2>
+    <div className="bg-white dark:bg-stone-950 font-mono">
+      <div className="container mx-auto px-4 py-3">
+        <div className="flex items-center justify-between">
+          <div className="w-14">
+            <button
+              className="p-2 rounded-lg bg-black dark:bg-slate-300 text-white dark:text-black 
+                         hover:bg-gray-800 dark:hover:bg-slate-400 transition-colors duration-200
+                         focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onClick={toggleDarkMode}
+              aria-label="Toggle dark mode"
+            >
+              {darkMode ? (
+                <Sun className="w-5 h-5" />
+              ) : (
+                <Moon className="w-5 h-5" />
+              )}
+            </button>
+          </div>
+
+          {/* Center - Title and subtitle */}
+          <div className="flex-1 text-center">
+            <h1 className="text-2xl text-black dark:text-white">
+              Rajiv Wallace 🇩🇲
+            </h1>
+            <h2 className="text-l text-black dark:text-white">
+              Software Engineer & Web Developer
+            </h2>
+          </div>
+
+          {/* Right side - Mobile menu button */}
+          <div className="w-14 flex justify-end md:hidden">
+            <button
+              onClick={toggleMenu}
+              className="p-2 text-black dark:text-white hover:text-gray-600 transition-colors"
+            >
+              {isMenuOpen ? (
+                <X className="w-8 h-8" />
+              ) : (
+                <Menu className="w-8 h-8" />
+              )}
+            </button>
+          </div>
         </div>
-        <div className="text-l hover:transition md:hidden">{mobileMenu}</div>
       </div>
-    </>
+    </div>
   );
 };
 

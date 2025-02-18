@@ -2,19 +2,6 @@ from .base import *
 
 DEBUG = False
 
-# PostgreSQL
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'portfolio-db',
-        'USER': os.environ.get('POSTGRESQL_USER'),
-        'PASSWORD': os.environ.get('POSTGRESQL_PASSWORD'),
-        'PORT': os.environ.get('POSTGRESQL_PORT'),
-        'HOST': os.environ.get('POSTGRESQL_HOST'),
-    }
-}
-
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
 # CORS/CSRF Settings

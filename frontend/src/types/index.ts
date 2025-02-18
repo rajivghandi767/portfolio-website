@@ -54,12 +54,16 @@ export interface SiteSection {
 
 // Component Props Types
 export interface BannerProps {
-  darkMode: boolean;
-  setDarkMode: (darkMode: boolean) => void;
+  isMenuOpen: boolean;
+  toggleMenu: () => void;
+}
+
+export interface NavBarProps {
+  isMenuOpen: boolean;
 }
 
 export interface ResumeModalProps {
   isOpen: boolean;
   onClose: () => void;
-  pdfUrl: string;
+  apiUrl: string;
 }

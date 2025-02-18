@@ -1,6 +1,6 @@
 import { Card } from "../types/index.ts";
 import { React, useEffect, useState } from "react";
-import API_URL from "./ApiConfig.tsx";
+import API_URL from "./ApiConfig";
 
 const Wallet = () => {
   const [cards, setCards] = useState<Card[]>([]);
