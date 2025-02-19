@@ -35,9 +35,10 @@ export interface BlogPost {
 export interface Card {
   id: number;
   card_name: string;
-  annual_fee: string;
-  referral_link: string;
-  description?: string;
+  annual_fee: string | null;
+  referral_link: string | null;
+  thumbnail?: string | null;
+  description?: string | null;
 }
 
 export interface ContactForm {
@@ -79,3 +80,8 @@ export interface ResumeModalProps {
   onClose: () => void;
   apiUrl: string;
 }
+
+export interface ThemeContextType {
+  isDarkMode: boolean;
+  toggleTheme: () => void;
+};

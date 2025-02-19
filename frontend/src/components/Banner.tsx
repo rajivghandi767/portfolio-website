@@ -1,28 +1,11 @@
-import { React, useState, useEffect } from "react";
+import { React } from "react";
 import { BannerProps } from "../types/index.ts";
 import { Sun, Moon, Menu, X } from "lucide-react";
+import { useTheme } from "./ThemeProvider";
 
 const Banner = ({ isMenuOpen, toggleMenu }: BannerProps) => {
-  const [darkMode, setDarkMode] = useState(false);
-
-  useEffect(() => {
-    const prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches;
-    setDarkMode(prefersDark);
-  }, []);
-
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
-
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [darkMode]);
+  // Use the theme context instead of local state
+  const { isDarkMode, toggleTheme } = useTheme();
 
   return (
     <div className="bg-gradient-to-r from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 font-mono backdrop-blur-sm bg-opacity-80">
@@ -35,10 +18,10 @@ const Banner = ({ isMenuOpen, toggleMenu }: BannerProps) => {
                          hover:from-gray-900 hover:to-gray-800 dark:hover:from-gray-200 dark:hover:to-gray-300 
                          transition-all duration-200
                          focus:outline-none focus:ring-2 focus:ring-blue-500"
-              onClick={toggleDarkMode}
+              onClick={toggleTheme}
               aria-label="Toggle dark mode"
             >
-              {darkMode ? (
+              {isDarkMode ? (
                 <Sun className="w-5 h-5" />
               ) : (
                 <Moon className="w-5 h-5" />
