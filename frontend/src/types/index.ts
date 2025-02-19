@@ -21,6 +21,15 @@ export interface BlogPost {
   title: string;
   body: string;
   image: string;
+  author?: string;
+  created_at?: string;
+  updated_at?: string;
+  tags?: string[];
+  excerpt?: string;
+  slug?: string;
+  category?: string;
+  is_published?: boolean;
+  view_count?: number;
 }
 
 export interface Card {
