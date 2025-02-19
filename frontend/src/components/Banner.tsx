@@ -25,13 +25,15 @@ const Banner = ({ isMenuOpen, toggleMenu }: BannerProps) => {
   }, [darkMode]);
 
   return (
-    <div className="bg-white dark:bg-stone-950 font-mono">
+    <div className="bg-gradient-to-r from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 font-mono backdrop-blur-sm bg-opacity-80">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="w-14">
             <button
-              className="p-2 rounded-lg bg-black dark:bg-slate-300 text-white dark:text-black 
-                         hover:bg-gray-800 dark:hover:bg-slate-400 transition-colors duration-200
+              className="p-2 rounded-lg bg-gradient-to-br from-gray-950 to-gray-900 dark:from-gray-100 dark:to-gray-200 
+                         text-gray-50 dark:text-gray-900 
+                         hover:from-gray-900 hover:to-gray-800 dark:hover:from-gray-200 dark:hover:to-gray-300 
+                         transition-all duration-200
                          focus:outline-none focus:ring-2 focus:ring-blue-500"
               onClick={toggleDarkMode}
               aria-label="Toggle dark mode"
@@ -44,21 +46,22 @@ const Banner = ({ isMenuOpen, toggleMenu }: BannerProps) => {
             </button>
           </div>
 
-          {/* Center - Title and subtitle */}
           <div className="flex-1 text-center">
-            <h1 className="text-2xl text-black dark:text-white">
-              Rajiv Wallace 🇩🇲
+            <h1 className="text-2xl">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-950 via-gray-900 to-gray-950 dark:from-gray-50 dark:via-gray-200 dark:to-gray-50">
+                Rajiv Wallace
+              </span>
+              <span className="text-gray-950 dark:text-gray-50"> 🇩🇲</span>
             </h1>
-            <h2 className="text-l text-black dark:text-white">
+            <h2 className="text-l text-gray-800 dark:text-gray-300">
               Software Engineer & Web Developer
             </h2>
           </div>
 
-          {/* Right side - Mobile menu button */}
           <div className="w-14 flex justify-end md:hidden">
             <button
               onClick={toggleMenu}
-              className="p-2 text-black dark:text-white hover:text-gray-600 transition-colors"
+              className="p-2 text-gray-950 dark:text-gray-50 hover:text-gray-800 dark:hover:text-gray-300 transition-colors"
             >
               {isMenuOpen ? (
                 <X className="w-8 h-8" />

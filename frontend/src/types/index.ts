@@ -1,6 +1,7 @@
 // API Response Types
 export interface Info {
   id: number;
+  profile_photo: string;
   greeting: string;
   bio: string;
 }
@@ -11,6 +12,8 @@ export interface Project {
   description: string;
   stack: string;
   repo: string;
+  thumbnail?: string;
+  deployed_url?: string;
 }
 
 export interface BlogPost {

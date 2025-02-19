@@ -16,7 +16,7 @@ function App() {
   };
 
   return (
-    <div className="bg-white m-auto font-mono scroll-smooth text-black dark:bg-stone-950 dark:text-white pt-2 pb-2">
+    <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900 min-h-screen m-auto font-mono scroll-smooth text-gray-950 dark:text-gray-50 pt-2 pb-2">
       <div className="block sticky top-0 z-50">
         <Banner isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
         <NavBar isMenuOpen={isMenuOpen} />
