@@ -1,6 +1,7 @@
 import { ContactForm, NotificationType } from "../types/index.ts";
 import { React, useState } from "react";
 import API_URL from "./ApiConfig";
+import { Send, AlertCircle, CheckCircle } from "lucide-react";
 
 const Contact = () => {
   const [formData, setFormData] = useState<ContactForm>({
@@ -24,6 +25,8 @@ const Contact = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsSubmitting(true);
+
     try {
       const response = await fetch(`${API_URL}/contact/`, {
         method: "POST",
@@ -36,42 +39,63 @@ const Contact = () => {
       if (!response.ok) throw new Error("Failed to send message");
 
       setNotification("success");
-
       setFormData({ name: "", email: "", message: "" });
+
+      // Auto-clear success notification after 5 seconds
+      setTimeout(() => {
+        setNotification(null);
+      }, 5000);
     } catch (error) {
       console.error("Error sending message:", error);
       setNotification("error");
+
+      // Auto-clear error notification after 5 seconds
+      setTimeout(() => {
+        setNotification(null);
+      }, 5000);
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div id="contact-form" className="pt-2 max-w-3xl mx-auto px-8 md:px-16">
-      <h1 className="p-2 font-semibold text-xl text-center">Contact</h1>
+    <div id="contact-form" className="mx-auto px-4 py-2 -mb-2">
+      <h1 className="text-2xl font-semibold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-gray-950 to-gray-800 dark:from-gray-50 dark:to-gray-300">
+        Contact Me
+      </h1>
 
       {notification && (
         <div
-          className={`mb-3 p-2 rounded text-sm text-center max-w-xs mx-auto ${
+          className={`mb-6 p-3 rounded-lg max-w-sm mx-auto flex items-center gap-2 transition-all duration-300 ${
             notification === "success"
-              ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-              : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+              ? "bg-green-50 text-green-800 dark:bg-green-900/20 dark:text-green-300"
+              : "bg-red-50 text-red-800 dark:bg-red-900/20 dark:text-red-300"
           }`}
         >
-          {notification === "success"
-            ? "Message sent successfully!"
-            : "Failed to send message. Please try again."}
+          {notification === "success" ? (
+            <CheckCircle className="w-5 h-5 flex-shrink-0" />
+          ) : (
+            <AlertCircle className="w-5 h-5 flex-shrink-0" />
+          )}
+          <span className="text-sm">
+            {notification === "success"
+              ? "Message sent successfully!"
+              : "Failed to send message. Please try again."}
+          </span>
         </div>
       )}
 
-      {/* Made the form container narrower with max-w-xs */}
       <div
-        className="w-full max-w-xs mx-auto rounded shadow-sm p-4 
-                    bg-white dark:bg-stone-900 border-2 border-black dark:border-white"
+        className="max-w-md mx-auto rounded-lg overflow-hidden
+                  bg-white dark:bg-gray-900 shadow-md
+                  border border-gray-200 dark:border-gray-700"
       >
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <div className="space-y-1">
-            <label htmlFor="name" className="block text-sm">
+        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          <div className="space-y-2">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-800 dark:text-gray-300"
+            >
               Name
             </label>
             <input
@@ -80,14 +104,19 @@ const Contact = () => {
               required
               value={formData.name}
               onChange={handleChange}
-              className="w-full p-1.5 text-sm border-2 border-black dark:border-white rounded 
-                       bg-transparent focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full p-2 text-sm bg-transparent 
+                       border border-gray-300 dark:border-gray-700 rounded-md
+                       focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400
+                       text-gray-900 dark:text-gray-100"
               placeholder="Your name"
             />
           </div>
 
-          <div className="space-y-1">
-            <label htmlFor="email" className="block text-sm">
+          <div className="space-y-2">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-800 dark:text-gray-300"
+            >
               Email
             </label>
             <input
@@ -96,14 +125,19 @@ const Contact = () => {
               required
               value={formData.email}
               onChange={handleChange}
-              className="w-full p-1.5 text-sm border-2 border-black dark:border-white rounded 
-                       bg-transparent focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full p-2 text-sm bg-transparent 
+                       border border-gray-300 dark:border-gray-700 rounded-md
+                       focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400
+                       text-gray-900 dark:text-gray-100"
               placeholder="your.email@example.com"
             />
           </div>
 
-          <div className="space-y-1">
-            <label htmlFor="message" className="block text-sm">
+          <div className="space-y-2">
+            <label
+              htmlFor="message"
+              className="block text-sm font-medium text-gray-800 dark:text-gray-300"
+            >
               Message
             </label>
             <textarea
@@ -111,23 +145,37 @@ const Contact = () => {
               required
               value={formData.message}
               onChange={handleChange}
-              rows={3}
-              className="w-full p-1.5 text-sm border-2 border-black dark:border-white rounded 
-                       bg-transparent focus:outline-none focus:ring-1 focus:ring-blue-500"
+              rows={4}
+              className="w-full p-2 text-sm bg-transparent 
+                       border border-gray-300 dark:border-gray-700 rounded-md
+                       focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400
+                       text-gray-900 dark:text-gray-100"
               placeholder="Your message..."
             />
           </div>
 
-          <div className="flex justify-center pt-1">
+          <div className="pt-2">
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-4 py-1.5 text-sm bg-black dark:bg-white text-white dark:text-black 
-                       rounded hover:bg-gray-800 dark:hover:bg-gray-200 
-                       transition-colors disabled:opacity-50 disabled:cursor-not-allowed
-                       focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full p-2 flex items-center justify-center gap-2
+                       bg-gradient-to-r from-gray-950 to-gray-800 dark:from-gray-50 dark:to-gray-300
+                       text-white dark:text-gray-950 rounded-md
+                       hover:from-gray-800 hover:to-gray-700 dark:hover:from-gray-200 dark:hover:to-gray-100
+                       transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed
+                       focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
             >
-              {isSubmitting ? "Sending..." : "Send Message"}
+              {isSubmitting ? (
+                <>
+                  <div className="animate-spin h-4 w-4 border-2 border-white dark:border-gray-900 border-t-transparent dark:border-t-transparent rounded-full"></div>
+                  <span>Sending...</span>
+                </>
+              ) : (
+                <>
+                  <Send className="w-4 h-4" />
+                  <span>Send Message</span>
+                </>
+              )}
             </button>
           </div>
         </form>

@@ -3,7 +3,7 @@ from .validators import validate_pdf
 
 
 class Info(models.Model):
-    profile_photo = models.ImageField(upload_to="info_images/", blank=True)
+    profile_photo = models.ImageField(upload_to="info/photos", blank=True)
     greeting = models.CharField(max_length=100, default="Hello!")
     bio = models.TextField()
     github = models.URLField()
