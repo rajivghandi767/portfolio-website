@@ -65,7 +65,7 @@ const NavBar = ({ isMenuOpen }: NavBarProps) => {
     <div className="hidden md:block">
       <nav
         className="flex bg-gradient-to-r from-gray-950 via-black to-gray-950 
-                     dark:border-b-2 dark:border-gray-800 shadow-lg"
+                     dark:border-b-2 dark:border-black shadow-lg"
       >
         <ul className="flex justify-center w-full">
           {navItems.map((item) => {
@@ -81,7 +81,7 @@ const NavBar = ({ isMenuOpen }: NavBarProps) => {
                   onClick={(e) => handleNavigation(item, e)}
                   className={`text-xl text-gray-50 hover:bg-gradient-to-br hover:from-gray-800 hover:to-gray-700
                              rounded px-3 py-1 transition-all duration-200 flex items-center gap-1
-                             ${isActive ? "bg-gray-800" : ""}`}
+                             ${isActive ? "bg-black" : ""}`}
                 >
                   {item.label === "Home" && <HomeIcon size={18} />}
                   <span>{item.label}</span>
@@ -96,7 +96,7 @@ const NavBar = ({ isMenuOpen }: NavBarProps) => {
 
   const mobileMenu = (
     <div
-      className={`md:hidden bg-gradient-to-b from-gray-950 to-black ${
+      className={`md:hidden bg-gradient-to-b from-black to-gray-950 ${
         isMenuOpen ? "block" : "hidden"
       }`}
     >
@@ -114,9 +114,9 @@ const NavBar = ({ isMenuOpen }: NavBarProps) => {
                   to={item.path}
                   onClick={(e) => handleNavigation(item, e)}
                   className={`flex items-center justify-center gap-1 mx-4 my-2 text-xl text-gray-50
-                             hover:bg-gradient-to-r hover:from-gray-800 hover:to-gray-700
+                             hover:bg-gradient-to-r hover:from-black hover:to-gray-900
                              rounded w-full py-2 text-center transition-all duration-200
-                             ${isActive ? "bg-gray-800" : ""}`}
+                             ${isActive ? "bg-black" : ""}`}
                 >
                   {item.label === "Home" && <HomeIcon size={18} />}
                   <span>{item.label}</span>

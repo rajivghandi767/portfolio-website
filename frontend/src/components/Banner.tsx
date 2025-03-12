@@ -8,7 +8,7 @@ const Banner = ({ isMenuOpen, toggleMenu }: BannerProps) => {
   const { isDarkMode, toggleTheme } = useTheme();
 
   return (
-    <div className="bg-gradient-to-r from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 font-mono backdrop-blur-sm bg-opacity-80">
+    <div className="bg-gradient-to-r from-gray-50 via-white to-gray-50 dark:from-black dark:via-gray-950 dark:to-black font-mono backdrop-blur-sm bg-opacity-80">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="w-14">
