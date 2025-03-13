@@ -91,7 +91,7 @@ const Bio = () => {
             {imageUrl ? (
               <img
                 className="mx-auto object-cover object-top size-44 rounded-full shrink-0 grow-0 
-                         ring-2 ring-gradient-to-r from-gray-400 to-gray-500 dark:from-gray-700 dark:to-gray-600"
+                         ring-3 ring-black dark:ring-gray-900"
                 src={imageUrl}
                 alt="Profile"
                 onError={(e) => {
@@ -102,32 +102,30 @@ const Bio = () => {
             ) : (
               <div
                 className="mx-auto size-44 rounded-full shrink-0 grow-0 
-                           ring-2 ring-gradient-to-r from-gray-400 to-gray-500 dark:from-gray-700 dark:to-gray-600
-                           bg-gray-200 dark:bg-gray-700 flex items-center justify-center"
+                           ring-3 ring-black dark:ring-black
+                           bg-gray-200 dark:bg-black flex items-center justify-center"
               >
-                <span className="text-gray-500 dark:text-gray-400">
-                  No Image
-                </span>
+                <span className="text-black dark:text-gray-400">No Image</span>
               </div>
             )}
             <div className="md:ml-3">
               <h1
                 className="text-xl font-semibold underline underline-offset-8 decoration-2 
-                            text-transparent bg-clip-text bg-gradient-to-r from-gray-950 to-gray-800 
-                            dark:from-gray-50 dark:to-gray-300"
+                            text-transparent bg-clip-text bg-gradient-to-r from-black to-gray-800 
+                            dark:from-white dark:to-gray-300"
               >
                 {infoItem.greeting}
               </h1>
-              <p className="pt-3 text-sm text-gray-800 dark:text-gray-300">
+              <p className="pt-3 text-sm text-black dark:text-gray-300">
                 {infoItem.bio}
               </p>
               <h5 className="mt-2 text-center md:text-left">
                 <button
                   onClick={() => setIsModalOpen(true)}
-                  className="text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-blue-600 
-                            dark:from-blue-400 dark:to-blue-300 hover:from-blue-800 hover:to-blue-700 
-                            dark:hover:from-blue-300 dark:hover:to-blue-200 transition-all duration-200 
-                            cursor-pointer hover:underline focus:outline-none"
+                  className="text-transparent bg-clip-text bg-gradient-to-r from-black to-gray-800 
+                            dark:from-white dark:to-gray-300 hover:underline dark:hover:from-gray-200 dark:hover:to-gray-100 
+                            transition-all duration-200 
+                            cursor-pointer focus:outline-none"
                 >
                   View Resume
                 </button>

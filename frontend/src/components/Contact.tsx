@@ -60,7 +60,7 @@ const Contact = () => {
 
   return (
     <div id="contact-form" className="mx-auto px-4 py-2 -mb-2">
-      <h1 className="text-2xl font-semibold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-gray-950 to-gray-800 dark:from-gray-50 dark:to-gray-300">
+      <h1 className="text-2xl font-semibold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-black to-gray-800 dark:from-white dark:to-gray-300">
         Contact Me
       </h1>
 
@@ -68,8 +68,8 @@ const Contact = () => {
         <div
           className={`mb-6 p-3 rounded-lg max-w-sm mx-auto flex items-center gap-2 transition-all duration-300 ${
             notification === "success"
-              ? "bg-green-50 text-green-800 dark:bg-green-900/20 dark:text-green-300"
-              : "bg-red-50 text-red-800 dark:bg-red-900/20 dark:text-red-300"
+              ? "bg-green-50 text-green-800 dark:bg-black dark:text-green-300 border border-green-200 dark:border-green-900"
+              : "bg-red-50 text-red-800 dark:bg-black dark:text-red-300 border border-red-200 dark:border-red-900"
           }`}
         >
           {notification === "success" ? (
@@ -87,14 +87,14 @@ const Contact = () => {
 
       <div
         className="max-w-md mx-auto rounded-lg overflow-hidden
-                  bg-white dark:bg-gray-900 shadow-md
-                  border border-gray-200 dark:border-gray-700"
+                  bg-white dark:bg-black shadow-md
+                  border-2 border-black dark:border-gray-800"
       >
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div className="space-y-2">
             <label
               htmlFor="name"
-              className="block text-sm font-medium text-gray-800 dark:text-gray-300"
+              className="block text-sm font-medium text-black dark:text-gray-300"
             >
               Name
             </label>
@@ -105,9 +105,9 @@ const Contact = () => {
               value={formData.name}
               onChange={handleChange}
               className="w-full p-2 text-sm bg-transparent 
-                       border border-gray-300 dark:border-gray-700 rounded-md
-                       focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400
-                       text-gray-900 dark:text-gray-100"
+                       border border-black dark:border-gray-700 rounded-md
+                       focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-gray-600
+                       text-black dark:text-gray-100"
               placeholder="Your name"
             />
           </div>
@@ -115,7 +115,7 @@ const Contact = () => {
           <div className="space-y-2">
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-800 dark:text-gray-300"
+              className="block text-sm font-medium text-black dark:text-gray-300"
             >
               Email
             </label>
@@ -126,9 +126,9 @@ const Contact = () => {
               value={formData.email}
               onChange={handleChange}
               className="w-full p-2 text-sm bg-transparent 
-                       border border-gray-300 dark:border-gray-700 rounded-md
-                       focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400
-                       text-gray-900 dark:text-gray-100"
+                       border border-black dark:border-gray-700 rounded-md
+                       focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-gray-600
+                       text-black dark:text-gray-100"
               placeholder="your.email@example.com"
             />
           </div>
@@ -136,7 +136,7 @@ const Contact = () => {
           <div className="space-y-2">
             <label
               htmlFor="message"
-              className="block text-sm font-medium text-gray-800 dark:text-gray-300"
+              className="block text-sm font-medium text-black dark:text-gray-300"
             >
               Message
             </label>
@@ -147,9 +147,9 @@ const Contact = () => {
               onChange={handleChange}
               rows={4}
               className="w-full p-2 text-sm bg-transparent 
-                       border border-gray-300 dark:border-gray-700 rounded-md
-                       focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400
-                       text-gray-900 dark:text-gray-100"
+                       border border-black dark:border-gray-700 rounded-md
+                       focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-gray-600
+                       text-black dark:text-gray-100"
               placeholder="Your message..."
             />
           </div>
@@ -159,15 +159,15 @@ const Contact = () => {
               type="submit"
               disabled={isSubmitting}
               className="w-full p-2 flex items-center justify-center gap-2
-                       bg-gradient-to-r from-gray-950 to-gray-800 dark:from-gray-50 dark:to-gray-300
-                       text-white dark:text-gray-950 rounded-md
+                       bg-gradient-to-r from-black to-gray-800 dark:from-gray-50 dark:to-white
+                       text-white dark:text-black rounded-md
                        hover:from-gray-800 hover:to-gray-700 dark:hover:from-gray-200 dark:hover:to-gray-100
                        transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed
-                       focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+                       focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-gray-600"
             >
               {isSubmitting ? (
                 <>
-                  <div className="animate-spin h-4 w-4 border-2 border-white dark:border-gray-900 border-t-transparent dark:border-t-transparent rounded-full"></div>
+                  <div className="animate-spin h-4 w-4 border-2 border-white dark:border-black border-t-transparent dark:border-t-transparent rounded-full"></div>
                   <span>Sending...</span>
                 </>
               ) : (

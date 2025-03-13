@@ -62,7 +62,7 @@ const BlogPost = () => {
         parts.push(
           <p
             key={`text-${lastIndex}`}
-            className="mb-4 text-gray-800 dark:text-gray-300"
+            className="mb-4 text-black dark:text-gray-300"
           >
             {content.slice(lastIndex, match.index)}
           </p>
@@ -77,7 +77,7 @@ const BlogPost = () => {
           <img
             src={src}
             alt={alt}
-            className="mx-auto rounded-lg shadow-md max-h-96 object-cover"
+            className="mx-auto rounded-lg shadow-md max-h-96 object-cover border border-black dark:border-gray-800"
             onError={(e) => {
               const target = e.currentTarget;
               // Use consistent placeholder styling with monospace font to match portfolio theme
@@ -88,7 +88,7 @@ const BlogPost = () => {
             }}
           />
           {alt && (
-            <figcaption className="text-center text-sm mt-2 text-gray-600 dark:text-gray-400">
+            <figcaption className="text-center text-sm mt-2 text-black dark:text-gray-400">
               {alt}
             </figcaption>
           )}
@@ -103,7 +103,7 @@ const BlogPost = () => {
       parts.push(
         <p
           key={`text-${lastIndex}`}
-          className="mb-4 text-gray-800 dark:text-gray-300"
+          className="mb-4 text-black dark:text-gray-300"
         >
           {content.slice(lastIndex)}
         </p>
@@ -137,7 +137,7 @@ const BlogPost = () => {
 
   // Use layout similar to the main Layout component for consistency
   return (
-    <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900 min-h-screen m-auto font-mono scroll-smooth text-gray-950 dark:text-gray-50 pt-2 pb-2">
+    <div className="bg-gradient-to-br from-gray-50 to-white dark:from-black dark:to-black min-h-screen m-auto font-mono scroll-smooth text-black dark:text-gray-50 pt-2 pb-2">
       <div className="block sticky top-0 z-50">
         <Banner isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
       </div>
@@ -146,7 +146,7 @@ const BlogPost = () => {
         <div className="max-w-3xl mx-auto pt-6 pb-2 px-4">
           <Link
             to="/blog"
-            className="flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors w-fit"
+            className="flex items-center gap-2 text-black dark:text-gray-300 hover:text-gray-800 dark:hover:text-white transition-colors w-fit"
           >
             <ArrowLeft size={18} />
             <span>Back to Blog</span>
@@ -154,16 +154,16 @@ const BlogPost = () => {
         </div>
         {isLoading ? (
           <div className="flex justify-center items-center min-h-screen py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900 dark:border-gray-100"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-black dark:border-gray-100"></div>
           </div>
         ) : error || !post ? (
           <div className="min-h-screen py-12 px-4">
             <div className="max-w-3xl mx-auto">
-              <div className="bg-red-50 dark:bg-red-900/20 p-8 rounded-lg text-center">
+              <div className="bg-red-50 dark:bg-black p-8 rounded-lg text-center border-2 border-red-200 dark:border-red-900">
                 <h2 className="text-xl font-bold text-red-600 dark:text-red-400 mb-4">
                   {error || "Post not found"}
                 </h2>
-                <p className="text-gray-700 dark:text-gray-300">
+                <p className="text-black dark:text-gray-300">
                   We couldn't load this blog post. Please try again later or
                   return to the blog.
                 </p>
@@ -171,12 +171,12 @@ const BlogPost = () => {
             </div>
           </div>
         ) : (
-          <article className="max-w-3xl mx-auto p-4">
-            <h1 className="text-3xl font-semibold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-gray-950 to-gray-800 dark:from-gray-50 dark:to-gray-300">
+          <article className="max-w-3xl mx-auto p-4 bg-white/95 dark:bg-black/95 rounded-lg shadow-md border border-black dark:border-gray-800">
+            <h1 className="text-3xl font-semibold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-black to-gray-800 dark:from-white dark:to-gray-300">
               {post.title}
             </h1>
 
-            <div className="flex flex-wrap gap-4 items-center text-sm text-gray-600 dark:text-gray-400 mb-8">
+            <div className="flex flex-wrap gap-4 items-center text-sm text-black dark:text-gray-400 mb-8">
               {post.author && (
                 <div className="flex items-center gap-1">
                   <User size={14} />
@@ -204,7 +204,7 @@ const BlogPost = () => {
                 <img
                   src={getImageUrl(post.image)}
                   alt={post.title}
-                  className="w-full h-64 sm:h-96 object-cover rounded-lg shadow-md"
+                  className="w-full h-64 sm:h-96 object-cover rounded-lg shadow-md border border-black dark:border-gray-800"
                   onError={(e) => {
                     const target = e.currentTarget;
                     // Use consistent placeholder styling with monospace font to match portfolio theme
@@ -224,15 +224,15 @@ const BlogPost = () => {
 
             {/* Tags if available */}
             {post.tags && post.tags.length > 0 && (
-              <div className="mt-12 pt-6 border-t border-gray-200 dark:border-gray-800">
-                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+              <div className="mt-12 pt-6 border-t border-black dark:border-gray-800">
+                <h3 className="text-sm font-semibold text-black dark:text-gray-300 mb-3">
                   Tags:
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {post.tags.map((tag, index) => (
                     <span
                       key={index}
-                      className="px-3 py-1 bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full text-xs"
+                      className="px-3 py-1 bg-gray-200 dark:bg-black text-black dark:text-gray-300 rounded-full text-xs border border-black dark:border-gray-800"
                     >
                       {tag}
                     </span>

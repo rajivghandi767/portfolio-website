@@ -13,10 +13,10 @@ const Footer = () => {
             <a
               href="https://linkedin.com/in/rajiv-wallace"
               aria-label="LinkedIn Profile"
-              className="p-2 rounded-full bg-gradient-to-br from-gray-950 to-gray-800 dark:from-gray-50 dark:to-gray-300
-                        text-white dark:text-gray-950
+              className="p-2 rounded-full bg-gradient-to-br from-black to-gray-800 dark:from-gray-50 dark:to-gray-300
+                        text-white dark:text-black
                         hover:from-gray-800 hover:to-gray-700 dark:hover:from-gray-200 dark:hover:to-gray-100
-                        transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-gray-600"
               target="_blank"
               rel="noreferrer"
             >
@@ -26,10 +26,10 @@ const Footer = () => {
             <a
               href="https://github.com/rajivghandi767"
               aria-label="GitHub Profile"
-              className="p-2 rounded-full bg-gradient-to-br from-gray-950 to-gray-800 dark:from-gray-50 dark:to-gray-300
-                        text-white dark:text-gray-950
+              className="p-2 rounded-full bg-gradient-to-br from-black to-gray-800 dark:from-gray-50 dark:to-gray-300
+                        text-white dark:text-black
                         hover:from-gray-800 hover:to-gray-700 dark:hover:from-gray-200 dark:hover:to-gray-100
-                        transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-gray-600"
               target="_blank"
               rel="noreferrer"
             >
@@ -39,10 +39,10 @@ const Footer = () => {
 
           {/* Copyright text */}
           <div className="text-center">
-            <p className="text-sm text-gray-800 dark:text-gray-300">
+            <p className="text-sm text-black dark:text-gray-300">
               &copy; {currentYear} Rajiv Wallace. All rights reserved.
             </p>
-            <p className="text-xs mt-1 text-gray-600 dark:text-gray-400">
+            <p className="text-xs mt-1 text-black dark:text-gray-400">
               Software Engineer & Web Developer
             </p>
           </div>

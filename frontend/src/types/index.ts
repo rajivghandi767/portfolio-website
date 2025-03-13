@@ -10,7 +10,7 @@ export interface Project {
   id: number;
   title: string;
   description: string;
-  stack: string;
+  technology: string;
   repo: string;
   thumbnail?: string;
   deployed_url?: string;
