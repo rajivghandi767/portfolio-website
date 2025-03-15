@@ -64,7 +64,7 @@ const NavBar = ({ isMenuOpen }: NavBarProps) => {
   const desktopMenu = (
     <div className="hidden md:block">
       <nav
-        className="flex bg-gradient-to-r from-gray-950 via-black to-gray-950 
+        className="flex bg-gradient-to-r from-black via-black to-black 
                      dark:border-b-2 dark:border-black shadow-lg"
       >
         <ul className="flex justify-center w-full">
@@ -79,9 +79,9 @@ const NavBar = ({ isMenuOpen }: NavBarProps) => {
                 <Link
                   to={item.path}
                   onClick={(e) => handleNavigation(item, e)}
-                  className={`text-xl text-gray-50 hover:bg-gradient-to-br hover:from-gray-800 hover:to-gray-700
+                  className={`text-xl text-gray-50 hover:bg-gradient-to-br hover:from-black hover:to-gray-800
                              rounded px-3 py-1 transition-all duration-200 flex items-center gap-1
-                             ${isActive ? "bg-black" : ""}`}
+                             ${isActive ? "bg-gray-900" : ""}`}
                 >
                   {item.label === "Home" && <HomeIcon size={18} />}
                   <span>{item.label}</span>
@@ -96,7 +96,7 @@ const NavBar = ({ isMenuOpen }: NavBarProps) => {
 
   const mobileMenu = (
     <div
-      className={`md:hidden bg-gradient-to-b from-black to-gray-950 ${
+      className={`md:hidden bg-gradient-to-b from-black to-black ${
         isMenuOpen ? "block" : "hidden"
       }`}
     >
@@ -116,7 +116,7 @@ const NavBar = ({ isMenuOpen }: NavBarProps) => {
                   className={`flex items-center justify-center gap-1 mx-4 my-2 text-xl text-gray-50
                              hover:bg-gradient-to-r hover:from-black hover:to-gray-900
                              rounded w-full py-2 text-center transition-all duration-200
-                             ${isActive ? "bg-black" : ""}`}
+                             ${isActive ? "bg-gray-900" : ""}`}
                 >
                   {item.label === "Home" && <HomeIcon size={18} />}
                   <span>{item.label}</span>

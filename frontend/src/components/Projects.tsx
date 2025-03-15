@@ -52,7 +52,7 @@ const Projects = ({ limit = 3 }: { limit?: number }) => {
   // Helper function to construct thumbnail URL - handles both absolute and relative paths
   const getThumbnailUrl = (thumbnailPath: string): string => {
     if (!thumbnailPath)
-      return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='120' viewBox='0 0 200 120'%3E%3Crect width='200' height='120' fill='%23eaeaea'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='12' text-anchor='middle' dominant-baseline='middle' fill='%23999'%3EImage Unavailable%3C/text%3E%3C/svg%3E";
+      return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='120' viewBox='0 0 200 120'%3E%3Crect width='200' height='120' fill='%23eaeaea'/%3E%3Ctext x='50%25' y='50%25' font-family='monospace' font-size='12' text-anchor='middle' dominant-baseline='middle' fill='%23999'%3EImage Unavailable%3C/text%3E%3C/svg%3E";
 
     // Check if the path is already an absolute URL
     if (
@@ -84,7 +84,7 @@ const Projects = ({ limit = 3 }: { limit?: number }) => {
       <div className="flex justify-center items-center mb-8">
         <Link
           to="/projects"
-          className="text-2xl font-semibold text-center text-transparent bg-clip-text bg-gradient-to-r from-gray-950 to-gray-800 dark:from-gray-50 dark:to-white hover:from-blue-700 hover:to-blue-600 dark:hover:from-blue-400 dark:hover:to-blue-300 transition-all duration-200"
+          className="text-2xl font-semibold text-center text-transparent bg-clip-text bg-gradient-to-r from-black to-gray-800 dark:from-white dark:to-gray-300 hover:from-gray-900 hover:to-gray-800 dark:hover:from-gray-200 dark:hover:to-gray-100 transition-all duration-200"
         >
           Coding Projects
         </Link>
@@ -92,10 +92,10 @@ const Projects = ({ limit = 3 }: { limit?: number }) => {
 
       {isLoading ? (
         <div className="flex justify-center items-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900 dark:border-gray-100"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-black dark:border-gray-100"></div>
         </div>
       ) : error ? (
-        <div className="text-center text-red-500 p-4 bg-red-50 dark:bg-red-900/20 rounded-lg max-w-2xl mx-auto">
+        <div className="text-center text-red-500 p-4 bg-red-50 dark:bg-black border border-red-200 dark:border-red-900 rounded-lg max-w-2xl mx-auto">
           {error}
         </div>
       ) : (
@@ -104,8 +104,8 @@ const Projects = ({ limit = 3 }: { limit?: number }) => {
             {displayedProjects.map((project) => (
               <div
                 key={project.id}
-                className="flex flex-col h-full bg-white dark:bg-gray-900 rounded-lg shadow-lg overflow-hidden
-                         border border-gray-200 dark:border-gray-700 transition-all duration-300
+                className="flex flex-col h-full bg-white dark:bg-black rounded-lg shadow-lg overflow-hidden
+                         border-2 border-black dark:border-gray-800 transition-all duration-300
                          hover:shadow-xl hover:scale-102"
               >
                 <div className="w-full h-40 overflow-hidden">
@@ -117,7 +117,7 @@ const Projects = ({ limit = 3 }: { limit?: number }) => {
                       const target = e.target as HTMLImageElement;
                       // Use inline SVG as data URL to avoid additional HTTP requests
                       target.src =
-                        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='160' viewBox='0 0 200 160'%3E%3Crect width='200' height='160' fill='%23eaeaea'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='12' text-anchor='middle' dominant-baseline='middle' fill='%23999'%3EImage Unavailable%3C/text%3E%3C/svg%3E";
+                        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='160' viewBox='0 0 200 160'%3E%3Crect width='200' height='160' fill='%23eaeaea'/%3E%3Ctext x='50%25' y='50%25' font-family='monospace' font-size='12' text-anchor='middle' dominant-baseline='middle' fill='%23999'%3EImage Unavailable%3C/text%3E%3C/svg%3E";
                       target.onerror = null; // Prevent infinite loop if fallback also fails
                     }}
                   />
@@ -126,7 +126,7 @@ const Projects = ({ limit = 3 }: { limit?: number }) => {
                 <div className="flex flex-col flex-grow p-4">
                   <h2
                     className="text-base font-semibold mb-1 text-center text-transparent bg-clip-text bg-gradient-to-r 
-                                from-gray-950 to-gray-800 dark:from-gray-50 dark:to-gray-300"
+                                from-black to-black dark:from-white dark:to-gray-300"
                   >
                     {project.title}
                   </h2>
@@ -136,8 +136,8 @@ const Projects = ({ limit = 3 }: { limit?: number }) => {
                       href={project.repo}
                       target="_blank"
                       rel="noreferrer"
-                      className="flex items-center gap-1 text-blue-600 dark:text-blue-400 
-                               hover:text-blue-800 dark:hover:text-blue-300 transition-colors text-xs"
+                      className="flex items-center gap-1 text-black dark:text-gray-300 
+                               hover:text-gray-800 dark:hover:text-white transition-colors text-xs"
                     >
                       <Github size={12} />
                       <span>Code</span>
@@ -148,22 +148,22 @@ const Projects = ({ limit = 3 }: { limit?: number }) => {
                         href={project.deployed_url}
                         target="_blank"
                         rel="noreferrer"
-                        className="flex items-center gap-1 text-green-600 dark:text-green-400 
-                                 hover:text-green-800 dark:hover:text-green-300 transition-colors text-xs"
+                        className="flex items-center gap-1 text-black dark:text-gray-300 
+                                 hover:text-gray-800 dark:hover:text-white transition-colors text-xs"
                       >
                         <span>Demo</span>
                       </a>
                     )}
                   </div>
 
-                  <p className="text-xs text-gray-700 dark:text-gray-300 mb-2 h-10 overflow-hidden line-clamp-2">
+                  <p className="text-xs text-black dark:text-gray-300 mb-2 h-10 overflow-hidden line-clamp-2">
                     {project.description}
                   </p>
 
                   <div className="mt-auto">
-                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                    <p className="text-xs text-black dark:text-gray-400">
                       <span className="font-semibold">Stack:</span>{" "}
-                      {project.stack}
+                      {project.technology}
                     </p>
                   </div>
                 </div>
@@ -175,7 +175,7 @@ const Projects = ({ limit = 3 }: { limit?: number }) => {
             <div className="flex justify-center mt-8">
               <Link
                 to="/projects"
-                className="flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors px-4 py-2 border border-blue-200 dark:border-blue-800 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                className="flex items-center gap-2 text-black dark:text-gray-300 hover:text-gray-800 dark:hover:text-white transition-colors px-4 py-2 border-2 border-black dark:border-gray-800 rounded-md hover:bg-gray-50 dark:hover:bg-black"
               >
                 <span>See More Projects</span>
                 <ChevronRight size={16} />

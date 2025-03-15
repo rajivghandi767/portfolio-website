@@ -25,7 +25,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-black dark:to-gray-950 min-h-screen m-auto font-mono scroll-smooth text-gray-950 dark:text-gray-50 pt-2 pb-2">
+    <div className="bg-gradient-to-br from-gray-50 to-white dark:from-black dark:to-black min-h-screen m-auto font-mono scroll-smooth text-black dark:text-gray-50 pt-2 pb-2">
       <div className="block sticky top-0 z-50">
         <Banner isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
         <NavBar isMenuOpen={isMenuOpen} />
