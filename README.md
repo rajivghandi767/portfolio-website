@@ -6,7 +6,7 @@
 
 This repository contains the source code for my portfolio website, which showcases my skills, projects, and experience as a self-taught Software Engineer as well as my personal interests of travel & collecting credit card points.
 
-The website is built with a Django REST backend and a React.js frontend, and is hosted locally on my Raspberry Pi4B using Docker and Jenkins for continuous integration and delivery.
+The website is built with a Django REST backend and a React Typescript frontend, and is hosted locally on my Raspberry Pi4B using Docker and Jenkins for continuous integration and delivery.
 
 ## 🌟 Features
 
@@ -25,7 +25,7 @@ The website is built with a Django REST backend and a React.js frontend, and is 
   - Django
   - Django REST Framework
 - **Frontend**:
-  - React.js
+  - React / Typescript
   - HTML5
   - CSS3 (with [Tailwind CSS](https://tailwindcss.com/))
 - **Containerization**:
@@ -33,45 +33,9 @@ The website is built with a Django REST backend and a React.js frontend, and is 
 - **CI/CD**:
   - Jenkins
 - **Database**:
-  - SQLite
+  - PostgreSQL
 
 ## 📂 Project Structure
-
-```bash
-.
-└── 📁portfolio-website
-    └── 📁backend
-        └── 📁blog                # Django app with models, views, and serializers
-        └── 📁info                # Django app with models, views, and serializers
-        └── 📁portfolio_website   # Django project settings and URLs
-        └── 📁projects            # Django app with models, views, and serializers
-        └── 📁wallet              # Django app with models, views, and serializers
-        └── db.sqlite3
-        └── Dockerfile            # Dockerfile for backend
-        └── manage.py             # Django management script
-        └── requirements.txt      # Python dependencies
-    └── 📁frontend
-        └── 📁src
-            └── 📁components      # Reusable React components
-                └── Banner.jsx
-                └── Bio.jsx
-                └── Blog.jsx
-                └── Contact.jsx
-                └── Footer.jsx
-                └── NavBar.jsx
-                └── Projects.jsx
-                └── Wallet.jsx
-            └── App.jsx           # Main React app component
-            └── index.css         # Entry point for the React app
-            └── main.jsx
-        └── Dockerfile            # Dockerfile for frontend
-        └── index.html            # Main HTML file
-        └── package.json          # Frontend dependencies and scripts
-    └── docker-compose.yaml       # Docker Compose configuration
-    └── Jenkinsfile               # Jenkins pipeline configuration
-    └── LICENSE                   # License file
-    └── README.md                 # This file
-```
 
 ## 🚀 Getting Started
 
@@ -112,7 +76,7 @@ Ensure you have Docker & Docker Compose installed on your machine. Jenkins insta
 ### Accessing the Application
 
 - **Django Backend**: `http://localhost:8000`
-- **React Frontend**: `http://localhost:4000`
+- **React Frontend**: `http://localhost:5173`
 
 ### Stopping the Application
 
