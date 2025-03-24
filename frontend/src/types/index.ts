@@ -85,3 +85,10 @@ export interface ThemeContextType {
   isDarkMode: boolean;
   toggleTheme: () => void;
 };
+
+// Define interface for API response
+export interface ApiResponse<T> {
+  data: T | null;
+  error: string | null;
+  status: number;
+}
