@@ -1,5 +1,4 @@
 // src/components/pages/ProjectsPage.tsx
-import React from "react";
 import Projects from "../sections/Projects";
 import { Section } from "../common/Section";
 

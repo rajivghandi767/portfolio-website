@@ -1,5 +1,4 @@
 // src/components/sections/Projects.tsx
-import React from "react";
 import { Link } from "react-router-dom";
 import { Github, ChevronRight } from "lucide-react";
 import { Project } from "../../types";

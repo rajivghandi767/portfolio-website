@@ -1,5 +1,4 @@
 // src/components/common/Section.tsx
-import React from "react";
 import { cn } from "@/utils/styleUtils";
 
 interface SectionProps {

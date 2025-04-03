@@ -1,5 +1,5 @@
 // src/components/layout/Header.tsx
-import React, { useState } from "react";
+import { useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { Sun, Moon, Menu, X, Home as HomeIcon } from "lucide-react";
 import { useThemeContext } from "../../context/ThemeContext";
@@ -29,7 +29,7 @@ const Header = () => {
   const navItems = isHomePage
     ? navigationItems
     : [
-        { id: 0, label: "Home", path: "/", sectionRef: null },
+        { id: 0, label: "Home", path: "/", sectionRef: null as string | null },
         ...navigationItems.filter((item) => item.label !== "Bio"),
       ];
 

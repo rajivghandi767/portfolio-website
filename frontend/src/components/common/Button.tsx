@@ -1,5 +1,4 @@
 // src/components/common/Button.tsx
-import React from "react";
 import { cn } from "@/utils/styleUtils";
 
 type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "link";

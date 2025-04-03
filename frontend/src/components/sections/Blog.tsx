@@ -1,5 +1,4 @@
 // src/components/sections/Blog.tsx
-import React from "react";
 import { Link } from "react-router-dom";
 import { BlogPost } from "../../types";
 import { ArrowRight, ChevronRight } from "lucide-react";

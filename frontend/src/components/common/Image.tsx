@@ -1,5 +1,5 @@
 // src/components/common/Image.tsx
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/utils/styleUtils";
 
 interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {

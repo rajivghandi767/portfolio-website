@@ -1,5 +1,4 @@
 // src/components/pages/ContactPage.tsx
-import React from "react";
 import Contact from "../sections/Contact";
 import { Section } from "../common/Section";
 
