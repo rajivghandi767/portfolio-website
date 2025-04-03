@@ -18,6 +18,9 @@ SESSION_ENGINE = "django.contrib.sessions.backends.db"
 # Cookie Security
 SESSION_COOKIE_SECURE = True  # Use a secure cookie for sessions
 SESSION_COOKIE_HTTPONLY = True  # Prevent JavaScript access to the session cookie
+SESSION_COOKIE_AGE = 86400  # 24 hours
+SESSION_SAVE_EVERY_REQUEST = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 # # Referrer Policy
 SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"

@@ -1,5 +1,4 @@
 // src/components/pages/WalletPage.tsx
-import React from "react";
 import Wallet from "../sections/Wallet";
 import { Section } from "../common/Section";
 

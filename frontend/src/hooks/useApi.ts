@@ -63,10 +63,14 @@ function useApi<T>(
     let isMounted = true;
     
     const execute = async () => {
+      if (!isMounted) return;
+
       try {
         await fetchData();
       } catch (err) {
-        console.error('Error in API call setup:', err);
+        if (isMounted) {
+          console.error('Error in API call setup:', err);
+        }
       }
     };
 
@@ -76,8 +80,7 @@ function useApi<T>(
     return () => {
       isMounted = false;
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, dependencies);
+  }, [...dependencies]);
 
   return { 
     data, 

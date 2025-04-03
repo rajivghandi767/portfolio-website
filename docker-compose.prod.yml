@@ -9,9 +9,9 @@ services:
     env_file: .env
     depends_on:
       - db
-    volumes:
-      - /opt/portfolio-website/backend/staticfiles:/home/backend/django/staticfiles
-      - /opt/portfolio-website/backend/mediafiles:/home/backend/django/mediafiles
+    # volumes:
+    #   - /opt/portfolio-website/backend/staticfiles:/home/backend/django/staticfiles
+    #   - /opt/portfolio-website/backend/mediafiles:/home/backend/django/mediafiles
     user: "backend:backend_group"
     ports:
       - "4040:4040"
@@ -23,7 +23,7 @@ services:
     restart: unless-stopped
     env_file: .env
     environment:
-      - POSTGRES_DB=${POSTGRESQL_DB}
+      - POSTGRES_HOST=${POSTGRESQL_HOST}
       - POSTGRES_USER=${POSTGRESQL_USER}
       - POSTGRES_PASSWORD=${POSTGRESQL_PASSWORD}
     volumes:
@@ -44,5 +44,5 @@ volumes:
   postgres_data:
 networks:
   default:
-    external: true
+    # external: true
     name: portfolio_backend_network

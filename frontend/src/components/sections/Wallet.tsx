@@ -1,5 +1,5 @@
 // src/components/sections/Wallet.tsx
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Card as CardType } from "../../types";
 import { ExternalLink, ChevronRight, X } from "lucide-react";

@@ -1,61 +1,118 @@
 import { ApiResponse, BlogPost, Project, Info, Card } from "../types";
 
-function getApiUrl() {
+// Configuration object for API settings
+const API_CONFIG = {
+  DEFAULT_TIMEOUT: 10000, // 10 seconds
+  RETRY_ATTEMPTS: 3,
+  DEFAULT_HEADERS: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+  }
+};
+
+// Custom API Error class
+class ApiError extends Error {
+  status: number;
+  constructor(message: string, status: number) {
+    super(message);
+    this.name = 'ApiError';
+    this.status = status;
+  }
+}
+
+// Utility function to get API URL with fallback and warning
+function getApiUrl(): string {
   const configuredUrl = import.meta.env.VITE_API_URL;
   if (!configuredUrl) {
     console.warn('VITE_API_URL environment variable is not set. Using fallback URL.');
-    return 'http://localhost:8000'; // Default fallback for development
+    return 'http://127.0.0.1:8000/'; // Default fallback for development
   }
   return configuredUrl;
 }
 
+// Main API URL
 const API_URL = getApiUrl();
 
 /**
- * Generic fetch function with error handling and typing
+ * Enhanced fetch function with retry and more robust error handling
  * @param endpoint API endpoint path
  * @param options Fetch options
+ * @param maxRetries Number of retry attempts
  * @returns Typed API response with data, error, and status
  */
 async function fetchApi<T>(
   endpoint: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
+  maxRetries = API_CONFIG.RETRY_ATTEMPTS
 ): Promise<ApiResponse<T>> {
   const url = `${API_URL}/${endpoint.replace(/^\/+/, "")}`;
-  
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.DEFAULT_TIMEOUT);
+
   try {
-    const response = await fetch(url, {
+    const fetchOptions: RequestInit = {
       ...options,
+      signal: controller.signal,
       headers: {
-        'Content-Type': 'application/json',
+        ...API_CONFIG.DEFAULT_HEADERS,
         ...options.headers,
       },
-    });
-    
-    // Check if response is OK
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    
-    return {
-      data,
-      error: null,
-      status: response.status,
     };
+
+    let lastError: unknown;
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+      try {
+        const response = await fetch(url, fetchOptions);
+        
+        // Clear timeout
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          const errorBody = await response.text();
+          throw new ApiError(
+            `HTTP error! Status: ${response.status}, Message: ${errorBody}`, 
+            response.status
+          );
+        }
+        
+        const data = await response.json();
+        return {
+          data,
+          error: null,
+          status: response.status,
+        };
+      } catch (error) {
+        lastError = error;
+        
+        // Exponential backoff
+        await new Promise(resolve => 
+          setTimeout(resolve, Math.pow(2, attempt) * 1000)
+        );
+      }
+    }
+
+    // If all retries fail
+    throw lastError;
   } catch (error) {
+    // Clear timeout in case of early failure
+    clearTimeout(timeoutId);
+
     console.error(`API Error (${endpoint}):`, error);
+    
     return {
       data: null,
-      error: error instanceof Error ? error.message : "An unknown error occurred",
-      status: 0,
+      error: error instanceof ApiError 
+        ? error.message 
+        : error instanceof Error 
+          ? error.message 
+          : "An unexpected network error occurred",
+      status: error instanceof ApiError ? error.status : 0,
     };
   }
 }
 
 /**
- * Fetch blob data (PDFs, etc.)
+ * Enhanced blob fetch function with error handling
  * @param endpoint API endpoint path
  * @param options Fetch options
  * @returns Blob data
@@ -65,26 +122,43 @@ async function fetchBlob(
   options: RequestInit = {}
 ): Promise<Blob> {
   const url = `${API_URL}/${endpoint.replace(/^\/+/, "")}`;
-  
-  const response = await fetch(url, {
-    ...options,
-    headers: {
-      ...options.headers,
-    },
-  });
-  
-  if (!response.ok) {
-    throw new Error(`HTTP error! Status: ${response.status}`);
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.DEFAULT_TIMEOUT);
+
+  try {
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal,
+      headers: {
+        ...options.headers,
+      },
+    });
+    
+    // Clear timeout
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      const errorBody = await response.text();
+      throw new ApiError(
+        `HTTP error! Status: ${response.status}, Message: ${errorBody}`, 
+        response.status
+      );
+    }
+    
+    return await response.blob();
+  } catch (error) {
+    // Clear timeout in case of early failure
+    clearTimeout(timeoutId);
+
+    console.error(`Blob Fetch Error (${endpoint}):`, error);
+    throw error;
   }
-  
-  return await response.blob();
 }
 
 /**
- * Centralized API service for all endpoints
+ * Centralized API service with enhanced capabilities
  */
 const apiService = {
-  
   baseUrl: API_URL,
   
   // Bio Endpoints
@@ -136,6 +210,29 @@ const apiService = {
     const baseUrl = API_URL.split("/").slice(0, 3).join("/");
     return `${baseUrl}/${cleanPath}`;
   },
+
+  /**
+   * Create a cancellable request
+   * @param endpoint API endpoint
+   * @param options Request options
+   * @returns Object with request promise and cancel method
+   */
+  createCancellableRequest<T>(
+    endpoint: string, 
+    options: RequestInit = {}
+  ) {
+    const controller = new AbortController();
+    
+    const request = fetchApi<T>(endpoint, {
+      ...options,
+      signal: controller.signal
+    });
+    
+    return {
+      request,
+      cancel: () => controller.abort()
+    };
+  }
 };
 
 export default apiService;

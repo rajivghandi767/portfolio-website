@@ -1,5 +1,5 @@
 // src/components/sections/Contact.tsx
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Send, AlertCircle, CheckCircle } from "lucide-react";
 import { ContactForm, NotificationType } from "../../types";
 import apiService from "../../services/api";

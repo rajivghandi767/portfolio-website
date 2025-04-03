@@ -1,5 +1,5 @@
 // src/components/sections/Bio.tsx
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { Info } from "../../types";
 import apiService from "../../services/api";

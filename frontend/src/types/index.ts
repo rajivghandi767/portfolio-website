@@ -1,5 +1,3 @@
-// src/types/index.ts
-
 /**
  * API Response type for all API calls
  */
