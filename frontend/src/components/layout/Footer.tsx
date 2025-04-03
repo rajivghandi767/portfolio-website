@@ -1,11 +1,12 @@
-import { React } from "react";
+// src/components/layout/Footer.tsx
+import React from "react";
 import { Github, Linkedin } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="py-2">
+    <footer className="py-6 mt-6 border-t border-default">
       <div className="max-w-4xl mx-auto px-4">
         <div className="flex flex-col items-center">
           {/* Social Icons */}
@@ -13,10 +14,7 @@ const Footer = () => {
             <a
               href="https://linkedin.com/in/rajiv-wallace"
               aria-label="LinkedIn Profile"
-              className="p-2 rounded-full bg-gradient-to-br from-black to-gray-800 dark:from-gray-50 dark:to-gray-300
-                        text-white dark:text-black
-                        hover:from-gray-800 hover:to-gray-700 dark:hover:from-gray-200 dark:hover:to-gray-100
-                        transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-gray-600"
+              className="btn btn-primary p-2 rounded-full"
               target="_blank"
               rel="noreferrer"
             >
@@ -26,10 +24,7 @@ const Footer = () => {
             <a
               href="https://github.com/rajivghandi767"
               aria-label="GitHub Profile"
-              className="p-2 rounded-full bg-gradient-to-br from-black to-gray-800 dark:from-gray-50 dark:to-gray-300
-                        text-white dark:text-black
-                        hover:from-gray-800 hover:to-gray-700 dark:hover:from-gray-200 dark:hover:to-gray-100
-                        transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-gray-600"
+              className="btn btn-primary p-2 rounded-full"
               target="_blank"
               rel="noreferrer"
             >
@@ -39,12 +34,10 @@ const Footer = () => {
 
           {/* Copyright text */}
           <div className="text-center">
-            <p className="text-sm text-black dark:text-gray-300">
+            <p className="text-sm">
               &copy; {currentYear} Rajiv Wallace. All rights reserved.
             </p>
-            <p className="text-xs mt-1 text-black dark:text-gray-400">
-              Software Engineer & Web Developer
-            </p>
+            <p className="text-xs mt-1">Software Engineer & Web Developer</p>
           </div>
         </div>
       </div>

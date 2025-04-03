@@ -1,57 +1,43 @@
-import { React, useState } from "react";
+// src/App.tsx
+import React, { lazy, Suspense } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
-import Banner from "./components/Banner";
-import NavBar from "./components/NavBar";
-import Bio from "./components/Bio";
-import Projects from "./components/Projects";
-import Blog from "./components/Blog";
-import BlogPost from "./components/BlogPost";
-import Wallet from "./components/Wallet";
-import Contact from "./components/Contact";
-import Footer from "./components/Footer";
-import { ThemeProvider } from "./components/ThemeProvider";
+import { ThemeProvider } from "./context/ThemeContext";
+import Header from "./components/layout/Header";
+import Footer from "./components/layout/Footer";
+
+// Lazy-loaded page components
+const HomePage = lazy(() => import("./components/pages/HomePage"));
+const ProjectsPage = lazy(() => import("./components/pages/ProjectsPage"));
+const BlogPage = lazy(() => import("./components/pages/BlogPage"));
+const BlogPost = lazy(() => import("./components/pages/BlogPost"));
+const WalletPage = lazy(() => import("./components/pages/WalletPage"));
+const ContactPage = lazy(() => import("./components/pages/ContactPage"));
 
 // Layout component for all pages
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
   return (
-    <div className="bg-gradient-to-br from-gray-50 to-white dark:from-black dark:to-black min-h-screen m-auto font-mono scroll-smooth text-black dark:text-gray-50 pt-2 pb-2">
-      <div className="block sticky top-0 z-50">
-        <Banner isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
-        <NavBar isMenuOpen={isMenuOpen} />
-      </div>
-      <main className="pb-16">{children}</main>
+    <div className="min-h-screen m-auto font-mono scroll-smooth pt-2 pb-2 flex flex-col">
+      <Header />
+      <main className="pb-16 flex-grow">
+        <Suspense
+          fallback={
+            <div className="flex justify-center items-center pt-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+            </div>
+          }
+        >
+          {children}
+        </Suspense>
+      </main>
       <Footer />
     </div>
   );
 };
-
-// Home page includes all sections for scrolling navigation
-const HomePage = () => (
-  <>
-    <Bio />
-    <Projects />
-    <Blog />
-    <Wallet />
-    <Contact />
-  </>
-);
-
-// Individual pages
-const ProjectsPage = () => <Projects />;
-const BlogListPage = () => <Blog />;
-const WalletPage = () => <Wallet />;
-const ContactPage = () => <Contact />;
 
 function App() {
   return (
@@ -75,14 +61,26 @@ function App() {
               </Layout>
             }
           />
+
+          {/* Blog routes */}
           <Route
             path="/blog"
             element={
               <Layout>
-                <BlogListPage />
+                <BlogPage />
               </Layout>
             }
           />
+          <Route
+            path="/blog/:id"
+            element={
+              <Layout>
+                <BlogPost />
+              </Layout>
+            }
+          />
+
+          {/* Other pages */}
           <Route
             path="/wallet"
             element={
@@ -99,9 +97,6 @@ function App() {
               </Layout>
             }
           />
-
-          {/* Blog post detail page */}
-          <Route path="/blog/:id" element={<BlogPost />} />
 
           {/* Catch-all redirect to home page */}
           <Route path="*" element={<Navigate to="/" replace />} />
