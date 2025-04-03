@@ -1,4 +1,5 @@
 // src/components/common/Card.tsx
+import React from "react";
 import { cn } from "@/utils/styleUtils";
 
 interface CardProps {
