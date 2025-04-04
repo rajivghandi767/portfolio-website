@@ -14,7 +14,9 @@ COPY --chown=frontend:frontend_group package*.json ./
 RUN npm ci npm@latest && npm ci
 COPY --chown=frontend:frontend_group . .
 
-# Build the React application
+ARG VITE_API_URL
+ENV VITE_API_URL=${VITE_API_URL}
+
 RUN npm run build && find /home/frontend/react -mindepth 1 -maxdepth 1 ! -name 'dist' -exec rm -rf {} +
 
 # Use Nginx to serve the built static files
