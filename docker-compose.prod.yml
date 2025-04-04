@@ -36,6 +36,9 @@ services:
       dockerfile: Dockerfile.prod
     container_name: portfolio-frontend
     restart: unless-stopped
+    env_file: ./frontend/.env
+    depends_on:
+      - backend
     environment:
       - NODE_ENV=production
     ports:
