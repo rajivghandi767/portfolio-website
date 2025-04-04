@@ -38,7 +38,7 @@ services:
         VITE_API_URL: ${VITE_API_URL}
     container_name: portfolio-frontend
     restart: unless-stopped
-    env_file: ./frontend/.env
+    env_file: .env
     depends_on:
       - backend
     environment:
