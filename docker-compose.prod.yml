@@ -36,6 +36,8 @@ services:
       dockerfile: Dockerfile.prod
     container_name: portfolio-frontend
     restart: unless-stopped
+    environment:
+      - NODE_ENV=production
     ports:
       - "4000:80"
 
