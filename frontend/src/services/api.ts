@@ -25,7 +25,7 @@ function getApiUrl(): string {
   const configuredUrl = import.meta.env.VITE_API_URL;
   if (!configuredUrl) {
     console.warn('VITE_API_URL environment variable is not set. Using fallback URL.');
-    return 'http://127.0.0.1:8000/'; // Default fallback for development
+    return 'http://127.0.0.1:8000'; // Default fallback for development
   }
   return configuredUrl;
 }
