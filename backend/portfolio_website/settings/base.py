@@ -99,10 +99,10 @@ DATABASES = {
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/home/backend/django/staticfiles'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = '/home/backend/django/mediafiles'
+MEDIA_ROOT = BASE_DIR / 'mediafiles'
 
 # Default primary key field type
 
