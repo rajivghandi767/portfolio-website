@@ -25,6 +25,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 USER backend
 
+RUN python manage.py collectstatic --noinput
+
 EXPOSE 4040
 
 CMD ["gunicorn", "--workers", "4", "--bind", "0.0.0.0:4040", "portfolio_website.wsgi:application"]
