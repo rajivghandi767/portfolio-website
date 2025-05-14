@@ -23,9 +23,14 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     DJANGO_SETTINGS_MODULE=portfolio_website.settings.production \
     DJANGO_ENV=production
 
-USER backend
+RUN mkdir -p /app/static /app/media && \
+    chown -R backend:backend_group /app && \
+    chmod -R 755 /app
 
+# Run collectstatic as root
 RUN python manage.py collectstatic --noinput
+
+USER backend
 
 EXPOSE 4040
 
