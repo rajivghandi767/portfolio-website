@@ -17,6 +17,8 @@ CSRF_USE_SESSIONS = True  # Store CSRF tokens in sessions instead of cookies
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
 # Cookie Security
 SESSION_COOKIE_SECURE = True  # Use a secure cookie for sessions
+SESSION_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_DOMAIN = 'rajivwallace.com'
 SESSION_COOKIE_HTTPONLY = True  # Prevent JavaScript access to the session cookie
 SESSION_COOKIE_AGE = 86400  # 24 hours
 SESSION_SAVE_EVERY_REQUEST = True
