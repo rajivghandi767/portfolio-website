@@ -18,16 +18,18 @@ RUN pip install --no-cache-dir --upgrade pip && \
 COPY --chown=backend:backend_group . .
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBFFERED=1 \
+    PYTHONUNBUFFERED=1 \
     PATH="/home/backend/.local/bin:$PATH" \
     DJANGO_SETTINGS_MODULE=portfolio_website.settings.production \
     DJANGO_ENV=production
 
-RUN mkdir -p /app/static /app/media /app/logs && \
-    touch /app/logs/errors.log && \
-    chown -R backend:backend_group /app && \
-    chmod -R 755 /app && \
-    chmod 664 /app/logs/errors.log
+RUN mkdir -p /home/backend/django/staticfiles && \
+    mkdir -p /home/backend/django/mediafiles && \
+    mkdir -p /home/backend/django/logs && \
+    touch /home/backend/django/logs/errors.log && \
+    chown -R backend:backend_group /home/backend/django && \
+    chmod -R 755 /home/backend/django && \
+    chmod 664 /home/backend/django/logs/errors.log
 
 # Run collectstatic as root
 RUN python manage.py collectstatic --noinput
