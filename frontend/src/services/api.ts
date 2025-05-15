@@ -23,14 +23,20 @@ class ApiError extends Error {
 // Utility function to get API URL with fallback and warning
 function getApiUrl(): string {
   const configuredUrl = import.meta.env.VITE_API_URL;
+  let baseUrl = '';
+  
   if (!configuredUrl) {
     console.warn('VITE_API_URL environment variable is not set. Using fallback URL.');
-    return 'http://127.0.0.1:8000'; // Default fallback for development
+    baseUrl = 'http://127.0.0.1:8000'; // Default fallback for development
+  } else {
+    baseUrl = configuredUrl;
   }
-  return configuredUrl;
+  
+  // Ensure the URL ends with a trailing slash
+  return baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
 }
 
-// Main API URL
+// Main API URL with trailing slash guaranteed
 const API_URL = getApiUrl();
 
 /**
@@ -45,7 +51,11 @@ async function fetchApi<T>(
   options: RequestInit = {},
   maxRetries = API_CONFIG.RETRY_ATTEMPTS
 ): Promise<ApiResponse<T>> {
-  const url = `${API_URL}/${endpoint.replace(/^\/+/, "")}`;
+  // Normalize endpoint: remove leading slashes and ensure trailing slash
+  const normalizedEndpoint = endpoint.replace(/^\/+/, "").replace(/\/$/, "");
+  // Form URL with proper trailing slash
+  const url = normalizedEndpoint ? `${API_URL}${normalizedEndpoint}/` : API_URL;
+  
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.DEFAULT_TIMEOUT);
 
@@ -121,7 +131,10 @@ async function fetchBlob(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<Blob> {
-  const url = `${API_URL}/${endpoint.replace(/^\/+/, "")}`;
+  // Use the same URL normalization logic as fetchApi
+  const normalizedEndpoint = endpoint.replace(/^\/+/, "").replace(/\/$/, "");
+  const url = normalizedEndpoint ? `${API_URL}${normalizedEndpoint}/` : API_URL;
+  
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.DEFAULT_TIMEOUT);
 
@@ -168,8 +181,8 @@ const apiService = {
   
   // Resume Endpoints
   resume: {
-    view: async (): Promise<Blob> => fetchBlob('resume/view/'),
-    download: async (): Promise<Blob> => fetchBlob('resume/download/')
+    view: async (): Promise<Blob> => fetchBlob('resume/view'),
+    download: async (): Promise<Blob> => fetchBlob('resume/download')
   },
   
   // Blog endpoints
@@ -186,7 +199,7 @@ const apiService = {
   
   // Contact Endpoint
   contact: {
-    send: (data: unknown) => fetchApi('contact/', {
+    send: (data: unknown) => fetchApi('contact', {
       method: 'POST',
       body: JSON.stringify(data)
     })
@@ -207,6 +220,7 @@ const apiService = {
     if (imagePath.startsWith("http")) return imagePath;
     
     const cleanPath = imagePath.replace(/^\/+/, "");
+    // Split on slashes, take first 3 parts (protocol + domain + port if exists)
     const baseUrl = API_URL.split("/").slice(0, 3).join("/");
     return `${baseUrl}/${cleanPath}`;
   },
