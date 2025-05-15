@@ -10,13 +10,19 @@ services:
     depends_on:
       - db
     volumes:
-      - /opt/portfolio-website/backend/static:/app/static
-      - /opt/portfolio-website/backend/media:/app/media
+      - /opt/portfolio-website/backend/static:/home/backend/django/staticfiles
+      - /opt/portfolio-website/backend/media:/home/backend/django/mediafiles
     user: "backend:backend_group"
     ports:
       - "4040:4040"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://portfolio-backend.rajivwallace.com/api/health/"]
+      test:
+        [
+          "CMD",
+          "curl",
+          "-f",
+          "http://portfolio-backend.rajivwallace.com/api/health/",
+        ]
       interval: 30s
       timeout: 10s
       retries: 3
