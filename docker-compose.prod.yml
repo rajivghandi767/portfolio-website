@@ -21,7 +21,7 @@ services:
           "CMD",
           "curl",
           "-f",
-          "http://portfolio-backend.rajivwallace.com/api/health/",
+          "http://portfolio-backend.rajivwallace.com/health/",
         ]
       interval: 30s
       timeout: 10s
