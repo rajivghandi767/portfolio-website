@@ -23,9 +23,11 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     DJANGO_SETTINGS_MODULE=portfolio_website.settings.production \
     DJANGO_ENV=production
 
-RUN mkdir -p /app/static /app/media && \
+RUN mkdir -p /app/static /app/media /app/logs && \
+    touch /app/logs/errors.log && \
     chown -R backend:backend_group /app && \
-    chmod -R 755 /app
+    chmod -R 755 /app && \
+    chmod 664 /app/logs/errors.log
 
 # Run collectstatic as root
 RUN python manage.py collectstatic --noinput
