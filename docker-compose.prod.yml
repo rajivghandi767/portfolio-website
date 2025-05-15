@@ -16,7 +16,7 @@ services:
     expose:
       - "4040"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://portfolio-backend:4040/health/"]
+      test: ["CMD", "curl", "-f", "http://portfolio-backend:4040/api/health/"]
       interval: 30s
       timeout: 10s
       retries: 3
