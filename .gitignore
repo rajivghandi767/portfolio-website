@@ -86,8 +86,6 @@ datadump.json
 
 npm-debug.log*
 
-/nginx
-
 *docker-compose.dev.yaml
 *docker-compose.dev.yml
 *Dockerfile.dev
