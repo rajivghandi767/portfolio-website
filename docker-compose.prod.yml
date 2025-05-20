@@ -32,6 +32,7 @@ services:
       - POSTGRES_USER=${POSTGRESQL_USER}
       - POSTGRES_PASSWORD=${POSTGRESQL_PASSWORD}
       - POSTGRES_DB=${POSTGRESQL_DB}
+      - POSTGRESQL_PORT=${POSTGRESQL_PORT}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -67,5 +68,5 @@ volumes:
   postgres_data:
 networks:
   default:
-    external: true
     name: portfolio_network
+    external: true
