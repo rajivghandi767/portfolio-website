@@ -41,9 +41,7 @@ services:
       timeout: 10s
       retries: 3
 
-#Volumes & Networks
-volumes:
-  postgres_data:
+#Networks
 networks:
   default:
     name: portfolio_network
