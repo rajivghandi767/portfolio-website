@@ -31,6 +31,7 @@ services:
       - POSTGRES_HOST=${POSTGRESQL_HOST}
       - POSTGRES_USER=${POSTGRESQL_USER}
       - POSTGRES_PASSWORD=${POSTGRESQL_PASSWORD}
+      - POSTGRES_DB=${POSTGRESQL_DB}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:

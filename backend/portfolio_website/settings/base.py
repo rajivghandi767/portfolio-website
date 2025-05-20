@@ -86,7 +86,7 @@ USE_TZ = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'portfolio-db',
+        'NAME': os.environ.get('POSTGRESQL_DB'),
         'USER': os.environ.get('POSTGRESQL_USER'),
         'PASSWORD': os.environ.get('POSTGRESQL_PASSWORD'),
         'PORT': os.environ.get('POSTGRESQL_PORT'),
