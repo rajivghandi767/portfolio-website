@@ -1,58 +1,139 @@
 from .base import *
+import os
 
+# ============================================================================
+# PRODUCTION SECURITY SETTINGS
+# ============================================================================
 DEBUG = False
 
+# Production hosts
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
-# CORS/CSRF Settings
-CORS_ALLOWED_ORIGINS = os.getenv(
-    'CORS_ALLOWED_ORIGINS', '').split(',')
+# ============================================================================
+# CORS/CSRF SETTINGS FOR PRODUCTION
+# ============================================================================
+CORS_ALLOWED_ORIGINS = [origin.strip() for origin in os.getenv(
+    'CORS_ALLOWED_ORIGINS', '').split(',') if origin.strip()]
 CORS_ALLOW_CREDENTIALS = True
-CSRF_COOKIE_SECURE = True  # Use a secure cookie for CSRF
-CSRF_TRUSTED_ORIGINS = os.getenv(
-    'CSRF_TRUSTED_ORIGINS', '').split(',')  # Trust your domain
+
+CSRF_COOKIE_SECURE = True  # Use secure cookies for CSRF
+CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.getenv(
+    'CSRF_TRUSTED_ORIGINS', '').split(',') if origin.strip()]
 CSRF_USE_SESSIONS = True  # Store CSRF tokens in sessions instead of cookies
 
-# Session Settings
+# ============================================================================
+# SESSION CONFIGURATION
+# ============================================================================
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
-# Cookie Security
-SESSION_COOKIE_SECURE = True  # Use a secure cookie for sessions
+SESSION_COOKIE_SECURE = True  # Use secure cookies for sessions
 SESSION_COOKIE_SAMESITE = 'Lax'
-SESSION_COOKIE_DOMAIN = 'rajivwallace.com'
-SESSION_COOKIE_HTTPONLY = True  # Prevent JavaScript access to the session cookie
+SESSION_COOKIE_DOMAIN = '.rajivwallace.com'  # Allow subdomain access
+SESSION_COOKIE_HTTPONLY = True  # Prevent JavaScript access
 SESSION_COOKIE_AGE = 86400  # 24 hours
 SESSION_SAVE_EVERY_REQUEST = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
-# # Referrer Policy
-SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
-
-# HTTPS Settings
+# ============================================================================
+# HTTPS SECURITY SETTINGS
+# ============================================================================
 SECURE_SSL_REDIRECT = True  # Redirect all HTTP to HTTPS
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO',
                            'https')  # For reverse proxies
 
-# Enable HTTP Strict Transport Security (1 year)
-SECURE_HSTS_SECONDS = 31536000
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Include subdomains in HSTS
-SECURE_HSTS_PRELOAD = True  # Preload the HSTS policy
-SECURE_BROWSER_XSS_FILTER = True  # Enable XSS filtering
-SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevent browsers from MIME-type sniffing
+# HTTP Strict Transport Security (HSTS)
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
 
-# X-Frame Options
-X_FRAME_OPTIONS = "DENY"  # Prevent the site from being embedded in an iframe
+# Additional security headers
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
+# Frame options
+# Allow iframes from same origin (for resume viewer)
+X_FRAME_OPTIONS = "SAMEORIGIN"
+
+# ============================================================================
+# STATIC & MEDIA FILES FOR PRODUCTION
+# ============================================================================
+STATIC_URL = '/static/'
+STATIC_ROOT = '/home/backend/django/staticfiles'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = '/home/backend/django/mediafiles'
+
+# ============================================================================
+# EMAIL CONFIGURATION FOR PRODUCTION
+# ============================================================================
+# Resend API settings
+RESEND_API_KEY = os.getenv('RESEND_API_KEY')
+DEFAULT_FROM_EMAIL = 'contact@rajivwallace.com'
+CONTACT_EMAIL = os.getenv('CONTACT_EMAIL')
+
+# ============================================================================
+# NOTIFICATION SETTINGS FOR PRODUCTION
+# ============================================================================
+# Discord webhook
+DISCORD_WEBHOOK_URL = os.getenv('DISCORD_WEBHOOK_URL')
+
+# ============================================================================
+# DATABASE CONFIGURATION FOR PRODUCTION
+# ============================================================================
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('POSTGRESQL_DB'),
+        'USER': os.getenv('POSTGRESQL_USER'),
+        'PASSWORD': os.getenv('POSTGRESQL_PASSWORD'),
+        'HOST': os.getenv('POSTGRESQL_HOST'),
+        'PORT': os.getenv('POSTGRESQL_PORT'),
+        'OPTIONS': {
+            'connect_timeout': 60,
+            'sslmode': 'prefer',  # Use SSL if available
+        },
+        'CONN_MAX_AGE': 60,  # Connection pooling
+    }
+}
+
+# ============================================================================
+# CACHING CONFIGURATION (Optional - for better performance)
+# ============================================================================
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'portfolio-cache',
+        'TIMEOUT': 300,  # 5 minutes
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000,
+        }
+    }
+}
+
+# ============================================================================
+# PRODUCTION LOGGING CONFIGURATION
+# ============================================================================
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
-            'format': '{levelname} {asctime} {module} {message}',
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {asctime} {message}',
             'style': '{',
         },
     },
     'handlers': {
         'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': '/home/backend/django/logs/portfolio.log',
+            'formatter': 'verbose',
+        },
+        'error_file': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
             'filename': '/home/backend/django/logs/errors.log',
@@ -61,30 +142,93 @@ LOGGING = {
         'console': {
             'level': 'INFO',
             'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
+            'formatter': 'simple',
         },
+    },
+    'root': {
+        'handlers': ['console', 'file'],
+        'level': 'INFO',
     },
     'loggers': {
         'django': {
             'handlers': ['file', 'console'],
             'level': 'INFO',
-            'propagate': True,
+            'propagate': False,
+        },
+        'django.request': {
+            'handlers': ['error_file', 'console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.security': {
+            'handlers': ['error_file', 'console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'contacts': {
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'info': {
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'projects': {
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'blog': {
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'wallet': {
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+            'propagate': False,
         },
     },
 }
 
-# Email Settings
+# ============================================================================
+# PERFORMANCE OPTIMIZATIONS
+# ============================================================================
+# Database connection pooling
+CONN_MAX_AGE = 60
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+# Optimize file uploads
+FILE_UPLOAD_MAX_MEMORY_SIZE = 5242880  # 5MB
+DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880  # 5MB
 
-# Discord Configuration
-DISCORD_WEBHOOK_URL = os.getenv('DISCORD_WEBHOOK_URL')
+# ============================================================================
+# DJANGO ADMIN CUSTOMIZATION
+# ============================================================================
+# Allow custom admin URL for security
+ADMIN_URL = os.getenv('ADMIN_URL', 'admin/')
 
-# Enhanced logging for Discord webhooks
-LOGGING['loggers']['contacts'] = {
-    'handlers': ['file', 'console'],
-    'level': 'INFO',
-    'propagate': True,
-}
+# ============================================================================
+# REST FRAMEWORK PRODUCTION SETTINGS
+# ============================================================================
+REST_FRAMEWORK.update({
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '100/hour',
+        'user': '1000/hour',
+        'contact': '5/hour',  # Limit contact form submissions
+    }
+})
+
+# ============================================================================
+# HEALTH CHECK CONFIGURATION
+# ============================================================================
+# Simple health check endpoint settings
+HEALTH_CHECK_ENABLED = True
