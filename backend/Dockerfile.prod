@@ -28,10 +28,10 @@ RUN mkdir -p /home/backend/django/staticfiles && \
     mkdir -p /home/backend/django/mediafiles && \
     mkdir -p /home/backend/django/logs && \
     touch /home/backend/django/logs/errors.log && \
-    touch /home/backend/django/logs/portfolio.log
+    touch /home/backend/django/logs/portfolio.log && \
     chown -R backend:backend_group /home/backend/django && \
     chmod -R 755 /home/backend/django && \
-    chmod 664 /home/backend/django/logs/errors.log
+    chmod 664 /home/backend/django/logs/errors.log && \
     chmod 664 /home/backend/django/logs/portfolio.log
 
 RUN python manage.py collectstatic --noinput
