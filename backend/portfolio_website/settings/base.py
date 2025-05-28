@@ -94,22 +94,22 @@ TEMPLATES = [
 # ============================================================================
 WSGI_APPLICATION = 'portfolio_website.wsgi.application'
 
-# ============================================================================
-# DATABASE CONFIGURATION
-# ============================================================================
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRESQL_DB'),
-        'USER': os.environ.get('POSTGRESQL_USER'),
-        'PASSWORD': os.environ.get('POSTGRESQL_PASSWORD'),
-        'HOST': os.environ.get('POSTGRESQL_HOST'),
-        'PORT': os.environ.get('POSTGRESQL_PORT', '5432'),
-        'OPTIONS': {
-            'connect_timeout': 60,
-        },
-    }
-}
+# # ============================================================================
+# # DATABASE CONFIGURATION
+# # ============================================================================
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.environ.get('POSTGRESQL_DB'),
+#         'USER': os.environ.get('POSTGRESQL_USER'),
+#         'PASSWORD': os.environ.get('POSTGRESQL_PASSWORD'),
+#         'HOST': os.environ.get('POSTGRESQL_HOST'),
+#         'PORT': os.environ.get('POSTGRESQL_PORT', '5432'),
+#         'OPTIONS': {
+#             'connect_timeout': 60,
+#         },
+#     }
+# }
 
 # ============================================================================
 # PASSWORD VALIDATION
@@ -154,14 +154,14 @@ MEDIA_ROOT = '/home/backend/django/mediafiles'
 # ============================================================================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# # ============================================================================
-# # EMAIL CONFIGURATION
-# # ============================================================================
-# # Primary email settings using Resend API
-# RESEND_API_KEY = os.environ.get('RESEND_API_KEY')
-# DEFAULT_FROM_EMAIL = os.environ.get(
-#     'DEFAULT_FROM_EMAIL', 'contact@rajivwallace.com')
-# CONTACT_EMAIL = os.environ.get('CONTACT_EMAIL')
+# ============================================================================
+# EMAIL CONFIGURATION
+# ============================================================================
+# Primary email settings using Resend API
+RESEND_API_KEY = os.environ.get('RESEND_API_KEY')
+DEFAULT_FROM_EMAIL = os.environ.get(
+    'DEFAULT_FROM_EMAIL', 'contact@rajivwallace.com')
+CONTACT_EMAIL = os.environ.get('CONTACT_EMAIL')
 
 # Email subject prefix for identification
 EMAIL_SUBJECT_PREFIX = '[Portfolio Contact] '
