@@ -7,12 +7,13 @@ WORKDIR /home/backend/django
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libpq-dev \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --chown=backend:backend_group requirements.txt ./
 
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir --no-warn-script-location -r requirements.txt && \ 
+    pip install --no-cache-dir --no-warn-script-location -r requirements.txt && \
     rm requirements.txt
 
 COPY --chown=backend:backend_group . .
@@ -31,11 +32,8 @@ RUN mkdir -p /home/backend/django/staticfiles && \
     chmod -R 755 /home/backend/django && \
     chmod 664 /home/backend/django/logs/errors.log
 
-# Run collectstatic as root
 RUN python manage.py collectstatic --noinput
 
 USER backend
 
-EXPOSE 4040
-
-CMD ["gunicorn", "--workers", "4", "--bind", "0.0.0.0:4040", "portfolio_website.wsgi:application"]
+CMD ["gunicorn", "--workers", "4", "--bind", "0.0.0.0:8000", "portfolio_website.wsgi:application"]

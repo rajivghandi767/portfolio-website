@@ -1,32 +1,23 @@
 # Use official Node.js image to build the frontend
 FROM node:23-alpine AS build
 
-# Set up non-root user and working directory in a single step
 RUN addgroup -S frontend_group && adduser -S frontend -G frontend_group && \
     mkdir -p /home/frontend/react && chown -R frontend:frontend_group /home/frontend/react
 WORKDIR /home/frontend/react
 
-# Switch to the non-root user
 USER frontend
 
-# Install dependencies, copy project files, build, and clean unnecessary files in one layer
 COPY --chown=frontend:frontend_group package*.json ./
-RUN npm ci npm@latest && npm ci
+RUN npm ci && npm ci npm@latest
 COPY --chown=frontend:frontend_group . .
-
-ARG VITE_API_URL
-ENV VITE_API_URL=${VITE_API_URL}
 
 RUN npm run build && find /home/frontend/react -mindepth 1 -maxdepth 1 ! -name 'dist' -exec rm -rf {} +
 
-# Use Nginx to serve the built static files
 FROM nginx:alpine AS production
 
-# Copy built files from the build stage to the Nginx HTML directory
+RUN apk add --no-cache wget
+
 COPY --from=build /home/frontend/react/dist /usr/share/nginx/html
 
-# Expose port 80 to make the container accessible
-EXPOSE 80
-
-# Start Nginx server
+# No EXPOSE needed - NPM handles routing
 CMD ["nginx", "-g", "daemon off;"]
