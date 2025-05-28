@@ -8,13 +8,11 @@ services:
     restart: unless-stopped
     env_file: .env
     volumes:
-      - /opt/portfolio-website/backend/static:/home/backend/django/staticfiles
-      - /opt/portfolio-website/backend/media:/home/backend/django/mediafiles
+      - portfolio_static:/home/backend/django/staticfiles
+      - portfolio_media:/home/backend/django/mediafiles
     user: "backend:backend_group"
-    expose:
-      - "4040"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://portfolio-backend:4040/api/health/"]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health/"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -24,43 +22,32 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile.prod
-      args:
-        VITE_API_URL: ${VITE_API_URL}
     container_name: portfolio-frontend
     restart: unless-stopped
-    env_file: .env
     depends_on:
       - backend
     environment:
       - NODE_ENV=production
-    ports:
-      - "4000:80"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://portfolio-frontend:80/health/"]
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:80/"]
       interval: 30s
       timeout: 10s
       retries: 3
 
-  nginx-static:
-    build:
-      context: ./nginx-static
-      dockerfile: Dockerfile
-    container_name: portfolio-static
-    restart: unless-stopped
-    depends_on:
-      - backend
-    volumes:
-      - /opt/portfolio-website/backend/static:/static
-      - /opt/portfolio-website/backend/media:/media
-    expose:
-      - "80"
-    healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost:80/health/"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+volumes:
+  portfolio_static:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /opt/portfolio-website/static
+  portfolio_media:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /opt/portfolio-website/media
 
-#Networks
 networks:
   default:
     name: portfolio_network

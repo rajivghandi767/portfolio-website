@@ -1,3 +1,4 @@
+// src/services/api.ts - Updated for relative paths
 import { ApiResponse, BlogPost, Project, Info, Card } from "../types";
 
 // Configuration object for API settings
@@ -20,23 +21,13 @@ class ApiError extends Error {
   }
 }
 
-// Utility function to get API URL with fallback and warning
+// Utility function to get API URL - now uses relative paths
 function getApiUrl(): string {
-  const configuredUrl = import.meta.env.VITE_API_URL;
-  let baseUrl = '';
-  
-  if (!configuredUrl) {
-    console.warn('VITE_API_URL environment variable is not set. Using fallback URL.');
-    baseUrl = 'http://127.0.0.1:8000'; // Default fallback for development
-  } else {
-    baseUrl = configuredUrl;
-  }
-  
-  // Ensure the URL ends with a trailing slash
-  return baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
+  // Always use relative paths - NPM handles the routing
+  return '/api/';
 }
 
-// Main API URL with trailing slash guaranteed
+// Main API URL - now relative
 const API_URL = getApiUrl();
 
 /**
@@ -53,7 +44,7 @@ async function fetchApi<T>(
 ): Promise<ApiResponse<T>> {
   // Normalize endpoint: remove leading slashes and ensure trailing slash
   const normalizedEndpoint = endpoint.replace(/^\/+/, "").replace(/\/$/, "");
-  // Form URL with proper trailing slash
+  // Form URL with proper trailing slash - now relative
   const url = normalizedEndpoint ? `${API_URL}${normalizedEndpoint}/` : API_URL;
   
   const controller = new AbortController();
@@ -94,10 +85,17 @@ async function fetchApi<T>(
       } catch (error) {
         lastError = error;
         
-        // Exponential backoff
-        await new Promise(resolve => 
-          setTimeout(resolve, Math.pow(2, attempt) * 1000)
-        );
+        // Don't retry on client errors (4xx)
+        if (error instanceof ApiError && error.status >= 400 && error.status < 500) {
+          break;
+        }
+        
+        // Exponential backoff for network/server errors
+        if (attempt < maxRetries - 1) {
+          await new Promise(resolve => 
+            setTimeout(resolve, Math.pow(2, attempt) * 1000)
+          );
+        }
       }
     }
 
@@ -122,7 +120,7 @@ async function fetchApi<T>(
 }
 
 /**
- * Enhanced blob fetch function with error handling
+ * Enhanced blob fetch function with error handling - now relative
  * @param endpoint API endpoint path
  * @param options Fetch options
  * @returns Blob data
@@ -169,7 +167,7 @@ async function fetchBlob(
 }
 
 /**
- * Centralized API service with enhanced capabilities
+ * Centralized API service with enhanced capabilities - now using relative paths
  */
 const apiService = {
   baseUrl: API_URL,
@@ -211,7 +209,7 @@ const apiService = {
   },
   
   /**
-   * Convert relative image paths to full URLs
+   * Convert relative image paths to full URLs - now relative to current domain
    * @param imagePath Relative or absolute image path
    * @returns Full image URL or empty string if no image
    */
@@ -219,10 +217,9 @@ const apiService = {
     if (!imagePath) return "";
     if (imagePath.startsWith("http")) return imagePath;
     
+    // For relative paths, prepend with current domain
     const cleanPath = imagePath.replace(/^\/+/, "");
-    // Split on slashes, take first 3 parts (protocol + domain + port if exists)
-    const baseUrl = API_URL.split("/").slice(0, 3).join("/");
-    return `${baseUrl}/${cleanPath}`;
+    return `/${cleanPath}`;
   },
 
   /**
