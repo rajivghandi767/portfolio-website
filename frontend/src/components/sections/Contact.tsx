@@ -1,7 +1,7 @@
 // src/components/sections/Contact.tsx
 import { useState, useEffect } from "react";
 import { Send, AlertCircle, CheckCircle } from "lucide-react";
-import { ContactForm, NotificationType } from "../../types";
+import { ContactForm, ContactResponse, NotificationType } from "../../types";
 import apiService from "../../services/api";
 
 const Contact = () => {
@@ -48,6 +48,12 @@ const Contact = () => {
 
       setNotification("success");
       setFormData({ name: "", email: "", message: "" });
+
+      // Optional: Log notification status for debugging
+      const contactResponse = response.data as ContactResponse;
+      if (contactResponse?.notifications) {
+        console.log("Notification status:", contactResponse.notifications);
+      }
     } catch (error) {
       console.error("Error sending message:", error);
       setNotification("error");

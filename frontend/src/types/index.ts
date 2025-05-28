@@ -66,6 +66,18 @@ export interface ContactForm {
 }
 
 /**
+ * Contact response type
+ */
+export interface ContactResponse {
+  status: string;
+  message: string;
+  notifications?: {
+    email: boolean;
+    discord: boolean;
+  };
+}
+
+/**
  * Notification types for UI feedback
  */
 export type NotificationType = 'success' | 'error' | null;

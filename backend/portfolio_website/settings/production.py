@@ -78,3 +78,13 @@ LOGGING = {
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+
+# Discord Configuration
+DISCORD_WEBHOOK_URL = os.getenv('DISCORD_WEBHOOK_URL')
+
+# Enhanced logging for Discord webhooks
+LOGGING['loggers']['contacts'] = {
+    'handlers': ['file', 'console'],
+    'level': 'INFO',
+    'propagate': True,
+}
