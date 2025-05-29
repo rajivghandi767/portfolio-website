@@ -19,7 +19,10 @@ CORS_ALLOW_CREDENTIALS = True
 CSRF_COOKIE_SECURE = True  # Use secure cookies for CSRF
 CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.getenv(
     'CSRF_TRUSTED_ORIGINS', '').split(',') if origin.strip()]
-CSRF_USE_SESSIONS = True  # Store CSRF tokens in sessions instead of cookies
+
+CSRF_USE_SESSIONS = False
+CSRF_COOKIE_HTTPONLY = False  # Allow JavaScript access for AJAX requests
+CSRF_COOKIE_SAMESITE = 'Lax'  # Balance security with functionality
 
 # ============================================================================
 # SESSION CONFIGURATION
@@ -27,7 +30,7 @@ CSRF_USE_SESSIONS = True  # Store CSRF tokens in sessions instead of cookies
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
 SESSION_COOKIE_SECURE = True  # Use secure cookies for sessions
 SESSION_COOKIE_SAMESITE = 'Lax'
-SESSION_COOKIE_DOMAIN = '.rajivwallace.com'  # Allow subdomain access
+SESSION_COOKIE_DOMAIN = 'rajivwallace.com'  # Allow subdomain access
 SESSION_COOKIE_HTTPONLY = True  # Prevent JavaScript access
 SESSION_COOKIE_AGE = 86400  # 24 hours
 SESSION_SAVE_EVERY_REQUEST = True
@@ -66,10 +69,7 @@ MEDIA_ROOT = '/home/backend/django/mediafiles'
 # ============================================================================
 # EMAIL CONFIGURATION FOR PRODUCTION
 # ============================================================================
-# Resend API settings
-RESEND_API_KEY = os.getenv('RESEND_API_KEY')
-DEFAULT_FROM_EMAIL = 'contact@rajivwallace.com'
-CONTACT_EMAIL = os.getenv('CONTACT_EMAIL')
+
 
 # ============================================================================
 # NOTIFICATION SETTINGS FOR PRODUCTION
