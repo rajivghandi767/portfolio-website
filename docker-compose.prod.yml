@@ -34,6 +34,21 @@ services:
       timeout: 10s
       retries: 3
 
+    # Static/Media Files Server
+  static-server:
+    image: nginx:alpine
+    container_name: portfolio-static-server
+    restart: unless-stopped
+    volumes:
+      - portfolio_static:/usr/share/nginx/html/static:ro
+      - portfolio_media:/usr/share/nginx/html/media:ro
+      - ./nginx/static-server.conf:/etc/nginx/conf.d/default.conf:ro
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:80/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
 volumes:
   portfolio_static:
     driver: local
