@@ -66,8 +66,9 @@ CMD ["gunicorn", \
      "--max-requests", "1000", \
      "--max-requests-jitter", "100", \
      "--bind", "0.0.0.0:8000", \
+     "--preload", \
      "--access-logfile", "/home/backend/django/logs/gunicorn-access.log", \
      "--error-logfile", "/home/backend/django/logs/gunicorn-error.log", \
      "--log-level", "info", \
-     "--preload-app", \
+     "--timeout", "30", \
      "portfolio_website.wsgi:application"]
