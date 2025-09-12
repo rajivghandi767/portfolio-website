@@ -74,10 +74,6 @@ services:
 volumes:
   portfolio_static:
     driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /opt/portfolio-website/static
 
   portfolio_media:
     driver: local
