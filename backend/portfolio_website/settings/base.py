@@ -153,7 +153,3 @@ MEDIA_ROOT = '/home/backend/django/mediafiles'
 # DEFAULT PRIMARY KEY FIELD TYPE
 # ============================================================================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# ============================================================================
-# EMAIL CONFIGURATION
-# ============================================================================
