@@ -62,12 +62,8 @@ CMD ["gunicorn", \
      "--workers", "2", \
      "--threads", "2", \
      "--worker-class", "gthread", \
-     "--worker-connections", "1000", \
-     "--max-requests", "1000", \
-     "--max-requests-jitter", "100", \
      "--bind", "0.0.0.0:8000", \
      "--access-logfile", "/home/backend/django/logs/gunicorn-access.log", \
      "--error-logfile", "/home/backend/django/logs/gunicorn-error.log", \
      "--log-level", "info", \
-     "--preload-app", \
      "portfolio_website.wsgi:application"]
