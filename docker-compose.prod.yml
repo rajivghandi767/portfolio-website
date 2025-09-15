@@ -27,14 +27,14 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile.prod
+      args:
+        - NODE_ENV=production
+        - VITE_API_URL=${VITE_API_URL}
     container_name: portfolio-frontend
     restart: unless-stopped
     depends_on:
       backend:
         condition: service_healthy
-    environment:
-      - NODE_ENV=production
-      - VITE_API_URL=https://portfolio-api.rajivwallace.com # Single nginx endpoint
     deploy:
       resources:
         limits:
