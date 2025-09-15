@@ -9,6 +9,7 @@ from blog.views import CategoryViewSet, PostViewSet, CommentViewSet
 from wallet.views import CardViewSet
 from contacts.views import ContactViewSet
 
+from health_check.views import health_detailed, health_simple
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
@@ -26,5 +27,6 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
-    path('', include('health_check.urls'))
+    path('health/', health_simple, name='health_simple'),
+    path('health/detailed/', health_detailed, name='health_detailed'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
