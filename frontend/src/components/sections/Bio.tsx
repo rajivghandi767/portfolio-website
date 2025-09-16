@@ -102,8 +102,8 @@ const Bio = () => {
     );
   }
 
-  // No bio information available
-  if (!info || info.length === 0) {
+  // Enhanced check to ensure bioInfo exists and is valid
+  if (!info || info.length === 0 || !info[0]) {
     return (
       <div className="text-center p-4">
         Profile information not available at this time.
