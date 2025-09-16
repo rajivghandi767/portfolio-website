@@ -11,11 +11,8 @@ DEBUG = False
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
 # ============================================================================
-# CORS/CSRF SETTINGS FOR PRODUCTION
+# CSRF SETTINGS FOR PRODUCTION
 # ============================================================================
-CORS_ALLOWED_ORIGINS = [origin.strip() for origin in os.getenv(
-    'CORS_ALLOWED_ORIGINS', '').split(',') if origin.strip()]
-CORS_ALLOW_CREDENTIALS = True
 
 # CSRF settings for subdomain setup
 CSRF_COOKIE_SECURE = True
