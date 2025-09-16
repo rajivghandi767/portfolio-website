@@ -22,7 +22,7 @@ class ApiError extends Error {
 }
 
 function getApiUrl(): string {
-  return `${import.meta.env.VITE_API_URL || 'https://portfolio-api.rajivwallace.com'}/api/`;
+  return import.meta.env.VITE_API_URL || 'https://portfolio-api.rajivwallace.com';
 }
 
 const API_URL = getApiUrl();
