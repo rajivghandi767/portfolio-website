@@ -21,13 +21,10 @@ class ApiError extends Error {
   }
 }
 
-// Utility function to get API URL - now uses relative paths
 function getApiUrl(): string {
-  // Always use relative paths - NPM handles the routing
-  return '/api/';
+  return `${import.meta.env.VITE_API_URL || 'https://portfolio-api.rajivwallace.com'}/api/`;
 }
 
-// Main API URL - now relative
 const API_URL = getApiUrl();
 
 /**
