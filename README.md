@@ -4,7 +4,7 @@
 
 ## 🚀 Overview
 
-This repository contains the source code for my portfolio website, which showcases my skills, projects, and experience as a self-taught Software Engineer as well as my personal interests of travel & collecting credit card points.
+This repository contains the source code for my portfolio website, which showcases primarily showcases my Backend & Dev Ops skills, projects, and experience as a self-taught Software Engineer as well as my personal interests of travel & collecting credit card points.
 
 The website is built with a Django REST backend and a React Typescript frontend, and is hosted locally on my Raspberry Pi4B using Docker and Jenkins for continuous integration and delivery.
 
