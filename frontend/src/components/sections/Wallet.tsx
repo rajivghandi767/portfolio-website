@@ -26,11 +26,10 @@ const Wallet = ({ limit = 4 }: WalletProps) => {
   const isWalletPage = window.location.pathname === "/wallet";
 
   // Filter cards to only show featured cards on the main page, or all cards on the wallet page
+  const cardsArray = Array.isArray(cards) ? cards : [];
   const displayedCards = isWalletPage
-    ? cards || []
-    : (cards || [])
-        .filter((card) => card.id >= 1 && card.id <= 4)
-        .slice(0, limit);
+    ? cardsArray
+    : cardsArray.filter((card) => card.id >= 1 && card.id <= 4).slice(0, limit);
 
   // Determine if we should show the "See More" button
   const shouldShowSeeMore = !isWalletPage && (cards?.length || 0) > limit;

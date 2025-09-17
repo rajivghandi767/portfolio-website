@@ -22,9 +22,10 @@ const Projects = ({ limit = 3 }: ProjectsProps) => {
   const isProjectsPage = window.location.pathname === "/projects";
 
   // Determine which projects to display based on limit
+  const projectsArray = Array.isArray(projects) ? projects : [];
   const displayedProjects = isProjectsPage
-    ? projects || []
-    : (projects || []).slice(0, limit);
+    ? projectsArray
+    : projectsArray.slice(0, limit);
 
   // Determine if we should show the "See More" button
   const shouldShowSeeMore = !isProjectsPage && (projects?.length || 0) > limit;
