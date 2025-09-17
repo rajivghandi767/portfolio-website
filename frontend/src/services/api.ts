@@ -1,9 +1,9 @@
-// src/services/api.ts - Compatible with existing useApi hook and architecture
-import { ApiResponse, BlogPost, Project, Info, Card, ContactForm, ContactResponse } from "../types";
+// src/services/api.ts - Clean version compatible with existing useApi hook
+import { ApiResponse, BlogPost, Project, Info, Card, ContactForm } from "../types";
 
-// Configuration object for API settings
+// Configuration
 const API_CONFIG = {
-  DEFAULT_TIMEOUT: 10000, // 10 seconds
+  DEFAULT_TIMEOUT: 10000,
   RETRY_ATTEMPTS: 3,
   DEFAULT_HEADERS: {
     'Accept': 'application/json',
@@ -28,9 +28,7 @@ function getApiUrl(): string {
 
 const API_URL = getApiUrl();
 
-/**
- * Enhanced fetch function that returns ApiResponse<T> (compatible with useApi hook)
- */
+// Enhanced fetch function that returns ApiResponse<T>
 async function fetchApi<T>(
   endpoint: string,
   options: RequestInit = {},
@@ -55,7 +53,7 @@ async function fetchApi<T>(
     let lastError: unknown;
     for (let attempt = 0; attempt < maxRetries; attempt++) {
       try {
-        console.log(`API Request (attempt ${attempt + 1}): ${url}`); // Debug log
+        console.log(`API Request (attempt ${attempt + 1}): ${url}`);
         
         const response = await fetch(url, fetchOptions);
         clearTimeout(timeoutId);
@@ -72,23 +70,18 @@ async function fetchApi<T>(
         }
         
         const rawData = await response.json();
-        console.log(`Raw API Response for ${endpoint}:`, rawData); // Debug log
+        console.log(`Raw API Response for ${endpoint}:`, rawData);
         
         // Handle different response formats from Django REST Framework
         let data: T;
         
-        // Handle paginated responses (Django REST Framework default)
         if (rawData && typeof rawData === 'object' && 'results' in rawData) {
           data = rawData.results as T;
           console.log(`Extracted paginated data for ${endpoint}:`, data);
-        }
-        // Handle custom wrapper responses  
-        else if (rawData && typeof rawData === 'object' && 'data' in rawData) {
+        } else if (rawData && typeof rawData === 'object' && 'data' in rawData) {
           data = rawData.data as T;
           console.log(`Extracted wrapped data for ${endpoint}:`, data);
-        }
-        // Handle direct responses
-        else {
+        } else {
           data = rawData as T;
           console.log(`Direct data for ${endpoint}:`, data);
         }
@@ -101,12 +94,10 @@ async function fetchApi<T>(
       } catch (error) {
         lastError = error;
         
-        // Don't retry on client errors (4xx)
         if (error instanceof ApiError && error.status >= 400 && error.status < 500) {
           break;
         }
         
-        // Exponential backoff for network/server errors
         if (attempt < maxRetries - 1) {
           await new Promise(resolve => 
             setTimeout(resolve, Math.pow(2, attempt) * 1000)
@@ -127,11 +118,8 @@ async function fetchApi<T>(
     };
   }
 }
-}
 
-/**
- * Enhanced blob fetch function
- */
+// Blob fetch function
 async function fetchBlob(
   endpoint: string,
   options: RequestInit = {}
@@ -169,36 +157,29 @@ async function fetchBlob(
   }
 }
 
-/**
- * API service compatible with existing useApi hook architecture
- */
+// API service object
 const apiService = {
   baseUrl: API_URL,
   
-  // Bio Endpoints
   info: {
     get: (): Promise<ApiResponse<Info[]>> => fetchApi<Info[]>('info')
   },
   
-  // Resume Endpoints
   resume: {
     view: (): Promise<Blob> => fetchBlob('resume/view'),
     download: (): Promise<Blob> => fetchBlob('resume/download')
   },
   
-  // Blog endpoints
   blog: {
     getAll: (): Promise<ApiResponse<BlogPost[]>> => fetchApi<BlogPost[]>('post'),
     getOne: (id: string): Promise<ApiResponse<BlogPost>> => fetchApi<BlogPost>(`post/${id}`)
   },
   
-  // Project Endpoints
   projects: {
     getAll: (): Promise<ApiResponse<Project[]>> => fetchApi<Project[]>('projects'),
     getOne: (id: string): Promise<ApiResponse<Project>> => fetchApi<Project>(`projects/${id}`)
   },
   
-  // Contact Endpoint - Compatible with existing Contact component
   contact: {
     send: async (formData: ContactForm) => {
       try {
@@ -228,30 +209,21 @@ const apiService = {
     }
   },
   
-  // Cards/Wallet Endpoint
   cards: {
     getAll: (): Promise<ApiResponse<Card[]>> => fetchApi<Card[]>('cards')
   },
 
-  /**
-   * Convert relative image paths to full URLs - Compatible with imageUtils
-   * @param imagePath Relative or absolute image path
-   * @returns Full image URL or empty string if no image
-   */
   getImageUrl: (imagePath: string | null | undefined): string => {
     if (!imagePath) return "";
     if (imagePath.startsWith("http")) return imagePath;
     
-    // For relative paths, handle media/static properly
     const cleanPath = imagePath.replace(/^\/+/, "");
     
-    // If the path starts with 'media/' or 'static/', use the full API base URL
     if (cleanPath.startsWith('media/') || cleanPath.startsWith('static/')) {
       const baseUrl = import.meta.env.VITE_API_URL || 'https://portfolio-api.rajivwallace.com';
       return `${baseUrl}/${cleanPath}`;
     }
     
-    // Otherwise, assume it's a local asset
     return `/${cleanPath}`;
   }
 };
