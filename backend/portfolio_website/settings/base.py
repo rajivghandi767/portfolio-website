@@ -92,23 +92,6 @@ TEMPLATES = [
 # ============================================================================
 WSGI_APPLICATION = 'portfolio_website.wsgi.application'
 
-# # ============================================================================
-# # DATABASE CONFIGURATION
-# # ============================================================================
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.environ.get('POSTGRESQL_DB'),
-#         'USER': os.environ.get('POSTGRESQL_USER'),
-#         'PASSWORD': os.environ.get('POSTGRESQL_PASSWORD'),
-#         'HOST': os.environ.get('POSTGRESQL_HOST'),
-#         'PORT': os.environ.get('POSTGRESQL_PORT', '5432'),
-#         'OPTIONS': {
-#             'connect_timeout': 60,
-#         },
-#     }
-# }
-
 # ============================================================================
 # PASSWORD VALIDATION
 # ============================================================================
