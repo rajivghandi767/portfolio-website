@@ -1,5 +1,5 @@
-// src/services/api.ts - Updated for relative paths
-import { ApiResponse, BlogPost, Project, Info, Card } from "../types";
+// src/services/api.ts - Compatible with existing useApi hook and architecture
+import { ApiResponse, BlogPost, Project, Info, Card, ContactForm, ContactResponse } from "../types";
 
 // Configuration object for API settings
 const API_CONFIG = {
@@ -22,7 +22,6 @@ class ApiError extends Error {
 }
 
 function getApiUrl(): string {
-  // Base URL without /api, then add /api/ suffix
   const baseUrl = import.meta.env.VITE_API_URL || 'https://portfolio-api.rajivwallace.com';
   return `${baseUrl}/api/`;
 }
@@ -30,20 +29,14 @@ function getApiUrl(): string {
 const API_URL = getApiUrl();
 
 /**
- * Enhanced fetch function with retry and more robust error handling
- * @param endpoint API endpoint path
- * @param options Fetch options
- * @param maxRetries Number of retry attempts
- * @returns Typed API response with data, error, and status
+ * Enhanced fetch function that returns ApiResponse<T> (compatible with useApi hook)
  */
 async function fetchApi<T>(
   endpoint: string,
   options: RequestInit = {},
   maxRetries = API_CONFIG.RETRY_ATTEMPTS
 ): Promise<ApiResponse<T>> {
-  // Normalize endpoint: remove leading slashes and ensure trailing slash
   const normalizedEndpoint = endpoint.replace(/^\/+/, "").replace(/\/$/, "");
-  // Form URL with proper trailing slash - now relative
   const url = normalizedEndpoint ? `${API_URL}${normalizedEndpoint}/` : API_URL;
   
   const controller = new AbortController();
@@ -62,20 +55,44 @@ async function fetchApi<T>(
     let lastError: unknown;
     for (let attempt = 0; attempt < maxRetries; attempt++) {
       try {
-        const response = await fetch(url, fetchOptions);
+        console.log(`API Request (attempt ${attempt + 1}): ${url}`); // Debug log
         
-        // Clear timeout
+        const response = await fetch(url, fetchOptions);
         clearTimeout(timeoutId);
 
         if (!response.ok) {
           const errorBody = await response.text();
-          throw new ApiError(
-            `HTTP error! Status: ${response.status}, Message: ${errorBody}`, 
-            response.status
-          );
+          const errorMessage = `HTTP error! Status: ${response.status}, Message: ${errorBody}`;
+          
+          return {
+            data: null,
+            error: errorMessage,
+            status: response.status,
+          };
         }
         
-        const data = await response.json();
+        const rawData = await response.json();
+        console.log(`Raw API Response for ${endpoint}:`, rawData); // Debug log
+        
+        // Handle different response formats from Django REST Framework
+        let data: T;
+        
+        // Handle paginated responses (Django REST Framework default)
+        if (rawData && typeof rawData === 'object' && 'results' in rawData) {
+          data = rawData.results as T;
+          console.log(`Extracted paginated data for ${endpoint}:`, data);
+        }
+        // Handle custom wrapper responses  
+        else if (rawData && typeof rawData === 'object' && 'data' in rawData) {
+          data = rawData.data as T;
+          console.log(`Extracted wrapped data for ${endpoint}:`, data);
+        }
+        // Handle direct responses
+        else {
+          data = rawData as T;
+          console.log(`Direct data for ${endpoint}:`, data);
+        }
+        
         return {
           data,
           error: null,
@@ -98,37 +115,27 @@ async function fetchApi<T>(
       }
     }
 
-    // If all retries fail
     throw lastError;
   } catch (error) {
-    // Clear timeout in case of early failure
     clearTimeout(timeoutId);
-
     console.error(`API Error (${endpoint}):`, error);
     
     return {
       data: null,
-      error: error instanceof ApiError 
-        ? error.message 
-        : error instanceof Error 
-          ? error.message 
-          : "An unexpected network error occurred",
+      error: error instanceof Error ? error.message : 'An unknown error occurred',
       status: error instanceof ApiError ? error.status : 0,
     };
   }
 }
+}
 
 /**
- * Enhanced blob fetch function with error handling - now relative
- * @param endpoint API endpoint path
- * @param options Fetch options
- * @returns Blob data
+ * Enhanced blob fetch function
  */
 async function fetchBlob(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<Blob> {
-  // Use the same URL normalization logic as fetchApi
   const normalizedEndpoint = endpoint.replace(/^\/+/, "").replace(/\/$/, "");
   const url = normalizedEndpoint ? `${API_URL}${normalizedEndpoint}/` : API_URL;
   
@@ -144,7 +151,6 @@ async function fetchBlob(
       },
     });
     
-    // Clear timeout
     clearTimeout(timeoutId);
 
     if (!response.ok) {
@@ -157,58 +163,78 @@ async function fetchBlob(
     
     return await response.blob();
   } catch (error) {
-    // Clear timeout in case of early failure
     clearTimeout(timeoutId);
-
     console.error(`Blob Fetch Error (${endpoint}):`, error);
     throw error;
   }
 }
 
 /**
- * Centralized API service with enhanced capabilities - now using relative paths
+ * API service compatible with existing useApi hook architecture
  */
 const apiService = {
   baseUrl: API_URL,
   
   // Bio Endpoints
   info: {
-    get: () => fetchApi<Info[]>('info')
+    get: (): Promise<ApiResponse<Info[]>> => fetchApi<Info[]>('info')
   },
   
   // Resume Endpoints
   resume: {
-    view: async (): Promise<Blob> => fetchBlob('resume/view'),
-    download: async (): Promise<Blob> => fetchBlob('resume/download')
+    view: (): Promise<Blob> => fetchBlob('resume/view'),
+    download: (): Promise<Blob> => fetchBlob('resume/download')
   },
   
   // Blog endpoints
   blog: {
-    getAll: () => fetchApi<BlogPost[]>('post'),
-    getOne: (id: string) => fetchApi<BlogPost>(`post/${id}`)
+    getAll: (): Promise<ApiResponse<BlogPost[]>> => fetchApi<BlogPost[]>('post'),
+    getOne: (id: string): Promise<ApiResponse<BlogPost>> => fetchApi<BlogPost>(`post/${id}`)
   },
   
   // Project Endpoints
   projects: {
-    getAll: () => fetchApi<Project[]>('projects'),
-    getOne: (id: string) => fetchApi<Project>(`projects/${id}`)
+    getAll: (): Promise<ApiResponse<Project[]>> => fetchApi<Project[]>('projects'),
+    getOne: (id: string): Promise<ApiResponse<Project>> => fetchApi<Project>(`projects/${id}`)
   },
   
-  // Contact Endpoint
+  // Contact Endpoint - Compatible with existing Contact component
   contact: {
-    send: (data: unknown) => fetchApi('contact', {
-      method: 'POST',
-      body: JSON.stringify(data)
-    })
+    send: async (formData: ContactForm) => {
+      try {
+        console.log('Sending contact form:', formData);
+        
+        const response = await fetch(`${API_URL}contact/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+
+        const data = await response.json();
+        console.log('Contact API Response:', data);
+
+        if (!response.ok) {
+          return { error: data.detail || `HTTP ${response.status}: ${response.statusText}` };
+        }
+
+        return { data };
+      } catch (error) {
+        console.error('Contact API Error:', error);
+        return { error: error instanceof Error ? error.message : 'Network error occurred' };
+      }
+    }
   },
   
-  // Wallet/Cards Endpoint
+  // Cards/Wallet Endpoint
   cards: {
-    getAll: () => fetchApi<Card[]>('cards')
+    getAll: (): Promise<ApiResponse<Card[]>> => fetchApi<Card[]>('cards')
   },
-  
+
   /**
-   * Convert relative image paths to full URLs - now relative to current domain
+   * Convert relative image paths to full URLs - Compatible with imageUtils
    * @param imagePath Relative or absolute image path
    * @returns Full image URL or empty string if no image
    */
@@ -216,32 +242,17 @@ const apiService = {
     if (!imagePath) return "";
     if (imagePath.startsWith("http")) return imagePath;
     
-    // For relative paths, prepend with current domain
+    // For relative paths, handle media/static properly
     const cleanPath = imagePath.replace(/^\/+/, "");
+    
+    // If the path starts with 'media/' or 'static/', use the full API base URL
+    if (cleanPath.startsWith('media/') || cleanPath.startsWith('static/')) {
+      const baseUrl = import.meta.env.VITE_API_URL || 'https://portfolio-api.rajivwallace.com';
+      return `${baseUrl}/${cleanPath}`;
+    }
+    
+    // Otherwise, assume it's a local asset
     return `/${cleanPath}`;
-  },
-
-  /**
-   * Create a cancellable request
-   * @param endpoint API endpoint
-   * @param options Request options
-   * @returns Object with request promise and cancel method
-   */
-  createCancellableRequest<T>(
-    endpoint: string, 
-    options: RequestInit = {}
-  ) {
-    const controller = new AbortController();
-    
-    const request = fetchApi<T>(endpoint, {
-      ...options,
-      signal: controller.signal
-    });
-    
-    return {
-      request,
-      cancel: () => controller.abort()
-    };
   }
 };
 
