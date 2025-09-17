@@ -7,11 +7,11 @@ import useApi from "../../hooks/useApi";
 import imageUtils from "../../utils/imageUtils";
 
 const Bio = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [resumeError, setResumeError] = useState<string | null>(null);
   const [resumeUrl, setResumeUrl] = useState<string | null>(null);
-  const [isDownloading, setIsDownloading] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isDownloading, setIsDownloading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Fetch bio information
   const {
@@ -29,7 +29,7 @@ const Bio = () => {
     };
   }, [resumeUrl]);
 
-  const handleViewResume = async () => {
+  const handleViewResume = async (): Promise<void> => {
     try {
       setIsLoading(true);
       setResumeError(null);
@@ -50,7 +50,7 @@ const Bio = () => {
     }
   };
 
-  const handleCloseModal = () => {
+  const handleCloseModal = (): void => {
     setIsModalOpen(false);
     if (resumeUrl) {
       URL.revokeObjectURL(resumeUrl);
@@ -58,7 +58,7 @@ const Bio = () => {
     }
   };
 
-  const handleDownload = async () => {
+  const handleDownload = async (): Promise<void> => {
     try {
       setIsDownloading(true);
       setResumeError(null);
@@ -81,6 +81,14 @@ const Bio = () => {
       setResumeError("Failed to download resume. Please try again.");
     } finally {
       setIsDownloading(false);
+    }
+  };
+
+  const handleModalBackdropClick = (
+    e: React.MouseEvent<HTMLDivElement>
+  ): void => {
+    if (e.target === e.currentTarget) {
+      handleCloseModal();
     }
   };
 
@@ -123,7 +131,7 @@ const Bio = () => {
           <div className="w-44 h-44 rounded-full overflow-hidden shrink-0 grow-0 ring-3 ring-black dark:ring-gray-900">
             <img
               src={imageUrl}
-              alt="Profile"
+              alt={`Profile photo of ${bioInfo.greeting || "user"}`}
               className="object-cover object-top w-full h-full"
             />
           </div>
@@ -132,16 +140,19 @@ const Bio = () => {
         {/* Bio Content */}
         <div className="md:ml-6">
           <h1 className="text-xl font-semibold underline underline-offset-8 decoration-2">
-            {bioInfo.greeting}
+            {bioInfo.greeting || "Welcome"}
           </h1>
 
-          <p className="pt-3 text-sm">{bioInfo.bio}</p>
+          <p className="pt-3 text-sm">
+            {bioInfo.bio || "Bio information not available"}
+          </p>
 
           <div className="mt-4 text-center md:text-left">
             <button
               onClick={handleViewResume}
               disabled={isLoading}
-              className="btn btn-primary px-4 py-2 text-sm rounded-md"
+              className="btn btn-primary px-4 py-2 text-sm rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+              aria-label="View resume in modal"
             >
               {isLoading ? (
                 <div className="flex items-center gap-2">
@@ -158,12 +169,19 @@ const Bio = () => {
 
       {/* Resume Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          onClick={handleModalBackdropClick}
+        >
           <div className="card w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
             {/* Modal Header */}
             <div className="flex justify-between items-center p-4 border-b-2 border-default">
               <h3 className="text-lg font-semibold">Rajiv Wallace Resume</h3>
-              <button onClick={handleCloseModal} className="hover:text-primary">
+              <button
+                onClick={handleCloseModal}
+                className="hover:text-primary"
+                aria-label="Close resume modal"
+              >
                 <X size={20} />
               </button>
             </div>
@@ -204,7 +222,8 @@ const Bio = () => {
               <button
                 onClick={handleDownload}
                 disabled={isDownloading || !resumeUrl}
-                className="btn btn-primary px-4 py-2 text-sm flex items-center gap-2"
+                className="btn btn-primary px-4 py-2 text-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-label="Download resume as PDF"
               >
                 {isDownloading ? (
                   <>

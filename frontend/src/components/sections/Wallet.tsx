@@ -11,7 +11,7 @@ interface WalletProps {
   limit?: number;
 }
 
-const Wallet = ({ limit = 4 }: WalletProps): JSX.Element => {
+const Wallet = ({ limit = 4 }: WalletProps) => {
   const [selectedCard, setSelectedCard] = useState<CardType | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
 
@@ -110,7 +110,7 @@ interface CreditCardProps {
   onClick: () => void;
 }
 
-const CreditCard = ({ card, onClick }: CreditCardProps): JSX.Element => {
+const CreditCard = ({ card, onClick }: CreditCardProps) => {
   // Get thumbnail URL using imageUtils
   const thumbnailUrl = imageUtils.getImageUrl(card.thumbnail, "card");
 
@@ -196,11 +196,7 @@ interface CardDetailModalProps {
   onClose: () => void;
 }
 
-const CardDetailModal = ({
-  card,
-  isOpen,
-  onClose,
-}: CardDetailModalProps): JSX.Element | null => {
+const CardDetailModal = ({ card, isOpen, onClose }: CardDetailModalProps) => {
   // Get image URL using imageUtils
   const imageUrl = imageUtils.getImageUrl(card.thumbnail, "card");
 
