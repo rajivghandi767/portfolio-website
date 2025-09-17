@@ -10,7 +10,7 @@ interface ProjectsProps {
   limit?: number;
 }
 
-const Projects = ({ limit = 3 }: ProjectsProps): JSX.Element => {
+const Projects = ({ limit = 3 }: ProjectsProps) => {
   // Use our custom hook to fetch projects
   const {
     data: projects,
@@ -80,7 +80,7 @@ interface ProjectCardProps {
   project: Project;
 }
 
-const ProjectCard = ({ project }: ProjectCardProps): JSX.Element => {
+const ProjectCard = ({ project }: ProjectCardProps) => {
   // Get image URL using our image utility
   const imageUrl = imageUtils.getImageUrl(project.thumbnail, "project");
 

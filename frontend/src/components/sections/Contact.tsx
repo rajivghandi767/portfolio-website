@@ -4,7 +4,7 @@ import { Send, AlertCircle, CheckCircle } from "lucide-react";
 import { ContactForm, ContactResponse, NotificationType } from "../../types";
 import apiService from "../../services/api";
 
-const Contact = (): JSX.Element => {
+const Contact = () => {
   const [formData, setFormData] = useState<ContactForm>({
     name: "",
     email: "",
@@ -86,11 +86,7 @@ const Contact = (): JSX.Element => {
     }
   };
 
-  const getNotificationContent = (): {
-    icon: JSX.Element;
-    message: string;
-    className: string;
-  } => {
+  const getNotificationContent = () => {
     if (notification === "success") {
       return {
         icon: <CheckCircle className="w-5 h-5 flex-shrink-0" />,

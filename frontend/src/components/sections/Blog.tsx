@@ -11,7 +11,7 @@ interface BlogProps {
 }
 
 // This component is for the home page preview
-const Blog = ({ limit = 3 }: BlogProps): JSX.Element => {
+const Blog = ({ limit = 3 }: BlogProps) => {
   // Fetch blog posts using our custom hook
   const {
     data: posts,
@@ -76,7 +76,7 @@ interface BlogPostCardProps {
   post: BlogPost;
 }
 
-const BlogPostCard = ({ post }: BlogPostCardProps): JSX.Element => {
+const BlogPostCard = ({ post }: BlogPostCardProps) => {
   // Convert relative image path to full URL
   const imageUrl = imageUtils.getImageUrl(post.image, "blogPost");
 
@@ -101,13 +101,6 @@ const BlogPostCard = ({ post }: BlogPostCardProps): JSX.Element => {
   };
 
   const formattedDate = formatDate(post.created_at);
-
-  const handleReadMoreClick = (
-    e: React.MouseEvent<HTMLAnchorElement>
-  ): void => {
-    // Optional: Add tracking or other side effects here
-    console.log(`Reading blog post: ${post.title}`);
-  };
 
   return (
     <div className="card hover-scale md:flex">
@@ -138,7 +131,6 @@ const BlogPostCard = ({ post }: BlogPostCardProps): JSX.Element => {
           <Link
             to={`/blog/${post.id}`}
             className="flex items-center gap-1 text-sm hover:text-primary transition-colors group"
-            onClick={handleReadMoreClick}
             aria-label={`Read more about ${post.title}`}
           >
             <span>Read more</span>
