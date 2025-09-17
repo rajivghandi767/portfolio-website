@@ -1,9 +1,9 @@
-// src/services/api.ts - Clean version compatible with existing useApi hook
+// src/services/api.ts - Complete frontend API service compatible with Django backend
 import { ApiResponse, BlogPost, Project, Info, Card, ContactForm } from "../types";
 
 // Configuration
 const API_CONFIG = {
-  DEFAULT_TIMEOUT: 10000,
+  DEFAULT_TIMEOUT: 15000, // 15 seconds for resume downloads
   RETRY_ATTEMPTS: 3,
   DEFAULT_HEADERS: {
     'Accept': 'application/json',
@@ -59,8 +59,18 @@ async function fetchApi<T>(
         clearTimeout(timeoutId);
 
         if (!response.ok) {
-          const errorBody = await response.text();
-          const errorMessage = `HTTP error! Status: ${response.status}, Message: ${errorBody}`;
+          let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+          
+          try {
+            const errorBody = await response.text();
+            if (errorBody) {
+              errorMessage += ` - ${errorBody}`;
+            }
+          } catch {
+            // If we can't read the error body, use the status text
+          }
+          
+          console.error(`API Error: ${errorMessage}`);
           
           return {
             data: null,
@@ -75,6 +85,8 @@ async function fetchApi<T>(
         // Handle different response formats from Django REST Framework
         let data: T;
         
+        // With pagination disabled in Django, we should get direct arrays
+        // But handle legacy pagination format just in case
         if (rawData && typeof rawData === 'object' && 'results' in rawData) {
           data = rawData.results as T;
           console.log(`Extracted paginated data for ${endpoint}:`, data);
@@ -94,14 +106,18 @@ async function fetchApi<T>(
       } catch (error) {
         lastError = error;
         
+        console.warn(`⚠️ Request attempt ${attempt + 1} failed:`, error);
+        
+        // Don't retry on client errors (4xx)
         if (error instanceof ApiError && error.status >= 400 && error.status < 500) {
           break;
         }
         
+        // Exponential backoff for network/server errors
         if (attempt < maxRetries - 1) {
-          await new Promise(resolve => 
-            setTimeout(resolve, Math.pow(2, attempt) * 1000)
-          );
+          const delay = Math.pow(2, attempt) * 1000;
+          console.log(`⏳ Retrying in ${delay}ms...`);
+          await new Promise(resolve => setTimeout(resolve, delay));
         }
       }
     }
@@ -109,17 +125,24 @@ async function fetchApi<T>(
     throw lastError;
   } catch (error) {
     clearTimeout(timeoutId);
-    console.error(`API Error (${endpoint}):`, error);
+    console.error(`💥 API Error (${endpoint}):`, error);
+    
+    let errorMessage = 'An unknown error occurred';
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      errorMessage = 'Network error - please check your connection';
+    } else if (error instanceof Error) {
+      errorMessage = error.message;
+    }
     
     return {
       data: null,
-      error: error instanceof Error ? error.message : 'An unknown error occurred',
+      error: errorMessage,
       status: error instanceof ApiError ? error.status : 0,
     };
   }
 }
 
-// Blob fetch function
+// Blob fetch function for file downloads
 async function fetchBlob(
   endpoint: string,
   options: RequestInit = {}
@@ -131,6 +154,8 @@ async function fetchBlob(
   const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.DEFAULT_TIMEOUT);
 
   try {
+    console.log(`📁 Blob Request: ${url}`);
+    
     const response = await fetch(url, {
       ...options,
       signal: controller.signal,
@@ -143,16 +168,20 @@ async function fetchBlob(
 
     if (!response.ok) {
       const errorBody = await response.text();
+      console.error(`❌ Blob Error: HTTP ${response.status} - ${errorBody}`);
       throw new ApiError(
         `HTTP error! Status: ${response.status}, Message: ${errorBody}`, 
         response.status
       );
     }
     
-    return await response.blob();
+    const blob = await response.blob();
+    console.log(`✅ Blob received: ${blob.size} bytes, type: ${blob.type}`);
+    return blob;
+    
   } catch (error) {
     clearTimeout(timeoutId);
-    console.error(`Blob Fetch Error (${endpoint}):`, error);
+    console.error(`💥 Blob Fetch Error (${endpoint}):`, error);
     throw error;
   }
 }
@@ -161,30 +190,72 @@ async function fetchBlob(
 const apiService = {
   baseUrl: API_URL,
   
+  // Bio/Profile Endpoints
   info: {
-    get: (): Promise<ApiResponse<Info[]>> => fetchApi<Info[]>('info')
+    get: (): Promise<ApiResponse<Info[]>> => {
+      console.log('🔍 Fetching profile info...');
+      return fetchApi<Info[]>('info');
+    }
   },
   
+  // Resume Endpoints with enhanced error handling
   resume: {
-    view: (): Promise<Blob> => fetchBlob('resume/view'),
-    download: (): Promise<Blob> => fetchBlob('resume/download')
+    view: async (): Promise<Blob> => {
+      console.log('👁️ Viewing resume...');
+      try {
+        return await fetchBlob('resume/view');
+      } catch (error) {
+        console.error('❌ Resume view failed:', error);
+        throw new Error('Failed to load resume for viewing. Please try again.');
+      }
+    },
+    
+    download: async (): Promise<Blob> => {
+      console.log('⬇️ Downloading resume...');
+      try {
+        return await fetchBlob('resume/download');
+      } catch (error) {
+        console.error('❌ Resume download failed:', error);
+        throw new Error('Failed to download resume. Please try again.');
+      }
+    },
+    
+    status: (): Promise<ApiResponse<any>> => {
+      console.log('📊 Checking resume status...');
+      return fetchApi<any>('resume/status');
+    }
   },
   
+  // Blog endpoints
   blog: {
-    getAll: (): Promise<ApiResponse<BlogPost[]>> => fetchApi<BlogPost[]>('post'),
-    getOne: (id: string): Promise<ApiResponse<BlogPost>> => fetchApi<BlogPost>(`post/${id}`)
+    getAll: (): Promise<ApiResponse<BlogPost[]>> => {
+      console.log('📝 Fetching blog posts...');
+      return fetchApi<BlogPost[]>('post');
+    },
+    getOne: (id: string): Promise<ApiResponse<BlogPost>> => {
+      console.log(`📄 Fetching blog post ${id}...`);
+      return fetchApi<BlogPost>(`post/${id}`);
+    }
   },
   
+  // Project Endpoints
   projects: {
-    getAll: (): Promise<ApiResponse<Project[]>> => fetchApi<Project[]>('projects'),
-    getOne: (id: string): Promise<ApiResponse<Project>> => fetchApi<Project>(`projects/${id}`)
+    getAll: (): Promise<ApiResponse<Project[]>> => {
+      console.log('🚀 Fetching projects...');
+      return fetchApi<Project[]>('projects');
+    },
+    getOne: (id: string): Promise<ApiResponse<Project>> => {
+      console.log(`🔍 Fetching project ${id}...`);
+      return fetchApi<Project>(`projects/${id}`);
+    }
   },
   
+  // Contact Endpoint with enhanced error handling
   contact: {
     send: async (formData: ContactForm) => {
+      console.log('📧 Sending contact form...', formData);
+      
       try {
-        console.log('Sending contact form:', formData);
-        
         const response = await fetch(`${API_URL}contact/`, {
           method: 'POST',
           headers: {
@@ -195,36 +266,96 @@ const apiService = {
         });
 
         const data = await response.json();
-        console.log('Contact API Response:', data);
+        console.log('📬 Contact API Response:', data);
 
         if (!response.ok) {
-          return { error: data.detail || `HTTP ${response.status}: ${response.statusText}` };
+          const errorMessage = data.detail || data.error || `HTTP ${response.status}: ${response.statusText}`;
+          console.error('❌ Contact form error:', errorMessage);
+          return { error: errorMessage };
         }
 
+        console.log('✅ Contact form sent successfully');
         return { data };
+        
       } catch (error) {
-        console.error('Contact API Error:', error);
-        return { error: error instanceof Error ? error.message : 'Network error occurred' };
+        console.error('💥 Contact API Error:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Network error occurred';
+        return { error: errorMessage };
       }
     }
   },
   
+  // Cards/Wallet Endpoint
   cards: {
-    getAll: (): Promise<ApiResponse<Card[]>> => fetchApi<Card[]>('cards')
+    getAll: (): Promise<ApiResponse<Card[]>> => {
+      console.log('💳 Fetching cards...');
+      return fetchApi<Card[]>('cards');
+    }
   },
 
+  // Image URL handling with better error handling
   getImageUrl: (imagePath: string | null | undefined): string => {
-    if (!imagePath) return "";
-    if (imagePath.startsWith("http")) return imagePath;
-    
-    const cleanPath = imagePath.replace(/^\/+/, "");
-    
-    if (cleanPath.startsWith('media/') || cleanPath.startsWith('static/')) {
-      const baseUrl = import.meta.env.VITE_API_URL || 'https://portfolio-api.rajivwallace.com';
-      return `${baseUrl}/${cleanPath}`;
+    if (!imagePath) {
+      console.log('🖼️ No image path provided, returning empty string');
+      return "";
     }
     
-    return `/${cleanPath}`;
+    if (imagePath.startsWith("http")) {
+      console.log('🌐 Using absolute URL:', imagePath);
+      return imagePath;
+    }
+    
+    if (imagePath.startsWith("data:")) {
+      console.log('📊 Using data URL');
+      return imagePath;
+    }
+    
+    // Clean and normalize path
+    const cleanPath = imagePath.replace(/^\/+/, "");
+    
+    // Handle Django media/static files
+    if (cleanPath.startsWith('media/') || cleanPath.startsWith('static/')) {
+      const baseUrl = import.meta.env.VITE_API_URL || 'https://portfolio-api.rajivwallace.com';
+      const fullUrl = `${baseUrl}/${cleanPath}`;
+      console.log('📁 Media/static URL:', fullUrl);
+      return fullUrl;
+    }
+    
+    // Handle relative paths that might be Django URLs
+    if (cleanPath.includes('/media/') || cleanPath.includes('/static/')) {
+      const baseUrl = import.meta.env.VITE_API_URL || 'https://portfolio-api.rajivwallace.com';
+      const fullUrl = `${baseUrl}${imagePath}`;
+      console.log('🔗 Django URL:', fullUrl);
+      return fullUrl;
+    }
+    
+    // Default to local asset
+    const localUrl = `/${cleanPath}`;
+    console.log('🏠 Local asset URL:', localUrl);
+    return localUrl;
+  },
+
+  // Utility methods
+  utils: {
+    // Test API connectivity
+    testConnection: async (): Promise<boolean> => {
+      try {
+        console.log('🔌 Testing API connection...');
+        const response = await fetch(API_URL, { method: 'HEAD' });
+        const isConnected = response.ok;
+        console.log(`🔌 API connection test: ${isConnected ? 'Success' : 'Failed'}`);
+        return isConnected;
+      } catch (error) {
+        console.error('🔌 API connection test failed:', error);
+        return false;
+      }
+    },
+
+    // Get API health status
+    getHealth: (): Promise<ApiResponse<any>> => {
+      console.log('🏥 Checking API health...');
+      return fetchApi<any>('../health');  // Go up one level from /api/
+    }
   }
 };
 
