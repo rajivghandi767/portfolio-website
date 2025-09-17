@@ -10,7 +10,7 @@ interface ProjectsProps {
   limit?: number;
 }
 
-const Projects = ({ limit = 3 }: ProjectsProps) => {
+const Projects = ({ limit = 3 }: ProjectsProps): JSX.Element => {
   // Use our custom hook to fetch projects
   const {
     data: projects,
@@ -47,6 +47,10 @@ const Projects = ({ limit = 3 }: ProjectsProps) => {
             {error}
           </div>
         </div>
+      ) : !displayedProjects.length ? (
+        <div className="text-center p-8">
+          No projects available at this time.
+        </div>
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-w-4xl mx-auto">
@@ -72,7 +76,11 @@ const Projects = ({ limit = 3 }: ProjectsProps) => {
 };
 
 // Separate component for each project card
-const ProjectCard = ({ project }: { project: Project }) => {
+interface ProjectCardProps {
+  project: Project;
+}
+
+const ProjectCard = ({ project }: ProjectCardProps): JSX.Element => {
   // Get image URL using our image utility
   const imageUrl = imageUtils.getImageUrl(project.thumbnail, "project");
 
@@ -81,7 +89,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
       <div className="card-image-container w-full h-40 overflow-hidden">
         <img
           src={imageUrl}
-          alt={project.title}
+          alt={project.title || "Project thumbnail"}
           className="w-full h-full object-cover"
         />
       </div>
@@ -96,8 +104,9 @@ const ProjectCard = ({ project }: { project: Project }) => {
             <a
               href={project.repo}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="flex items-center gap-1 hover:text-primary transition-colors text-xs"
+              aria-label={`View source code for ${project.title}`}
             >
               <Github size={12} />
               <span>Code</span>
@@ -108,8 +117,9 @@ const ProjectCard = ({ project }: { project: Project }) => {
             <a
               href={project.deployed_url}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="flex items-center gap-1 hover:text-primary transition-colors text-xs"
+              aria-label={`View demo for ${project.title}`}
             >
               <span>Demo</span>
             </a>
@@ -117,12 +127,13 @@ const ProjectCard = ({ project }: { project: Project }) => {
         </div>
 
         <p className="text-xs mb-2 h-10 overflow-hidden line-clamp-2">
-          {project.description}
+          {project.description || "No description available"}
         </p>
 
         <div className="mt-auto">
           <p className="text-xs">
-            <span className="font-semibold">Stack:</span> {project.technology}
+            <span className="font-semibold">Stack:</span>{" "}
+            {project.technology || "Not specified"}
           </p>
         </div>
       </div>
