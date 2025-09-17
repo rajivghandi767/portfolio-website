@@ -11,7 +11,7 @@ interface BlogProps {
 }
 
 // This component is for the home page preview
-const Blog = ({ limit = 3 }: BlogProps) => {
+const Blog = ({ limit = 3 }: BlogProps): JSX.Element => {
   // Fetch blog posts using our custom hook
   const {
     data: posts,
@@ -43,7 +43,7 @@ const Blog = ({ limit = 3 }: BlogProps) => {
             {error}
           </div>
         </div>
-      ) : !posts || posts.length === 0 ? (
+      ) : !displayedPosts.length ? (
         <div className="text-center p-8">
           No blog posts available at this time.
         </div>
@@ -72,21 +72,49 @@ const Blog = ({ limit = 3 }: BlogProps) => {
 };
 
 // Separate component for each blog post card
-const BlogPostCard = ({ post }: { post: BlogPost }) => {
+interface BlogPostCardProps {
+  post: BlogPost;
+}
+
+const BlogPostCard = ({ post }: BlogPostCardProps): JSX.Element => {
   // Convert relative image path to full URL
   const imageUrl = imageUtils.getImageUrl(post.image, "blogPost");
 
-  // Format date
-  const formattedDate = post.created_at
-    ? new Date(post.created_at).toLocaleDateString()
-    : "No date available";
+  // Format date with better type safety and error handling
+  const formatDate = (dateString: string | undefined | null): string => {
+    if (!dateString) return "No date available";
+
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) {
+        return "Invalid date";
+      }
+
+      return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    } catch {
+      return "Invalid date";
+    }
+  };
+
+  const formattedDate = formatDate(post.created_at);
+
+  const handleReadMoreClick = (
+    e: React.MouseEvent<HTMLAnchorElement>
+  ): void => {
+    // Optional: Add tracking or other side effects here
+    console.log(`Reading blog post: ${post.title}`);
+  };
 
   return (
     <div className="card hover-scale md:flex">
       <div className="card-image-container md:w-1/3 h-48 md:h-auto overflow-hidden">
         <img
           src={imageUrl}
-          alt={post.title}
+          alt={post.title || "Blog post image"}
           className="w-full h-full object-cover"
         />
       </div>
@@ -94,23 +122,30 @@ const BlogPostCard = ({ post }: { post: BlogPost }) => {
       <div className="p-4 md:w-2/3 flex flex-col">
         <Link to={`/blog/${post.id}`}>
           <h2 className="mb-3 text-xl font-medium hover:text-primary transition-all duration-200">
-            {post.title}
+            {post.title || "Untitled Post"}
           </h2>
         </Link>
 
-        <p className="mb-4 line-clamp-3 text-sm">{post.body}</p>
+        <p className="mb-4 line-clamp-3 text-sm">
+          {post.body || "No preview available"}
+        </p>
 
         <div className="mt-auto pt-4 border-t border-default flex justify-between items-center">
-          <div className="text-xs">{formattedDate}</div>
+          <div className="text-xs" title={`Published on ${formattedDate}`}>
+            {formattedDate}
+          </div>
 
           <Link
             to={`/blog/${post.id}`}
             className="flex items-center gap-1 text-sm hover:text-primary transition-colors group"
+            onClick={handleReadMoreClick}
+            aria-label={`Read more about ${post.title}`}
           >
             <span>Read more</span>
             <ArrowRight
               size={16}
               className="group-hover:translate-x-1 transition-transform"
+              aria-hidden="true"
             />
           </Link>
         </div>

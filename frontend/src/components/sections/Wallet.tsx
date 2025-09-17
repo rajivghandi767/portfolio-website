@@ -11,9 +11,9 @@ interface WalletProps {
   limit?: number;
 }
 
-const Wallet = ({ limit = 4 }: WalletProps) => {
+const Wallet = ({ limit = 4 }: WalletProps): JSX.Element => {
   const [selectedCard, setSelectedCard] = useState<CardType | null>(null);
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   // Fetch cards using our custom hook
   const {
@@ -36,13 +36,13 @@ const Wallet = ({ limit = 4 }: WalletProps) => {
   const shouldShowSeeMore = !isWalletPage && (cards?.length || 0) > limit;
 
   // Handle card click to open modal
-  const handleCardClick = (card: CardType) => {
+  const handleCardClick = (card: CardType): void => {
     setSelectedCard(card);
     setShowModal(true);
   };
 
   // Close modal
-  const closeModal = () => {
+  const closeModal = (): void => {
     setShowModal(false);
     setSelectedCard(null);
   };
@@ -65,7 +65,7 @@ const Wallet = ({ limit = 4 }: WalletProps) => {
             {error}
           </div>
         </div>
-      ) : !cards || cards.length === 0 ? (
+      ) : !displayedCards.length ? (
         <div className="text-center p-8">No cards available at this time.</div>
       ) : (
         <>
@@ -105,13 +105,12 @@ const Wallet = ({ limit = 4 }: WalletProps) => {
 };
 
 // Credit Card component
-const CreditCard = ({
-  card,
-  onClick,
-}: {
+interface CreditCardProps {
   card: CardType;
   onClick: () => void;
-}) => {
+}
+
+const CreditCard = ({ card, onClick }: CreditCardProps): JSX.Element => {
   // Get thumbnail URL using imageUtils
   const thumbnailUrl = imageUtils.getImageUrl(card.thumbnail, "card");
 
@@ -123,8 +122,16 @@ const CreditCard = ({
         .slice(0, 3) // Limit to 3 points for the card view
     : [];
 
+  const handleClick = (): void => {
+    onClick();
+  };
+
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>): void => {
+    e.stopPropagation(); // Prevent modal from opening
+  };
+
   return (
-    <div className="card hover-scale cursor-pointer" onClick={onClick}>
+    <div className="card hover-scale cursor-pointer" onClick={handleClick}>
       <div className="card-image-container w-full h-32 overflow-hidden p-2 flex items-center justify-center">
         <img
           src={thumbnailUrl}
@@ -165,9 +172,10 @@ const CreditCard = ({
             <a
               href={card.referral_link}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="flex items-center gap-1 text-xs hover:text-primary transition-colors"
-              onClick={(e) => e.stopPropagation()} // Prevent modal from opening
+              onClick={handleLinkClick}
+              aria-label={`Referral link for ${card.card_name}`}
             >
               <span>Referral</span>
               <ExternalLink size={10} />
@@ -182,15 +190,17 @@ const CreditCard = ({
 };
 
 // Card Detail Modal component
+interface CardDetailModalProps {
+  card: CardType;
+  isOpen: boolean;
+  onClose: () => void;
+}
+
 const CardDetailModal = ({
   card,
   isOpen,
   onClose,
-}: {
-  card: CardType;
-  isOpen: boolean;
-  onClose: () => void;
-}) => {
+}: CardDetailModalProps): JSX.Element | null => {
   // Get image URL using imageUtils
   const imageUrl = imageUtils.getImageUrl(card.thumbnail, "card");
 
@@ -201,17 +211,34 @@ const CardDetailModal = ({
         .filter((point) => point.trim().length > 0)
     : [];
 
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>): void => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
+  const handleCloseClick = (): void => {
+    onClose();
+  };
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+      onClick={handleBackdropClick}
+    >
       <div className="card w-full max-w-xl max-h-[90vh] overflow-hidden flex flex-col">
         {/* Modal Header */}
         <div className="flex justify-between items-center p-4 border-b-2 border-default">
           <h3 className="text-lg font-semibold">
             {card.card_name || "Card Details"}
           </h3>
-          <button onClick={onClose} className="hover:text-primary">
+          <button
+            onClick={handleCloseClick}
+            className="hover:text-primary"
+            aria-label="Close modal"
+          >
             <X size={20} />
           </button>
         </div>
@@ -231,7 +258,7 @@ const CardDetailModal = ({
           <div className="w-full md:w-1/2">
             <div className="mb-4">
               <h4 className="text-sm font-medium mb-1">Annual Fee</h4>
-              <p>{card.annual_fee ? card.annual_fee : "No Annual Fee"}</p>
+              <p>{card.annual_fee || "No Annual Fee"}</p>
             </div>
 
             <div>
@@ -255,8 +282,9 @@ const CardDetailModal = ({
             <a
               href={card.referral_link}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="btn btn-primary px-4 py-2 text-sm flex items-center gap-2"
+              aria-label={`Apply for ${card.card_name} via referral`}
             >
               <span>Apply via Referral</span>
               <ExternalLink size={14} />

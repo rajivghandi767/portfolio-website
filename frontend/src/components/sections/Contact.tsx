@@ -1,10 +1,10 @@
 // src/components/sections/Contact.tsx
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Send, AlertCircle, CheckCircle } from "lucide-react";
 import { ContactForm, ContactResponse, NotificationType } from "../../types";
 import apiService from "../../services/api";
 
-const Contact = () => {
+const Contact = (): JSX.Element => {
   const [formData, setFormData] = useState<ContactForm>({
     name: "",
     email: "",
@@ -12,7 +12,7 @@ const Contact = () => {
   });
 
   const [notification, setNotification] = useState<NotificationType>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   // Clear notification after 5 seconds
   useEffect(() => {
@@ -25,34 +25,58 @@ const Contact = () => {
     }
   }, [notification]);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { id, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [id]: value,
-    }));
-  };
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
+      const { id, value } = e.target;
+      setFormData((prev) => ({
+        ...prev,
+        [id]: value,
+      }));
+    },
+    []
+  );
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const resetForm = useCallback((): void => {
+    setFormData({ name: "", email: "", message: "" });
+  }, []);
+
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     e.preventDefault();
+
+    // Basic validation
+    if (
+      !formData.name.trim() ||
+      !formData.email.trim() ||
+      !formData.message.trim()
+    ) {
+      setNotification("error");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
       const response = await apiService.contact.send(formData);
 
-      if (response.error) {
+      // Check if response has error property
+      if ("error" in response && response.error) {
         throw new Error(response.error);
       }
 
-      setNotification("success");
-      setFormData({ name: "", email: "", message: "" });
+      // Check if response has data property and is successful
+      if ("data" in response && response.data) {
+        setNotification("success");
+        resetForm();
 
-      // Optional: Log notification status for debugging
-      const contactResponse = response.data as ContactResponse;
-      if (contactResponse?.notifications) {
-        console.log("Notification status:", contactResponse.notifications);
+        // Optional: Log notification status for debugging
+        const contactResponse = response.data as ContactResponse;
+        if (contactResponse?.notifications) {
+          console.log("Notification status:", contactResponse.notifications);
+        }
+      } else {
+        throw new Error("Unexpected response format");
       }
     } catch (error) {
       console.error("Error sending message:", error);
@@ -62,33 +86,47 @@ const Contact = () => {
     }
   };
 
+  const getNotificationContent = (): {
+    icon: JSX.Element;
+    message: string;
+    className: string;
+  } => {
+    if (notification === "success") {
+      return {
+        icon: <CheckCircle className="w-5 h-5 flex-shrink-0" />,
+        message: "Message sent successfully!",
+        className:
+          "bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-300 border border-green-200 dark:border-green-900",
+      };
+    } else {
+      return {
+        icon: <AlertCircle className="w-5 h-5 flex-shrink-0" />,
+        message: "Failed to send message. Please try again.",
+        className:
+          "bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300 border border-red-200 dark:border-red-900",
+      };
+    }
+  };
+
+  const notificationContent = notification ? getNotificationContent() : null;
+
   return (
     <div id="contact-form" className="mx-auto px-4 py-2 -mb-2">
       <h1 className="text-2xl font-semibold text-center mb-8">Contact Me</h1>
 
-      {notification && (
+      {notificationContent && (
         <div
-          className={`mb-6 p-3 rounded-lg max-w-sm mx-auto flex items-center gap-2 transition-all duration-300 ${
-            notification === "success"
-              ? "bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-300 border border-green-200 dark:border-green-900"
-              : "bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300 border border-red-200 dark:border-red-900"
-          }`}
+          className={`mb-6 p-3 rounded-lg max-w-sm mx-auto flex items-center gap-2 transition-all duration-300 ${notificationContent.className}`}
+          role="alert"
+          aria-live="polite"
         >
-          {notification === "success" ? (
-            <CheckCircle className="w-5 h-5 flex-shrink-0" />
-          ) : (
-            <AlertCircle className="w-5 h-5 flex-shrink-0" />
-          )}
-          <span className="text-sm">
-            {notification === "success"
-              ? "Message sent successfully!"
-              : "Failed to send message. Please try again."}
-          </span>
+          {notificationContent.icon}
+          <span className="text-sm">{notificationContent.message}</span>
         </div>
       )}
 
       <div className="card max-w-md mx-auto">
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="p-6 space-y-4" noValidate>
           <div className="space-y-2">
             <label htmlFor="name" className="block text-sm font-medium">
               Name
@@ -99,10 +137,13 @@ const Contact = () => {
               required
               value={formData.name}
               onChange={handleChange}
+              disabled={isSubmitting}
               className="w-full p-2 text-sm bg-transparent 
                        border border-default rounded-md
-                       focus:outline-none focus:ring-2 focus:ring-primary"
+                       focus:outline-none focus:ring-2 focus:ring-primary
+                       disabled:opacity-50 disabled:cursor-not-allowed"
               placeholder="Your name"
+              aria-describedby="name-error"
             />
           </div>
 
@@ -116,10 +157,13 @@ const Contact = () => {
               required
               value={formData.email}
               onChange={handleChange}
+              disabled={isSubmitting}
               className="w-full p-2 text-sm bg-transparent 
                        border border-default rounded-md
-                       focus:outline-none focus:ring-2 focus:ring-primary"
+                       focus:outline-none focus:ring-2 focus:ring-primary
+                       disabled:opacity-50 disabled:cursor-not-allowed"
               placeholder="your.email@example.com"
+              aria-describedby="email-error"
             />
           </div>
 
@@ -132,11 +176,14 @@ const Contact = () => {
               required
               value={formData.message}
               onChange={handleChange}
+              disabled={isSubmitting}
               rows={4}
               className="w-full p-2 text-sm bg-transparent 
                        border border-default rounded-md
-                       focus:outline-none focus:ring-2 focus:ring-primary"
+                       focus:outline-none focus:ring-2 focus:ring-primary
+                       disabled:opacity-50 disabled:cursor-not-allowed"
               placeholder="Your message..."
+              aria-describedby="message-error"
             />
           </div>
 
@@ -144,16 +191,20 @@ const Contact = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="btn btn-primary w-full p-2 flex items-center justify-center gap-2 rounded-md"
+              className="btn btn-primary w-full p-2 flex items-center justify-center gap-2 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+              aria-describedby="submit-status"
             >
               {isSubmitting ? (
                 <>
-                  <div className="animate-spin h-4 w-4 border-2 border-white dark:border-black border-t-transparent dark:border-t-transparent rounded-full"></div>
+                  <div
+                    className="animate-spin h-4 w-4 border-2 border-white dark:border-black border-t-transparent dark:border-t-transparent rounded-full"
+                    aria-hidden="true"
+                  ></div>
                   <span>Sending...</span>
                 </>
               ) : (
                 <>
-                  <Send className="w-4 h-4" />
+                  <Send className="w-4 h-4" aria-hidden="true" />
                   <span>Send Message</span>
                 </>
               )}
