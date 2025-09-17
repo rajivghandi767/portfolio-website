@@ -1,4 +1,3 @@
-
 from .base import *
 import os
 
@@ -13,8 +12,6 @@ ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 # ============================================================================
 # CSRF SETTINGS FOR PRODUCTION
 # ============================================================================
-
-# CSRF settings for subdomain setup
 CSRF_COOKIE_SECURE = True
 CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.getenv(
     'CSRF_TRUSTED_ORIGINS', '').split(',') if origin.strip()]
@@ -35,26 +32,26 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 # ============================================================================
 # HTTPS SECURITY SETTINGS (Adjusted for NPM/Cloudflare)
 # ============================================================================
-# NPM/Cloudflare handles SSL termination
 SECURE_SSL_REDIRECT = False
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-# Basic security headers (Cloudflare may override some)
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
-
-# Frame options - allow for resume viewer
 X_FRAME_OPTIONS = "SAMEORIGIN"
 
 # ============================================================================
-# STATIC & MEDIA FILES FOR PRODUCTION
+# STATIC & MEDIA FILES FOR PRODUCTION - FIXED
 # ============================================================================
-STATIC_URL = 'https://portfolio-api.rajivwallace.com/static/'
-MEDIA_URL = 'https://portfolio-api.rajivwallace.com/media/'
-
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
 STATIC_ROOT = '/home/backend/django/staticfiles'
 MEDIA_ROOT = '/home/backend/django/mediafiles'
+
+# Ensure directories exist
+os.makedirs(MEDIA_ROOT, exist_ok=True)
+os.makedirs(STATIC_ROOT, exist_ok=True)
+os.makedirs(os.path.join(MEDIA_ROOT, 'info', 'photos'), exist_ok=True)
+os.makedirs(os.path.join(MEDIA_ROOT, 'resumes'), exist_ok=True)
 
 # ============================================================================
 # DATABASE CONFIGURATION FOR PRODUCTION
@@ -68,20 +65,33 @@ DATABASES = {
         'HOST': os.getenv('POSTGRESQL_HOST'),
         'PORT': os.getenv('POSTGRESQL_PORT'),
         'OPTIONS': {
-            'connect_timeout': 30,  # Reduced for Pi 4B
+            'connect_timeout': 30,
             'sslmode': 'prefer',
         },
-        'CONN_MAX_AGE': 60,  # Connection pooling
+        'CONN_MAX_AGE': 60,
     }
 }
 
 # ============================================================================
-# SIMPLIFIED LOGGING CONFIGURATION
+# FILE UPLOAD SETTINGS - FIXED SIZE LIMITS
+# ============================================================================
+# Increased to handle 5MB files + Django overhead
+FILE_UPLOAD_MAX_MEMORY_SIZE = 6 * 1024 * 1024  # 6MB
+DATA_UPLOAD_MAX_MEMORY_SIZE = 6 * 1024 * 1024  # 6MB
+FILE_UPLOAD_PERMISSIONS = 0o644
+FILE_UPLOAD_DIRECTORY_PERMISSIONS = 0o755
+
+# ============================================================================
+# ENHANCED LOGGING CONFIGURATION
 # ============================================================================
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
         'simple': {
             'format': '{levelname} {asctime} {name} {message}',
             'style': '{',
@@ -98,7 +108,7 @@ LOGGING = {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
             'filename': '/home/backend/django/logs/errors.log',
-            'formatter': 'simple',
+            'formatter': 'verbose',
         },
         'console': {
             'level': 'INFO',
@@ -117,22 +127,40 @@ LOGGING = {
             'propagate': False,
         },
         'django.request': {
-            'handlers': ['error_file'],
+            'handlers': ['error_file', 'console'],
             'level': 'ERROR',
+            'propagate': False,
+        },
+        'info': {
+            'handlers': ['file', 'error_file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'projects': {
+            'handlers': ['file', 'error_file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'blog': {
+            'handlers': ['file', 'error_file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'wallet': {
+            'handlers': ['file', 'error_file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'contacts': {
+            'handlers': ['file', 'error_file'],
+            'level': 'DEBUG',
             'propagate': False,
         },
     },
 }
 
 # ============================================================================
-# PERFORMANCE OPTIMIZATIONS FOR PI 4B
-# ============================================================================
-# Optimize file uploads for Pi
-FILE_UPLOAD_MAX_MEMORY_SIZE = 2621440  # 2.5MB (reduced for Pi)
-DATA_UPLOAD_MAX_MEMORY_SIZE = 2621440  # 2.5MB
-
-# ============================================================================
-# SIMPLIFIED REST FRAMEWORK SETTINGS
+# REST FRAMEWORK SETTINGS FOR PRODUCTION
 # ============================================================================
 REST_FRAMEWORK.update({
     'DEFAULT_RENDERER_CLASSES': [
@@ -142,19 +170,16 @@ REST_FRAMEWORK.update({
         'rest_framework.throttling.AnonRateThrottle',
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '1000/hour',  # More reasonable for portfolio
-        'contact': '20/hour',  # Contact form limit
-    }
+        'anon': '1000/hour',
+        'contact': '20/hour',
+    },
+    # Disable pagination for simple array responses
+    'DEFAULT_PAGINATION_CLASS': None,
 })
 
 # ============================================================================
 # OPTIONAL SETTINGS
 # ============================================================================
-# Discord webhook for contact notifications
 DISCORD_WEBHOOK_URL = os.getenv('DISCORD_WEBHOOK_URL')
-
-# Custom admin URL for security
 ADMIN_URL = os.getenv('ADMIN_URL', 'admin/')
-
-# Health check
 HEALTH_CHECK_ENABLED = True
