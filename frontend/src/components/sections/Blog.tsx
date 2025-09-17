@@ -20,7 +20,8 @@ const Blog = ({ limit = 3 }: BlogProps) => {
   } = useApi<BlogPost[]>(() => apiService.blog.getAll());
 
   // Determine which posts to display based on limit
-  const displayedPosts = (posts || []).slice(0, limit);
+  const postsArray = Array.isArray(posts) ? posts : [];
+  const displayedPosts = postsArray.slice(0, limit);
 
   // Determine if we should show the "See More" button
   const shouldShowSeeMore = (posts?.length || 0) > limit;
