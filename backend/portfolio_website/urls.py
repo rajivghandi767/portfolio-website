@@ -37,24 +37,8 @@ def api_root(request):
             "api": f"{base_url}api/",
             "auth": f"{base_url}api-auth/",
             "health": f"{base_url}health/",
-            "health_detailed": f"{base_url}health/detailed/",
-
-            # Main API endpoints
-            "info": f"{base_url}api/info/",
-            "projects": f"{base_url}api/projects/",
-            "blog_posts": f"{base_url}api/post/",
-            "blog_categories": f"{base_url}api/category/",
-            "cards": f"{base_url}api/cards/",
-            "contact": f"{base_url}api/contact/",
-
-            # Resume endpoints
-            "resume_list": f"{base_url}api/resume/",
-            "resume_view": f"{base_url}api/resume/view/",
-            "resume_download": f"{base_url}api/resume/download/",
-            "resume_status": f"{base_url}api/resume/status/",
-        },
-        "media_url": settings.MEDIA_URL,
-        "static_url": settings.STATIC_URL,
+            "health_detailed": f"{base_url}health/detailed/"
+        }
     })
 
 
@@ -103,9 +87,3 @@ else:
     # This is needed for Django to generate correct URLs in serializers
     urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)
-
-# Custom error handlers (optional, for better API error responses)
-handler400 = 'your_app.views.bad_request'
-handler403 = 'your_app.views.permission_denied'
-handler404 = 'your_app.views.page_not_found'
-handler500 = 'your_app.views.server_error'
