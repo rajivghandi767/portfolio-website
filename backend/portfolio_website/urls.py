@@ -73,7 +73,7 @@ urlpatterns = [
     path('health/detailed/', health_detailed, name='health_detailed'),
 
     # Prometheus monitoring
-    path('metrics', include('django_prometheus.urls')),
+    path('', include('django_prometheus.urls')),
 ]
 
 # Static and media file serving fallback
