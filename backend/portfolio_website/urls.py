@@ -31,7 +31,7 @@ def api_root(request):
         "message": "Portfolio API",
         "status": "running",
         "version": "1.0",
-        "documentation": f"{base_url}api/",
+        "api_url": f"{base_url}api/",
         "endpoints": {
             "admin": f"{base_url}admin/",
             "api": f"{base_url}api/",
@@ -74,8 +74,7 @@ urlpatterns = [
     path('health/detailed/', health_detailed, name='health_detailed'),
 ]
 
-# Static and media file serving
-# Note: In production, nginx should handle static files, but this provides fallback
+# Static and media file serving fallback
 if settings.DEBUG:
     # Development: Serve media files through Django
     urlpatterns += static(settings.MEDIA_URL,

@@ -123,11 +123,6 @@ class ResumeViewSet(viewsets.ModelViewSet):
                 # Cache for 1 hour
                 response['Cache-Control'] = 'public, max-age=3600'
 
-                # Add CORS headers for cross-origin requests
-                response['Access-Control-Allow-Origin'] = '*'
-                response['Access-Control-Allow-Methods'] = 'GET, OPTIONS'
-                response['Access-Control-Allow-Headers'] = 'Content-Type'
-
                 logger.info(f"Resume served for viewing: {resume.filename}")
                 return response
 
