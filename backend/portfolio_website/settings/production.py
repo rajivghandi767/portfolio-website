@@ -58,7 +58,7 @@ os.makedirs(os.path.join(MEDIA_ROOT, 'resumes'), exist_ok=True)
 # ============================================================================
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django_prometheus.db.backends.postgresql',
         'NAME': os.getenv('POSTGRESQL_DB'),
         'USER': os.getenv('POSTGRESQL_USER'),
         'PASSWORD': os.getenv('POSTGRESQL_PASSWORD'),
@@ -183,3 +183,12 @@ REST_FRAMEWORK.update({
 DISCORD_WEBHOOK_URL = os.getenv('DISCORD_WEBHOOK_URL')
 ADMIN_URL = os.getenv('ADMIN_URL', 'admin/')
 HEALTH_CHECK_ENABLED = True
+
+# ============================================================================
+# PROMETHEUS MONITORING CONFIGURATION
+# ============================================================================
+PROMETHEUS_EXPORT_MIGRATIONS = True
+PROMETHEUS_LATENCY_BUCKETS = (
+    0.008, 0.016, 0.032, 0.064, 0.128, 0.256, 0.512, 1.024, 2.048, 4.096, 8.192, 16.384, float(
+        'inf')
+)
