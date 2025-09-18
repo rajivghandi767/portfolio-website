@@ -1,5 +1,5 @@
 services:
-  backend:
+  portfolio-backend:
     build:
       context: ./backend
       dockerfile: Dockerfile.prod
@@ -23,7 +23,7 @@ services:
       retries: 3
       start_period: 60s
 
-  frontend:
+  portfolio-frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile.prod
@@ -33,7 +33,7 @@ services:
     container_name: portfolio-frontend
     restart: unless-stopped
     depends_on:
-      backend:
+      portfolio-backend:
         condition: service_healthy
     deploy:
       resources:
@@ -47,14 +47,14 @@ services:
       retries: 3
 
   # Single unified nginx service
-  nginx:
+  portfolio-nginx:
     build:
       context: ./nginx
       dockerfile: Dockerfile
     container_name: portfolio-nginx
     restart: unless-stopped
     depends_on:
-      backend:
+      portfolio-backend:
         condition: service_healthy
     volumes:
       - portfolio_static:/usr/share/nginx/html/static:ro
