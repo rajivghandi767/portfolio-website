@@ -36,8 +36,7 @@ def api_root(request):
             "admin": f"{base_url}admin/",
             "api": f"{base_url}api/",
             "auth": f"{base_url}api-auth/",
-            "health": f"{base_url}health/",
-            "health_detailed": f"{base_url}health/detailed/"
+
         }
     })
 
@@ -74,7 +73,7 @@ urlpatterns = [
     path('health/detailed/', health_detailed, name='health_detailed'),
 
     # Prometheus monitoring
-    path('metrics/', include('django_prometheus.urls')),
+    path('metrics', include('django_prometheus.urls')),
 ]
 
 # Static and media file serving fallback
