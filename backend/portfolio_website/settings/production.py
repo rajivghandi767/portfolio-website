@@ -187,7 +187,7 @@ HEALTH_CHECK_ENABLED = True
 # ============================================================================
 # PROMETHEUS MONITORING CONFIGURATION
 # ============================================================================
-PROMETHEUS_EXPORT_MIGRATIONS = True
+PROMETHEUS_EXPORT_MIGRATIONS = False
 PROMETHEUS_LATENCY_BUCKETS = (
     0.008, 0.016, 0.032, 0.064, 0.128, 0.256, 0.512, 1.024, 2.048, 4.096, 8.192, 16.384, float(
         'inf')
