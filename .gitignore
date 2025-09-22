@@ -93,6 +93,6 @@ npm-debug.log*
 
 /backend/staticfiles
 /backend/mediafiles
-/backend/portfolio_website/settings/local.py
+/backend/config/settings/local.py
 
 /frontend/README.md

@@ -69,7 +69,7 @@ REST_FRAMEWORK = {
 # ============================================================================
 # URL CONFIGURATION
 # ============================================================================
-ROOT_URLCONF = 'portfolio_website.urls'
+ROOT_URLCONF = 'config.urls'
 
 # ============================================================================
 # TEMPLATE CONFIGURATION
@@ -93,7 +93,7 @@ TEMPLATES = [
 # ============================================================================
 # WSGI CONFIGURATION
 # ============================================================================
-WSGI_APPLICATION = 'portfolio_website.wsgi.application'
+WSGI_APPLICATION = 'config.wsgi.application'
 
 # ============================================================================
 # PASSWORD VALIDATION
