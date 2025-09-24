@@ -6,7 +6,6 @@ import os
 # ============================================================================
 DEBUG = False
 
-# Production hosts
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
 # ============================================================================
@@ -15,7 +14,7 @@ ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 CSRF_COOKIE_SECURE = True
 CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.getenv(
     'CSRF_TRUSTED_ORIGINS', '').split(',') if origin.strip()]
-CSRF_COOKIE_HTTPONLY = False  # Allow JavaScript access for AJAX
+CSRF_COOKIE_HTTPONLY = False
 CSRF_COOKIE_SAMESITE = 'Lax'
 
 # ============================================================================
@@ -40,7 +39,7 @@ SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 X_FRAME_OPTIONS = "SAMEORIGIN"
 
 # ============================================================================
-# STATIC & MEDIA FILES FOR PRODUCTION - FIXED
+# STATIC & MEDIA FILES FOR PRODUCTION
 # ============================================================================
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
@@ -173,7 +172,7 @@ REST_FRAMEWORK.update({
         'anon': '1000/hour',
         'contact': '20/hour',
     },
-    # Disable pagination for simple array responses
+
     'DEFAULT_PAGINATION_CLASS': None,
 })
 
