@@ -2,19 +2,15 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
 load_dotenv()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# ============================================================================
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # ============================================================================
 # SECURITY SETTINGS
 # ============================================================================
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False  # Will be overridden in local.py if needed
 
 # ============================================================================
 # APPLICATION DEFINITION
