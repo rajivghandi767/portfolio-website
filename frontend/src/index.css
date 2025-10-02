@@ -195,6 +195,47 @@
   transform: scale(1.02);
 }
 
+.prose h1,
+.prose h2,
+.prose h3 {
+  margin-bottom: 0.5em;
+  margin-top: 1em;
+  font-weight: 600;
+}
+
+.prose p {
+  line-height: 1.6;
+  margin-bottom: 1em;
+}
+
+.prose ul,
+.prose ol {
+  margin-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+.prose a {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.prose img {
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+}
+
+.prose img[style*="float: left"],
+.prose img[style*="float:left"] {
+  margin-right: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.prose img[style*="float: right"],
+.prose img[style*="float:right"] {
+  margin-left: 1.5em;
+  margin-bottom: 0.5em;
+}
+
 .text-gradient-light {
   background: linear-gradient(
     to right,
@@ -268,4 +309,15 @@
   --card: #000000;
   --header-bg: #000000;
   --nav-bg: #000000;
+}
+
+@layer components {
+  .card-prose-preview ul {
+    /* Revert to list-none and remove pl-5 */
+    @apply list-none p-0 m-0 space-y-1;
+  }
+  .card-prose-preview li,
+  .card-prose-preview p {
+    @apply m-0 p-0 text-sm;
+  }
 }

@@ -8,13 +8,27 @@ export interface ApiResponse<T = any> {
 }
 
 /**
+ * Navigation Item Type
+ */
+export interface NavigationItem {
+  id: number;
+  label: string;
+  path: string;
+  sectionRef?: string | null;
+}
+
+/**
  * Bio/Profile information type
  */
 export interface Info {
   id: number;
+  site_header: string;
+  professional_title: string;
   greeting: string;
   bio: string;
-  profile_photo: string | null;
+  profile_photo_url: string | null;
+  github: string;
+  linkedin: string;
 }
 
 /**
@@ -25,10 +39,11 @@ export interface BlogPost {
   title: string;
   author?: string;
   body: string;
-  image: string;
+  image_url: string;
   created_at?: string;
   updated_at?: string;
   tags?: string[];
+  order?: number;
 }
 
 /**
@@ -38,10 +53,11 @@ export interface Project {
   id: number;
   title: string;
   description: string;
-  thumbnail: string;
+  thumbnail_url: string;
   repo: string;
   deployed_url?: string;
   technology: string;
+  order?: number;
 }
 
 /**
@@ -52,8 +68,9 @@ export interface Card {
   card_name: string;
   description: string;
   annual_fee?: string;
-  thumbnail?: string;
+  image_url?: string;
   referral_link?: string;
+  order?: number;
 }
 
 /**
@@ -134,5 +151,25 @@ export interface LayoutProps {
  * Common props for page components 
  */
 export interface PageProps {
+  limit?: number;
+}
+
+export interface DataLoaderProps<T> {
+  isLoading: boolean;
+  error: string | null;
+  data: T[] | null | undefined;
+  children: (data: T[]) => React.ReactNode;
+  emptyMessage?: string;
+}
+
+export interface ProjectsProps {
+  limit?: number;
+}
+
+export interface BlogProps {
+  limit?: number;
+}
+
+export interface WalletProps {
   limit?: number;
 }

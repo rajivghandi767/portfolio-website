@@ -1,8 +1,14 @@
 // src/components/layout/Footer.tsx
 import { Github, Linkedin } from "lucide-react";
+import apiService from "../../services/api";
+import useApi from "../../hooks/useApi";
+import { Info } from "../../types";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+
+  const { data: info } = useApi<Info[]>(() => apiService.info.get());
+  const infoData = info?.[0];
 
   return (
     <footer className="py-6 mt-6 border-t border-default">
@@ -11,7 +17,7 @@ const Footer = () => {
           {/* Social Icons */}
           <div className="flex gap-4 mb-4">
             <a
-              href="https://linkedin.com/in/rajiv-wallace"
+              href={infoData?.linkedin}
               aria-label="LinkedIn Profile"
               className="btn btn-primary p-2 rounded-full"
               target="_blank"
@@ -21,7 +27,7 @@ const Footer = () => {
             </a>
 
             <a
-              href="https://github.com/rajivghandi767"
+              href={infoData?.github}
               aria-label="GitHub Profile"
               className="btn btn-primary p-2 rounded-full"
               target="_blank"
@@ -34,9 +40,9 @@ const Footer = () => {
           {/* Copyright text */}
           <div className="text-center">
             <p className="text-sm">
-              &copy; {currentYear} Rajiv Wallace. All rights reserved.
+              &copy; {currentYear} {infoData?.site_header}. All rights reserved.
             </p>
-            <p className="text-xs mt-1">Software Engineer & Web Developer</p>
+            <p className="text-xs mt-1">{infoData?.professional_title}</p>
           </div>
         </div>
       </div>

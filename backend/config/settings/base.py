@@ -1,31 +1,25 @@
 from pathlib import Path
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
 
 # ============================================================================
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-
+# BASE DIRECTORY
 # ============================================================================
-# SECURITY SETTINGS
-# ============================================================================
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+BASE_DIR = Path(__file__).resolve().parents[2]
 
 # ============================================================================
 # APPLICATION DEFINITION
 # ============================================================================
 INSTALLED_APPS = [
+    # Third-Party apps
     'django_prometheus',
+    'rest_framework',
+    'django_ckeditor_5',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    # Third party apps
-    'rest_framework',
 
     # Local apps
     'info',
@@ -118,18 +112,62 @@ USE_I18N = True
 USE_TZ = True
 
 # ============================================================================
-# STATIC FILES CONFIGURATION
-# ============================================================================
-STATIC_URL = '/static/'
-STATIC_ROOT = '/home/backend/django/staticfiles'
-
-# ============================================================================
-# MEDIA FILES CONFIGURATION
-# ============================================================================
-MEDIA_URL = '/media/'
-MEDIA_ROOT = '/home/backend/django/mediafiles'
-
-# ============================================================================
 # DEFAULT PRIMARY KEY FIELD TYPE
 # ============================================================================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ============================================================================
+# CKEDITOR CONFIGURATION
+# ============================================================================
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
+CKEDITOR_5_CONFIGS = {
+    'default': {
+        'toolbar': ['heading', '|', 'bold', 'italic', 'link',
+                    'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', ],
+    },
+    'extends': {
+        'shouldNotGroupWhenFull': 'True',
+        'toolbar': [
+            'heading', '|',
+            'fullscreen', 'imageUpload', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
+            'bold', 'italic', 'underline', 'strikethrough', 'link', '|',
+            'alignment', '|',
+            'bulletedList', 'numberedList', 'todoList', '|',
+            'outdent', 'indent', '|',
+            'fontSize', 'fontFamily', '|',
+            'code', 'codeBlock', 'sourceEditing', 'subscript', 'superscript', '|',
+            'blockQuote', 'insertImage', 'mediaEmbed', 'insertTable', '|',
+            'removeFormat',
+        ],
+        'image': {
+            'toolbar': ['imageTextAlternative', '|', 'imageStyle:alignLeft',
+                        'imageStyle:alignRight', 'imageStyle:alignCenter', 'imageStyle:side', '|'],
+            'styles': [
+                'full',
+                'side',
+                'alignLeft',
+                'alignRight',
+                'alignCenter',
+            ]
+        },
+        'table': {
+            'contentToolbar': ['tableColumn', 'tableRow', 'mergeTableCells',
+                               'tableProperties', 'tableCellProperties'],
+        },
+        'heading': {
+            'options': [
+                {'model': 'paragraph', 'title': 'Paragraph',
+                    'class': 'ck-heading_paragraph'},
+                {'model': 'heading1', 'view': 'h1', 'title': 'Heading 1',
+                    'class': 'ck-heading_heading1'},
+                {'model': 'heading2', 'view': 'h2', 'title': 'Heading 2',
+                    'class': 'ck-heading_heading2'},
+                {'model': 'heading3', 'view': 'h3',
+                    'title': 'Heading 3', 'class': 'ck-heading_heading3'}
+            ]
+        },
+    },
+}
+# ============================================================================

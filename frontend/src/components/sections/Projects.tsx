@@ -1,34 +1,19 @@
 // src/components/sections/Projects.tsx
 import { Link } from "react-router-dom";
 import { Github, ChevronRight } from "lucide-react";
-import { Project } from "../../types";
+import { Project, ProjectsProps } from "../../types";
 import apiService from "../../services/api";
 import useApi from "../../hooks/useApi";
 import imageUtils from "../../utils/imageUtils";
-
-interface ProjectsProps {
-  limit?: number;
-}
+import DataLoader from "../common/DataLoader";
 
 const Projects = ({ limit = 3 }: ProjectsProps) => {
-  // Use our custom hook to fetch projects
   const {
     data: projects,
     isLoading,
     error,
   } = useApi<Project[]>(() => apiService.projects.getAll());
-
-  // Check if we're on the dedicated projects page
   const isProjectsPage = window.location.pathname === "/projects";
-
-  // Determine which projects to display based on limit
-  const projectsArray = Array.isArray(projects) ? projects : [];
-  const displayedProjects = isProjectsPage
-    ? projectsArray
-    : projectsArray.slice(0, limit);
-
-  // Determine if we should show the "See More" button
-  const shouldShowSeeMore = !isProjectsPage && (projects?.length || 0) > limit;
 
   return (
     <div id="projects" className="mx-auto px-4 py-8">
@@ -38,40 +23,41 @@ const Projects = ({ limit = 3 }: ProjectsProps) => {
         </Link>
       </div>
 
-      {isLoading ? (
-        <div className="flex justify-center items-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-        </div>
-      ) : error ? (
-        <div className="max-w-2xl mx-auto">
-          <div className="bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300 p-4 rounded-lg border border-red-200 dark:border-red-900">
-            {error}
-          </div>
-        </div>
-      ) : !displayedProjects.length ? (
-        <div className="text-center p-8">
-          No projects available at this time.
-        </div>
-      ) : (
-        <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-w-4xl mx-auto">
-            {displayedProjects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
-            ))}
-          </div>
+      <DataLoader<Project>
+        isLoading={isLoading}
+        error={error}
+        data={projects}
+        emptyMessage="No projects available at this time."
+      >
+        {(allProjects) => {
+          const displayedProjects = isProjectsPage
+            ? allProjects
+            : allProjects.slice(0, limit);
+          const shouldShowSeeMore =
+            !isProjectsPage && allProjects.length > limit;
 
-          {shouldShowSeeMore && (
-            <div className="flex justify-center mt-8">
-              <Link to="/projects">
-                <button className="btn btn-outline flex items-center gap-2 px-4 py-2">
-                  <span>See More Projects</span>
-                  <ChevronRight size={16} />
-                </button>
-              </Link>
-            </div>
-          )}
-        </>
-      )}
+          return (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-w-4xl mx-auto">
+                {displayedProjects.map((project) => (
+                  <ProjectCard key={project.id} project={project} />
+                ))}
+              </div>
+
+              {shouldShowSeeMore && (
+                <div className="flex justify-center mt-8">
+                  <Link to="/projects">
+                    <button className="btn btn-outline flex items-center gap-2 px-4 py-2">
+                      <span>See More Projects</span>
+                      <ChevronRight size={16} />
+                    </button>
+                  </Link>
+                </div>
+              )}
+            </>
+          );
+        }}
+      </DataLoader>
     </div>
   );
 };
@@ -82,8 +68,7 @@ interface ProjectCardProps {
 }
 
 const ProjectCard = ({ project }: ProjectCardProps) => {
-  // Get image URL using our image utility
-  const imageUrl = imageUtils.getImageUrl(project.thumbnail, "project");
+  const imageUrl = imageUtils.getImageUrl(project.thumbnail_url, "project");
 
   return (
     <div className="card hover-scale">
@@ -107,20 +92,17 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1 hover:text-primary transition-colors text-xs"
-              aria-label={`View source code for ${project.title}`}
             >
               <Github size={12} />
               <span>Code</span>
             </a>
           )}
-
           {project.deployed_url && (
             <a
               href={project.deployed_url}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1 hover:text-primary transition-colors text-xs"
-              aria-label={`View demo for ${project.title}`}
             >
               <span>Demo</span>
             </a>

@@ -22,7 +22,7 @@ class ApiError extends Error {
 }
 
 function getApiUrl(): string {
-  const baseUrl = import.meta.env.VITE_API_URL || 'https://portfolio-api.rajivwallace.com';
+  const baseUrl = import.meta.env.VITE_API_URL;
   return `${baseUrl}/api/`;
 }
 
@@ -291,48 +291,6 @@ const apiService = {
       console.log('💳 Fetching cards...');
       return fetchApi<Card[]>('cards');
     }
-  },
-
-  // Image URL handling with better error handling
-  getImageUrl: (imagePath: string | null | undefined): string => {
-    if (!imagePath) {
-      console.log('🖼️ No image path provided, returning empty string');
-      return "";
-    }
-    
-    if (imagePath.startsWith("http")) {
-      console.log('🌐 Using absolute URL:', imagePath);
-      return imagePath;
-    }
-    
-    if (imagePath.startsWith("data:")) {
-      console.log('📊 Using data URL');
-      return imagePath;
-    }
-    
-    // Clean and normalize path
-    const cleanPath = imagePath.replace(/^\/+/, "");
-    
-    // Handle Django media/static files
-    if (cleanPath.startsWith('media/') || cleanPath.startsWith('static/')) {
-      const baseUrl = import.meta.env.VITE_API_URL || 'https://portfolio-api.rajivwallace.com';
-      const fullUrl = `${baseUrl}/${cleanPath}`;
-      console.log('📁 Media/static URL:', fullUrl);
-      return fullUrl;
-    }
-    
-    // Handle relative paths that might be Django URLs
-    if (cleanPath.includes('/media/') || cleanPath.includes('/static/')) {
-      const baseUrl = import.meta.env.VITE_API_URL || 'https://portfolio-api.rajivwallace.com';
-      const fullUrl = `${baseUrl}${imagePath}`;
-      console.log('🔗 Django URL:', fullUrl);
-      return fullUrl;
-    }
-    
-    // Default to local asset
-    const localUrl = `/${cleanPath}`;
-    console.log('🏠 Local asset URL:', localUrl);
-    return localUrl;
   },
 
   // Utility methods

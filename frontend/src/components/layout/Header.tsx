@@ -2,14 +2,9 @@ import { useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { Sun, Moon, Menu, X, Home as HomeIcon } from "lucide-react";
 import { useThemeContext } from "../../context/ThemeContext";
-
-// Type definition for navigation items
-type NavigationItem = {
-  id: number;
-  label: string;
-  path: string;
-  sectionRef?: string | null;
-};
+import apiService from "../../services/api";
+import useApi from "../../hooks/useApi";
+import { NavigationItem, Info } from "../../types";
 
 // Separate component for theme toggle button
 const ThemeToggleButton = () => {
@@ -59,6 +54,9 @@ const Header = () => {
   const location = useLocation();
   const currentPath = location.pathname;
   const isHomePage = currentPath === "/";
+
+  const { data: info } = useApi<Info[]>(() => apiService.info.get());
+  const infoData = info?.[0];
 
   // Compute navigation items based on current page
   const navItems: NavigationItem[] = isHomePage
@@ -150,11 +148,10 @@ const Header = () => {
 
             <div className="flex-1 text-center">
               <h1 className="text-2xl text-header">
-                <span>Rajiv Wallace</span>
-                <span> 🇩🇲</span>
+                <span>{infoData?.site_header}</span>
               </h1>
               <h2 className="text-l text-header">
-                Software Engineer & Web Developer
+                {infoData?.professional_title}
               </h2>
             </div>
 

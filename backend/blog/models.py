@@ -1,4 +1,5 @@
 from django.db import models
+from django_ckeditor_5.fields import CKEditor5Field
 
 
 class Category(models.Model):
@@ -13,11 +14,17 @@ class Category(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=255)
-    body = models.TextField()
+    body = CKEditor5Field('Text', config_name='extends')
     created_on = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
-    image = models.FileField(upload_to="blog_images/", blank=True)
+    image = models.ImageField(upload_to='post_images/', blank=True, null=True)
     categories = models.ManyToManyField("Category", related_name="posts")
+    order = models.PositiveIntegerField(
+        default=0, help_text="Manually set order for blog posts. Default is newest first."
+    )
+
+    class Meta:
+        ordering = ['order', '-created_on']
 
     def __str__(self):
         return self.title

@@ -23,7 +23,7 @@ from health_check.views import health_detailed, health_simple
 @cache_control(max_age=300)  # Cache for 5 minutes
 def api_root(request):
     """
-    API root endpoint with comprehensive endpoint listing
+    API Endpoint List
     """
     base_url = request.build_absolute_uri('/')
 
@@ -41,7 +41,6 @@ def api_root(request):
     })
 
 
-# Configure Django REST Framework router
 router = DefaultRouter()
 
 # Register viewsets with explicit basename for better URL naming
@@ -56,24 +55,25 @@ router.register('contact', ContactViewSet, basename='contact')
 
 # URL patterns
 urlpatterns = [
-    # Root API endpoint
+    # Root API Endpoint
     path('', api_root, name='api-root'),
 
-    # API routes (includes all the router URLs)
+    # API Routes
     path('api/', include(router.urls)),
 
-    # Admin interface
+    # Admin Interface
     path('admin/', admin.site.urls),
 
-    # DRF authentication
+    # DRF Authentication
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
-    # Health check endpoints
+    # Health Check Endpoints
     path('health/', health_simple, name='health_simple'),
     path('health/detailed/', health_detailed, name='health_detailed'),
 
-    # Prometheus monitoring
-    path('', include('django_prometheus.urls')),
+    # Third-Party App URLs
+    path('', include('django_prometheus.urls')),   # Prometheus Monitoring
+    path("ckeditor5/", include('django_ckeditor_5.urls')),  # CKEditor5
 ]
 
 # Static and media file serving fallback

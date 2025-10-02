@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.utils.safestring import mark_safe
+from django.urls import reverse
 from blog.models import Category, Comment, Post
 
 
@@ -9,7 +11,8 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('title', 'created_on', 'order')
+    list_editable = ('order',)
 
 
 @admin.register(Comment)
