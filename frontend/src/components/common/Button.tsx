@@ -1,4 +1,3 @@
-// src/components/common/Button.tsx
 import { cn } from "@/utils/styleUtils";
 
 type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "link";

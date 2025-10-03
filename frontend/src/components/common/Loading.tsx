@@ -1,4 +1,3 @@
-// src/components/common/Loading.tsx
 import { cn } from "@/utils/styleUtils";
 
 interface LoadingProps {

@@ -1,4 +1,3 @@
-// src/App.tsx
 import { lazy, Suspense } from "react";
 import {
   BrowserRouter as Router,

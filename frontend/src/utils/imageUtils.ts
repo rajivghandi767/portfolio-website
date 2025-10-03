@@ -1,51 +1,14 @@
-// src/utils/imageUtils.ts
-const imageUtils = {
-  /**
-   * Convert relative image paths to full URLs
-   * @param imagePath Relative or absolute image path
-   * @param type Image type for fallback (optional)
-   * @returns Full image URL or placeholder
-   */
-  getImageUrl: (imagePath: string | null | undefined, type?: string): string => {
-    // If no image path provided, return a proper data URL placeholder
-    if (!imagePath) {
-      return createPlaceholderDataUrl(type);
-    }
-    
-    // If already a full URL, return as is
-    if (imagePath.startsWith("http")) {
-      return imagePath;
-    }
-    
-    // If already a data URL, return as is
-    if (imagePath.startsWith("data:")) {
-      return imagePath;
-    }
-    
-    // For relative paths starting with media/ or static/, use API base URL
-    const cleanPath = imagePath.replace(/^\/+/, "");
-    
-    if (cleanPath.startsWith('media/') || cleanPath.startsWith('static/')) {
-      const baseUrl = import.meta.env.VITE_API_URL || 'https://portfolio-api.rajivwallace.com';
-      return `${baseUrl}/${cleanPath}`;
-    }
-    
-    // For other relative paths, assume they're local assets
-    return `/${cleanPath}`;
-  }
-};
-
 /**
- * Create a proper data URL placeholder SVG
- * @param type Type of image for appropriate placeholder
- * @returns Data URL for SVG placeholder
+ * Creates a placeholder SVG as a data URL.
+ * @param type - A string key for the type of placeholder.
+ * @returns A data URL string for the SVG placeholder.
  */
 function createPlaceholderDataUrl(type?: string): string {
   const placeholders = {
     profile: { width: 200, height: 200, text: 'Profile' },
-    project: { width: 400, height: 250, text: 'Project Image' },
-    blogPost: { width: 400, height: 200, text: 'Blog Image' },
-    card: { width: 300, height: 190, text: 'Card Image' },
+    project: { width: 400, height: 250, text: 'Project' },
+    blogPost: { width: 800, height: 400, text: 'Blog Image' },
+    card: { width: 300, height: 190, text: 'Card' },
     default: { width: 400, height: 300, text: 'Image' }
   };
   
@@ -53,9 +16,8 @@ function createPlaceholderDataUrl(type?: string): string {
   
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" width="${config.width}" height="${config.height}" viewBox="0 0 ${config.width} ${config.height}">
-      <rect width="100%" height="100%" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
-      <circle cx="50%" cy="40%" r="20" fill="#e9ecef"/>
-      <text x="50%" y="65%" font-family="system-ui, -apple-system, sans-serif" font-size="14" text-anchor="middle" dominant-baseline="middle" fill="#6c757d">
+      <rect width="100%" height="100%" fill="#e9ecef"/>
+      <text x="50%" y="50%" font-family="sans-serif" font-size="16" text-anchor="middle" dominant-baseline="middle" fill="#6c757d">
         ${config.text}
       </text>
     </svg>
@@ -63,5 +25,31 @@ function createPlaceholderDataUrl(type?: string): string {
   
   return `data:image/svg+xml;base64,${btoa(svg.trim())}`;
 }
+
+
+const imageUtils = {
+  /**
+   * Safely returns a full image URL from a given path or a placeholder.
+   * @param imagePath - The URL or path of the image.
+   * @param type - The type of image for generating a correct placeholder.
+   * @returns A full image URL or a data URL for a placeholder.
+   */
+  getImageUrl: (imagePath: unknown, type?: string): string => {
+    // Check if imagePath is a valid, non-empty string
+    if (typeof imagePath !== 'string' || !imagePath) {
+      return createPlaceholderDataUrl(type);
+    }
+
+    // If it's already a full URL or data URL, return it
+    if (imagePath.startsWith("http") || imagePath.startsWith("data:")) {
+      return imagePath;
+    }
+
+    // For relative paths, prepend the API base URL
+    const baseUrl = import.meta.env.VITE_API_URL || '';
+    // Ensure there's no double slash between the base URL and the image path
+    return `${baseUrl.replace(/\/$/, '')}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
+  }
+};
 
 export default imageUtils;

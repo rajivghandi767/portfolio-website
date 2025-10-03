@@ -1,31 +1,25 @@
 from pathlib import Path
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
 
 # ============================================================================
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-
+# BASE DIRECTORY
 # ============================================================================
-# SECURITY SETTINGS
-# ============================================================================
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+BASE_DIR = Path(__file__).resolve().parents[2]
 
 # ============================================================================
 # APPLICATION DEFINITION
 # ============================================================================
 INSTALLED_APPS = [
+    # Third-Party apps
     'django_prometheus',
+    'rest_framework',
+    'django_ckeditor_5',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    # Third party apps
-    'rest_framework',
 
     # Local apps
     'info',
@@ -118,18 +112,39 @@ USE_I18N = True
 USE_TZ = True
 
 # ============================================================================
-# STATIC FILES CONFIGURATION
-# ============================================================================
-STATIC_URL = '/static/'
-STATIC_ROOT = '/home/backend/django/staticfiles'
-
-# ============================================================================
-# MEDIA FILES CONFIGURATION
-# ============================================================================
-MEDIA_URL = '/media/'
-MEDIA_ROOT = '/home/backend/django/mediafiles'
-
-# ============================================================================
 # DEFAULT PRIMARY KEY FIELD TYPE
 # ============================================================================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ============================================================================
+# CKEDITOR CONFIGURATION
+# ============================================================================
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
+CKEDITOR_5_CUSTOM_CSS = "admin/css/ckeditor_custom.css"
+
+CKEDITOR_5_CONFIGS = {
+    'default': {
+        'toolbar': {
+            'items': [
+                'heading', '|',
+                'bold', 'italic', 'underline', 'strikethrough', '|',
+                'fontColor', 'fontBackgroundColor', 'highlight', '|',
+                'imageUpload', 'mediaEmbed', 'link', '|',
+                'bulletedList', 'numberedList', 'insertTable', '|',
+                'alignment', 'outdent', 'indent', '|',
+                'fullscreen',
+            ],
+            'shouldNotGroupWhenFull': True
+        },
+        'language': 'en',
+        'width': 'auto',
+    }
+}
+# ============================================================================
+# STATICFILES FINDERS & DIRS
+# ============================================================================
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # To find custom static files
+]

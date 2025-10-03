@@ -45,7 +45,6 @@ const Contact = () => {
   ): Promise<void> => {
     e.preventDefault();
 
-    // Basic validation
     if (
       !formData.name.trim() ||
       !formData.email.trim() ||
@@ -60,17 +59,13 @@ const Contact = () => {
     try {
       const response = await apiService.contact.send(formData);
 
-      // Check if response has error property
       if ("error" in response && response.error) {
         throw new Error(response.error);
       }
 
-      // Check if response has data property and is successful
       if ("data" in response && response.data) {
         setNotification("success");
         resetForm();
-
-        // Optional: Log notification status for debugging
         const contactResponse = response.data as ContactResponse;
         if (contactResponse?.notifications) {
           console.log("Notification status:", contactResponse.notifications);
@@ -89,17 +84,21 @@ const Contact = () => {
   const getNotificationContent = () => {
     if (notification === "success") {
       return {
-        icon: <CheckCircle className="w-5 h-5 flex-shrink-0" />,
+        icon: (
+          <CheckCircle className="w-5 h-5 flex-shrink-0 text-green-600 dark:text-green-400" />
+        ),
         message: "Message sent successfully!",
         className:
-          "bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-300 border border-green-200 dark:border-green-900",
+          "bg-green-100 dark:bg-green-950 text-green-900 dark:text-green-200 border border-green-300 dark:border-green-800",
       };
     } else {
       return {
-        icon: <AlertCircle className="w-5 h-5 flex-shrink-0" />,
+        icon: (
+          <AlertCircle className="w-5 h-5 flex-shrink-0 text-red-600 dark:text-red-400" />
+        ),
         message: "Failed to send message. Please try again.",
         className:
-          "bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300 border border-red-200 dark:border-red-900",
+          "bg-red-100 dark:bg-red-950 text-red-900 dark:text-red-200 border border-red-300 dark:border-red-800",
       };
     }
   };
@@ -117,7 +116,9 @@ const Contact = () => {
           aria-live="polite"
         >
           {notificationContent.icon}
-          <span className="text-sm">{notificationContent.message}</span>
+          <span className="text-sm font-medium">
+            {notificationContent.message}
+          </span>
         </div>
       )}
 
@@ -134,12 +135,8 @@ const Contact = () => {
               value={formData.name}
               onChange={handleChange}
               disabled={isSubmitting}
-              className="w-full p-2 text-sm bg-transparent 
-                       border border-default rounded-md
-                       focus:outline-none focus:ring-2 focus:ring-primary
-                       disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full p-2 text-sm bg-transparent border border-default rounded-md focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
               placeholder="Your name"
-              aria-describedby="name-error"
             />
           </div>
 
@@ -154,12 +151,8 @@ const Contact = () => {
               value={formData.email}
               onChange={handleChange}
               disabled={isSubmitting}
-              className="w-full p-2 text-sm bg-transparent 
-                       border border-default rounded-md
-                       focus:outline-none focus:ring-2 focus:ring-primary
-                       disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full p-2 text-sm bg-transparent border border-default rounded-md focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
               placeholder="your.email@example.com"
-              aria-describedby="email-error"
             />
           </div>
 
@@ -174,12 +167,8 @@ const Contact = () => {
               onChange={handleChange}
               disabled={isSubmitting}
               rows={4}
-              className="w-full p-2 text-sm bg-transparent 
-                       border border-default rounded-md
-                       focus:outline-none focus:ring-2 focus:ring-primary
-                       disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full p-2 text-sm bg-transparent border border-default rounded-md focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
               placeholder="Your message..."
-              aria-describedby="message-error"
             />
           </div>
 
@@ -187,20 +176,16 @@ const Contact = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="btn btn-primary w-full p-2 flex items-center justify-center gap-2 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
-              aria-describedby="submit-status"
+              className="btn btn-primary w-full p-2 flex items-center justify-center gap-2 rounded-md disabled:opacity-50"
             >
               {isSubmitting ? (
                 <>
-                  <div
-                    className="animate-spin h-4 w-4 border-2 border-white dark:border-black border-t-transparent dark:border-t-transparent rounded-full"
-                    aria-hidden="true"
-                  ></div>
+                  <div className="animate-spin h-4 w-4 border-2 border-white dark:border-black border-t-transparent dark:border-t-transparent rounded-full"></div>
                   <span>Sending...</span>
                 </>
               ) : (
                 <>
-                  <Send className="w-4 h-4" aria-hidden="true" />
+                  <Send className="w-4 h-4" />
                   <span>Send Message</span>
                 </>
               )}

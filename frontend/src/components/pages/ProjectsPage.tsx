@@ -1,4 +1,3 @@
-// src/components/pages/ProjectsPage.tsx
 import Projects from "../sections/Projects";
 import { Section } from "../common/Section";
 

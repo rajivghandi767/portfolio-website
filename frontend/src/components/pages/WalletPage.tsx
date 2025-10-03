@@ -1,4 +1,3 @@
-// src/components/pages/WalletPage.tsx
 import Wallet from "../sections/Wallet";
 import { Section } from "../common/Section";
 

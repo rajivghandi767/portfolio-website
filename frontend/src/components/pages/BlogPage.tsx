@@ -1,4 +1,3 @@
-// src/components/pages/BlogPage.tsx
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { BlogPost } from "../../types";
@@ -6,8 +5,9 @@ import { ArrowRight, Search, Calendar } from "lucide-react";
 import apiService from "../../services/api";
 import useApi from "../../hooks/useApi";
 import imageUtils from "../../utils/imageUtils";
+import DataLoader from "../common/DataLoader";
 
-// This component is for the /blog route - displaying all blog posts
+// Main blog page component
 const BlogPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -50,32 +50,40 @@ const BlogPage = () => {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" />
         </div>
       </div>
+      <DataLoader<BlogPost>
+        isLoading={isLoading}
+        error={error}
+        data={posts}
+        emptyMessage="No blog posts available at this time."
+      >
+        {(allPosts) => {
+          const filteredPosts = allPosts.filter(
+            (post) =>
+              post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              post.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              (post.tags &&
+                post.tags.some((tag) =>
+                  tag.toLowerCase().includes(searchTerm.toLowerCase())
+                ))
+          );
 
-      {isLoading ? (
-        <div className="flex justify-center items-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-        </div>
-      ) : error ? (
-        <div className="max-w-2xl mx-auto">
-          <div className="bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300 p-4 rounded-lg border border-red-200 dark:border-red-900">
-            {error}
-          </div>
-        </div>
-      ) : !posts || posts.length === 0 ? (
-        <div className="text-center p-8">
-          No blog posts available at this time.
-        </div>
-      ) : filteredPosts.length === 0 ? (
-        <div className="text-center p-8">
-          No blog posts found matching your search.
-        </div>
-      ) : (
-        <div className="space-y-8">
-          {filteredPosts.map((post) => (
-            <BlogPostCard key={post.id} post={post} />
-          ))}
-        </div>
-      )}
+          if (filteredPosts.length === 0) {
+            return (
+              <div className="text-center p-8">
+                No blog posts found matching your search.
+              </div>
+            );
+          }
+
+          return (
+            <div className="space-y-8">
+              {filteredPosts.map((post) => (
+                <BlogPostCard key={post.id} post={post} />
+              ))}
+            </div>
+          );
+        }}
+      </DataLoader>
     </div>
   );
 };
@@ -83,7 +91,7 @@ const BlogPage = () => {
 // Blog post card component for the blog page view
 const BlogPostCard = ({ post }: { post: BlogPost }) => {
   // Get image URL using imageUtils
-  const imageUrl = imageUtils.getImageUrl(post.image, "blogPost");
+  const imageUrl = imageUtils.getImageUrl(post.image_url, "blogPost");
 
   // Format date
   const formattedDate = post.created_at
@@ -120,7 +128,10 @@ const BlogPostCard = ({ post }: { post: BlogPost }) => {
           </h2>
         </Link>
 
-        <p className="text-sm mb-4">{previewContent}</p>
+        <div
+          className="text-sm mb-4 prose prose-sm dark:prose-invert max-w-none line-clamp-4"
+          dangerouslySetInnerHTML={{ __html: post.body }}
+        />
 
         {post.tags && post.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-4">

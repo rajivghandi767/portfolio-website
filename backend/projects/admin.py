@@ -4,4 +4,5 @@ from projects.models import Project
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('title', 'technology', 'order')
+    list_editable = ('order',)

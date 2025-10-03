@@ -96,3 +96,8 @@ npm-debug.log*
 /backend/config/settings/local.py
 
 /frontend/README.md
+
+/backend/requirements.in
+/backend/dev-requirements.in
+/backend/common.in
+/backend/dev-requirements.txt

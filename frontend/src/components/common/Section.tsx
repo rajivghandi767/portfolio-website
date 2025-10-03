@@ -1,4 +1,3 @@
-// src/components/common/Section.tsx
 import { cn } from "@/utils/styleUtils";
 
 interface SectionProps {
