@@ -310,14 +310,3 @@
   --header-bg: #000000;
   --nav-bg: #000000;
 }
-
-@layer components {
-  .card-prose-preview ul {
-    /* Revert to list-none and remove pl-5 */
-    @apply list-none p-0 m-0 space-y-1;
-  }
-  .card-prose-preview li,
-  .card-prose-preview p {
-    @apply m-0 p-0 text-sm;
-  }
-}
