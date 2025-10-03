@@ -40,8 +40,7 @@ export interface BlogPost {
   author?: string;
   body: string;
   image_url: string;
-  created_at?: string;
-  updated_at?: string;
+  created_on?: string;
   tags?: string[];
   order?: number;
 }
@@ -151,17 +150,5 @@ export interface LayoutProps {
  * Common props for page components 
  */
 export interface PageProps {
-  limit?: number;
-}
-
-export interface ProjectsProps {
-  limit?: number;
-}
-
-export interface BlogProps {
-  limit?: number;
-}
-
-export interface WalletProps {
   limit?: number;
 }

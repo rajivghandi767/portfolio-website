@@ -102,7 +102,7 @@ const CreditCard = ({
         </p>
 
         <div
-          className="card-prose-preview my-4 prose prose-sm dark:prose-invert"
+          className="card-prose-preview my-4 prose prose-sm dark:prose-invert text-left"
           dangerouslySetInnerHTML={{ __html: card.description || "" }}
         />
 

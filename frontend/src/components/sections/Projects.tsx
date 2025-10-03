@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 import { Github, ChevronRight } from "lucide-react";
-import { Project, ProjectsProps } from "../../types";
+import { Project, PageProps } from "../../types";
 import apiService from "../../services/api";
 import useApi from "../../hooks/useApi";
 import imageUtils from "../../utils/imageUtils";
 import DataLoader from "../common/DataLoader";
 
-const Projects = ({ limit = 3 }: ProjectsProps) => {
+const Projects = ({ limit = 3 }: PageProps) => {
   const {
     data: projects,
     isLoading,

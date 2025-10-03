@@ -4,7 +4,7 @@ from django_ckeditor_5.fields import CKEditor5Field
 
 class Card(models.Model):
     card_name = models.CharField(max_length=100)
-    description = CKEditor5Field('Text', config_name='extends')
+    description = CKEditor5Field('Text', config_name='default')
     annual_fee = models.CharField(("Annual Fee"), max_length=20, blank=True)
     referral_link = models.URLField(("Referral Link"), blank=True)
     image = models.ImageField(upload_to='card_images/', blank=True, null=True)

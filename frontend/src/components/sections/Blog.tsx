@@ -1,13 +1,13 @@
 // src/components/sections/Blog.tsx
 import { Link } from "react-router-dom";
-import { BlogPost, BlogProps } from "../../types";
+import { BlogPost, PageProps } from "../../types";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import apiService from "../../services/api";
 import useApi from "../../hooks/useApi";
 import imageUtils from "../../utils/imageUtils";
 import DataLoader from "../common/DataLoader";
 
-const Blog = ({ limit = 3 }: BlogProps) => {
+const Blog = ({ limit = 3 }: PageProps) => {
   const {
     data: posts,
     isLoading,
@@ -61,8 +61,8 @@ const Blog = ({ limit = 3 }: BlogProps) => {
 // BlogPostCard Component
 const BlogPostCard = ({ post }: { post: BlogPost }) => {
   const imageUrl = imageUtils.getImageUrl(post.image_url, "blogPost");
-  const formattedDate = post.created_at
-    ? new Date(post.created_at).toLocaleDateString("en-US", {
+  const formattedDate = post.created_on
+    ? new Date(post.created_on).toLocaleDateString("en-US", {
         year: "numeric",
         month: "long",
         day: "numeric",
@@ -84,7 +84,10 @@ const BlogPostCard = ({ post }: { post: BlogPost }) => {
             {post.title}
           </h2>
         </Link>
-        <p className="mb-4 line-clamp-3 text-sm">{post.body}</p>
+        <div
+          className="mb-4 line-clamp-3 text-sm prose prose-sm dark:prose-invert max-w-none"
+          dangerouslySetInnerHTML={{ __html: post.body }}
+        />
         <div className="mt-auto pt-4 border-t border-default flex justify-between items-center">
           <div className="text-xs">{formattedDate}</div>
           <Link

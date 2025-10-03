@@ -128,7 +128,10 @@ const BlogPostCard = ({ post }: { post: BlogPost }) => {
           </h2>
         </Link>
 
-        <p className="text-sm mb-4">{previewContent}</p>
+        <div
+          className="text-sm mb-4 prose prose-sm dark:prose-invert max-w-none line-clamp-4"
+          dangerouslySetInnerHTML={{ __html: post.body }}
+        />
 
         {post.tags && post.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-4">

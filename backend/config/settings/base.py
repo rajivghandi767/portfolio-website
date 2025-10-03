@@ -122,52 +122,29 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
 
+CKEDITOR_5_CUSTOM_CSS = "admin/css/ckeditor_custom.css"
+
 CKEDITOR_5_CONFIGS = {
     'default': {
-        'toolbar': ['heading', '|', 'bold', 'italic', 'link',
-                    'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', ],
-    },
-    'extends': {
-        'shouldNotGroupWhenFull': 'True',
-        'toolbar': [
-            'heading', '|',
-            'fullscreen', 'imageUpload', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
-            'bold', 'italic', 'underline', 'strikethrough', 'link', '|',
-            'alignment', '|',
-            'bulletedList', 'numberedList', 'todoList', '|',
-            'outdent', 'indent', '|',
-            'fontSize', 'fontFamily', '|',
-            'code', 'codeBlock', 'sourceEditing', 'subscript', 'superscript', '|',
-            'blockQuote', 'insertImage', 'mediaEmbed', 'insertTable', '|',
-            'removeFormat',
-        ],
-        'image': {
-            'toolbar': ['imageTextAlternative', '|', 'imageStyle:alignLeft',
-                        'imageStyle:alignRight', 'imageStyle:alignCenter', 'imageStyle:side', '|'],
-            'styles': [
-                'full',
-                'side',
-                'alignLeft',
-                'alignRight',
-                'alignCenter',
-            ]
+        'toolbar': {
+            'items': [
+                'heading', '|',
+                'bold', 'italic', 'underline', 'strikethrough', '|',
+                'fontColor', 'fontBackgroundColor', 'highlight', '|',
+                'imageUpload', 'mediaEmbed', 'link', '|',
+                'bulletedList', 'numberedList', 'insertTable', '|',
+                'alignment', 'outdent', 'indent', '|',
+                'fullscreen',
+            ],
+            'shouldNotGroupWhenFull': True
         },
-        'table': {
-            'contentToolbar': ['tableColumn', 'tableRow', 'mergeTableCells',
-                               'tableProperties', 'tableCellProperties'],
-        },
-        'heading': {
-            'options': [
-                {'model': 'paragraph', 'title': 'Paragraph',
-                    'class': 'ck-heading_paragraph'},
-                {'model': 'heading1', 'view': 'h1', 'title': 'Heading 1',
-                    'class': 'ck-heading_heading1'},
-                {'model': 'heading2', 'view': 'h2', 'title': 'Heading 2',
-                    'class': 'ck-heading_heading2'},
-                {'model': 'heading3', 'view': 'h3',
-                    'title': 'Heading 3', 'class': 'ck-heading_heading3'}
-            ]
-        },
-    },
+        'language': 'en',
+        'width': 'auto',
+    }
 }
 # ============================================================================
+# STATICFILES FINDERS & DIRS
+# ============================================================================
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # To find custom static files
+]

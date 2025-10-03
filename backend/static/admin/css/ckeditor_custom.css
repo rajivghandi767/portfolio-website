@@ -1,0 +1,97 @@
+/* ============================================
+   Fix 1: Dark Mode Text Color Issues
+   ============================================ */
+.ck-content * {
+  color: black !important;
+}
+
+.ck-content pre,
+.ck-content code {
+  background-color: #f4f4f4 !important;
+  color: #333 !important;
+}
+
+/* ============================================
+   Fix 2: Make Editor Responsive (Full Width)
+   ============================================ */
+.django-ckeditor-widget {
+  width: 100% !important;
+}
+
+.ck-editor {
+  width: 100% !important;
+}
+
+/* ============================================
+   Fix 3: Resizable Text Area with Black Bar Fix
+   ============================================ */
+.ck-editor__editable {
+  min-height: 250px !important;
+  max-height: 600px !important;
+  resize: vertical !important;
+  overflow-y: auto !important;
+  background-color: white !important;
+}
+
+/* Force proper rendering to eliminate black bar */
+.ck-editor__main {
+  background: white !important;
+  overflow: hidden !important;
+}
+
+/* ============================================
+   Fix Fullscreen Sticky Toolbar
+   ============================================ */
+.ck-body-wrapper .ck-toolbar {
+  position: fixed !important; /* Changed from mobile to fixed */
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 10000 !important;
+  background: white !important;
+  border-bottom: 1px solid #ddd !important;
+}
+
+/* Adjust content area to account for fixed toolbar */
+.ck-body-wrapper .ck-editor__main {
+  padding-top: 45px !important; /* Space for fixed toolbar */
+  height: 100vh !important;
+}
+
+.ck-body-wrapper .ck-editor__editable {
+  height: calc(100vh - 45px) !important; /* Full height minus toolbar */
+  max-height: none !important;
+  overflow-y: auto !important;
+}
+
+/* ============================================
+   Basic Theme Fixes
+   ============================================ */
+.ck-editor__editable_inline {
+  background-color: white !important;
+}
+
+.ck-toolbar {
+  background-color: white !important;
+}
+
+/* ============================================
+   Force Reflow to Fix Black Bar (mimics fullscreen toggle)
+   ============================================ */
+.ck-editor {
+  transform: translateZ(0); /* Forces GPU acceleration and reflow */
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+@media (max-width: 768px) {
+  .ck-editor__editable {
+    min-height: 200px !important;
+    max-height: 400px !important;
+  }
+
+  .ck-toolbar {
+    flex-wrap: wrap !important;
+  }
+}
