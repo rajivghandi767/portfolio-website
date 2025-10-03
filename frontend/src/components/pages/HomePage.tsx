@@ -1,4 +1,3 @@
-// src/components/pages/HomePage.tsx
 import Bio from "../sections/Bio";
 import Projects from "../sections/Projects";
 import Blog from "../sections/Blog";

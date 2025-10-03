@@ -1,4 +1,3 @@
-// src/components/pages/BlogPost.tsx
 import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Calendar, User } from "lucide-react";

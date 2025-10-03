@@ -1,4 +1,3 @@
-// src/components/common/Image.tsx
 import { useState, useEffect } from "react";
 import { cn } from "@/utils/styleUtils";
 
@@ -7,8 +6,8 @@ interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   fallbackComponent?: React.ReactNode;
   aspectRatio?: "auto" | "square" | "video" | "3/2" | "4/3" | "16/9";
   objectFit?: "contain" | "cover";
-  lowQualitySrc?: string; // New prop for progressive loading
-  enableProgressiveLoading?: boolean; // Toggle for progressive loading
+  lowQualitySrc?: string;
+  enableProgressiveLoading?: boolean;
 }
 
 const Image = ({
@@ -20,7 +19,7 @@ const Image = ({
   aspectRatio = "auto",
   objectFit = "cover",
   lowQualitySrc,
-  enableProgressiveLoading = false, // Default to false for backward compatibility
+  enableProgressiveLoading = false,
   ...props
 }: ImageProps) => {
   const [hasError, setHasError] = useState(false);
@@ -128,7 +127,7 @@ const Image = ({
     <img
       src={src}
       alt={alt}
-      loading="lazy" // Add native lazy loading
+      loading="lazy"
       className={cn(
         aspectRatioClasses[aspectRatio],
         objectFitClasses[objectFit],

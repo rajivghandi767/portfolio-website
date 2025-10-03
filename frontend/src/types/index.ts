@@ -154,14 +154,6 @@ export interface PageProps {
   limit?: number;
 }
 
-export interface DataLoaderProps<T> {
-  isLoading: boolean;
-  error: string | null;
-  data: T[] | null | undefined;
-  children: (data: T[]) => React.ReactNode;
-  emptyMessage?: string;
-}
-
 export interface ProjectsProps {
   limit?: number;
 }

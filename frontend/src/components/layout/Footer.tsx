@@ -1,4 +1,3 @@
-// src/components/layout/Footer.tsx
 import { Github, Linkedin } from "lucide-react";
 import apiService from "../../services/api";
 import useApi from "../../hooks/useApi";

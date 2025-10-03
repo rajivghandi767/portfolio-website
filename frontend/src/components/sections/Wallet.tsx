@@ -1,4 +1,3 @@
-// src/components/sections/Wallet.tsx
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Card as CardType } from "../../types";
@@ -29,7 +28,7 @@ const Wallet = ({ limit = 4 }: { limit?: number }) => {
         isLoading={isLoading}
         error={error}
         data={cards}
-        emptyMessage="No cards available at this time."
+        emptyMessage="My latest card collection is being revamped 🤭. Stay tuned for updates!"
       >
         {(allCards) => {
           const displayedCards = isWalletPage
@@ -74,7 +73,7 @@ const Wallet = ({ limit = 4 }: { limit?: number }) => {
   );
 };
 
-// Credit Card component (Redesigned)
+// Credit Card component
 const CreditCard = ({
   card,
   onClick,

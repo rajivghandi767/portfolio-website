@@ -1,4 +1,3 @@
-// src/hooks/useApi.ts - Enhanced with caching
 import { useState, useEffect, useRef } from 'react';
 import { ApiResponse } from '../types';
 

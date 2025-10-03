@@ -1,4 +1,3 @@
-// src/components/common/ErrorDisplay.tsx
 import { cn } from "@/utils/styleUtils";
 import { AlertCircle } from "lucide-react";
 

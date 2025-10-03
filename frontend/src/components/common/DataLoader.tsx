@@ -1,4 +1,10 @@
-import { DataLoaderProps } from "@/types";
+interface DataLoaderProps<T> {
+  isLoading: boolean;
+  error: string | null;
+  data: T[] | null | undefined;
+  children: (data: T[]) => React.ReactNode;
+  emptyMessage?: string;
+}
 
 const DataLoader = <T,>({
   isLoading,

@@ -1,4 +1,3 @@
-// src/services/api.ts - Complete frontend API service compatible with Django backend
 import { ApiResponse, BlogPost, Project, Info, Card, ContactForm } from "../types";
 
 // Configuration

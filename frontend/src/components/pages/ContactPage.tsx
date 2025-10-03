@@ -1,4 +1,3 @@
-// src/components/pages/ContactPage.tsx
 import Contact from "../sections/Contact";
 import { Section } from "../common/Section";
 

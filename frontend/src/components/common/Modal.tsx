@@ -1,4 +1,3 @@
-// src/components/common/Modal.tsx
 import { useEffect } from "react";
 import { cn } from "@/utils/styleUtils";
 import { X } from "lucide-react";

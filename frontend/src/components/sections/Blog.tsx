@@ -26,7 +26,7 @@ const Blog = ({ limit = 3 }: BlogProps) => {
         isLoading={isLoading}
         error={error}
         data={posts}
-        emptyMessage="No blog posts available at this time."
+        emptyMessage="Coming Soon!"
       >
         {(allPosts) => {
           const displayedPosts = allPosts.slice(0, limit);

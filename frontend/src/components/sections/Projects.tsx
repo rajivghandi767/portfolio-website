@@ -1,4 +1,3 @@
-// src/components/sections/Projects.tsx
 import { Link } from "react-router-dom";
 import { Github, ChevronRight } from "lucide-react";
 import { Project, ProjectsProps } from "../../types";
@@ -27,7 +26,7 @@ const Projects = ({ limit = 3 }: ProjectsProps) => {
         isLoading={isLoading}
         error={error}
         data={projects}
-        emptyMessage="No projects available at this time."
+        emptyMessage="Stay Tuned! But if you cant wait, check out my GitHub (github.com/rajivghandi767) for my latest work."
       >
         {(allProjects) => {
           const displayedProjects = isProjectsPage

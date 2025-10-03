@@ -1,4 +1,3 @@
-// src/components/sections/Bio.tsx
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { Info } from "../../types";
@@ -89,16 +88,10 @@ const Bio = () => {
         isLoading={isLoading}
         error={error}
         data={info}
-        emptyMessage="Profile information is not available at this time."
+        emptyMessage="Bio Coming Soon!"
       >
         {(infoData) => {
           const bioInfo = infoData[0];
-          if (!bioInfo)
-            return (
-              <div className="text-center p-4">
-                Profile information not found.
-              </div>
-            );
 
           const imageUrl = imageUtils.getImageUrl(
             bioInfo.profile_photo_url,
