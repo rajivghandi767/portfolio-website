@@ -73,7 +73,7 @@ DATABASES = {
     }
 }
 # ============================================================================
-# FILE UPLOAD SETTINGS - FIXED SIZE LIMITS
+# FILE UPLOAD SETTINGS
 # ============================================================================
 # Increased to handle 5MB files + Django overhead
 FILE_UPLOAD_MAX_MEMORY_SIZE = 6 * 1024 * 1024  # 6MB

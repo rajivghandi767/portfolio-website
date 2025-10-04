@@ -84,7 +84,9 @@ if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL,
                           document_root=settings.STATIC_ROOT)
 else:
-    # Production: Add media URL pattern for URL resolution, but nginx will serve files
-    # This is needed for Django to generate correct URLs in serializers
+    # Production: Add media and static URL patterns for URL resolution.
+    # Nginx will serve the files, but Django needs to be aware of the URLs.
     urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL,
+                          document_root=settings.STATIC_ROOT)
