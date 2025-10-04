@@ -32,12 +32,12 @@ services:
       retries: 5
       start_period: 10s
 
-  # DB Migration Init Container - Runs once before backend starts
-  portfolio-db-backend-migrate:
+  # DB Migration & Static Files Collection
+  portfolio-backend-init:
     build:
       context: ./backend
       dockerfile: Dockerfile.prod
-    container_name: portfolio-db-backend-migrate
+    container_name: portfolio-backend-init
     env_file: .env
     depends_on:
       portfolio-db:
