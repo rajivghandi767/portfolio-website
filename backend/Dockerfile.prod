@@ -47,9 +47,6 @@ RUN touch /home/backend/django/logs/portfolio.log \
 # Switch to backend user
 USER backend
 
-# Collect static files
-RUN python manage.py collectstatic --noinput
-
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
     CMD curl -f http://localhost:8000/health/ || exit 1

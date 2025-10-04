@@ -42,9 +42,9 @@ services:
     depends_on:
       portfolio-db:
         condition: service_healthy
-    command: python manage.py migrate --noinput
-    restart: "no"
-    user: "backend:backend_group"
+    command: >
+      sh -c "python manage.py migrate --noinput && 
+             python manage.py collectstatic --noinput"
 
   # Portfolio Backend - Django
   portfolio-backend:
