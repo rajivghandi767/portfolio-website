@@ -56,7 +56,7 @@ services:
     depends_on:
       portfolio-db:
         condition: service_healthy
-      portfolio-db-backend-migrate:
+      portfolio-backend-init:
         condition: service_completed_successfully
     env_file: .env
     volumes:
