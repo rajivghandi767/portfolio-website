@@ -18,19 +18,6 @@ const BlogPage = () => {
     error,
   } = useApi<BlogPost[]>(() => apiService.blog.getAll());
 
-  // Filter posts by search term if needed
-  const filteredPosts = posts
-    ? posts.filter(
-        (post) =>
-          post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          post.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          (post.tags &&
-            post.tags.some((tag) =>
-              tag.toLowerCase().includes(searchTerm.toLowerCase())
-            ))
-      )
-    : [];
-
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <h1 className="text-3xl font-semibold text-center mb-8">
@@ -94,17 +81,13 @@ const BlogPostCard = ({ post }: { post: BlogPost }) => {
   const imageUrl = imageUtils.getImageUrl(post.image_url, "blogPost");
 
   // Format date
-  const formattedDate = post.created_at
-    ? new Date(post.created_at).toLocaleDateString("en-US", {
+  const formattedDate = post.created_on
+    ? new Date(post.created_on).toLocaleDateString("en-US", {
         year: "numeric",
         month: "long",
         day: "numeric",
       })
     : "No date available";
-
-  // Get a preview of the content (first few lines)
-  const previewContent =
-    post.body.length > 300 ? post.body.substring(0, 300) + "..." : post.body;
 
   return (
     <div className="card hover-scale md:flex">
