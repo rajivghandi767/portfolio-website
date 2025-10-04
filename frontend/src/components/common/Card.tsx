@@ -1,4 +1,5 @@
 import { cn } from "@/utils/styleUtils";
+import { useState } from "react";
 
 interface CardProps {
   children: React.ReactNode;
@@ -40,7 +41,7 @@ const CardImage = ({
   aspectRatio = "auto",
   objectFit = "cover",
 }: CardImageProps) => {
-  const [hasError, setHasError] = React.useState(false);
+  const [hasError, setHasError] = useState(false);
 
   const aspectRatioClasses = {
     auto: "",
