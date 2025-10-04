@@ -103,10 +103,6 @@ volumes:
 
   portfolio_db_data:
     driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /opt/portfolio-website/db
 
   portfolio_media:
     driver: local
