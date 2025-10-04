@@ -13,6 +13,9 @@ services:
     volumes:
       - portfolio_db_data:/var/lib/postgresql/data
       - ./backups:/backups
+    networks:
+      - default
+      - database_network
     healthcheck:
       test:
         [
@@ -132,4 +135,7 @@ volumes:
 networks:
   default:
     name: portfolio_network
+    external: true
+  database_network:
+    name: database_network
     external: true
