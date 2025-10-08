@@ -53,6 +53,8 @@ services:
       dockerfile: Dockerfile.prod
     container_name: portfolio-backend
     restart: unless-stopped
+    networks:
+      - portfolio
     depends_on:
       portfolio-db:
         condition: service_healthy
@@ -82,6 +84,7 @@ services:
     restart: unless-stopped
     networks:
       - core
+      - portfolio
     depends_on:
       portfolio-backend:
         condition: service_healthy
@@ -138,8 +141,7 @@ volumes:
       device: /opt/portfolio-website/logs
 
 networks:
-  default:
-    name: portfolio
+  portfolio:
     external: true
   core:
     external: true
