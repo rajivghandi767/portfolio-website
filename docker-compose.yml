@@ -38,6 +38,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile.prod
     container_name: portfolio-backend-init
+    networks:
+      - portfolio
     env_file: .env
     depends_on:
       portfolio-db:
