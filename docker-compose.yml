@@ -14,8 +14,8 @@ services:
       - portfolio_db_data:/var/lib/postgresql/data
       - ./backups:/backups
     networks:
-      - default
-      - database_network
+      - portfolio
+      - database
     healthcheck:
       test:
         [
@@ -80,6 +80,8 @@ services:
         - VITE_API_URL=${VITE_API_URL}
     container_name: portfolio-frontend
     restart: unless-stopped
+    networks:
+      - core
     depends_on:
       portfolio-backend:
         condition: service_healthy
@@ -96,6 +98,9 @@ services:
       dockerfile: Dockerfile
     container_name: portfolio-nginx
     restart: unless-stopped
+    networks:
+      - core
+      - portfolio
     depends_on:
       portfolio-backend:
         condition: service_healthy
@@ -134,8 +139,9 @@ volumes:
 
 networks:
   default:
-    name: portfolio_network
+    name: portfolio
     external: true
-  database_network:
-    name: database_network
+  core:
+    external: true
+  database:
     external: true
