@@ -41,6 +41,8 @@ services:
     networks:
       - portfolio
     env_file: .env
+    volumes:
+      - portfolio_static:/home/backend/django/staticfiles
     depends_on:
       portfolio-db:
         condition: service_healthy
