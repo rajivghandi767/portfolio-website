@@ -47,7 +47,8 @@ services:
       portfolio-db:
         condition: service_healthy
     command: >
-      sh -c "python manage.py migrate --noinput && 
+      sh -c "chown -R backend:backend_group /home/backend/django/staticfiles &&
+             python manage.py migrate --noinput && 
              python manage.py collectstatic --noinput"
 
   # Portfolio Backend - Django
