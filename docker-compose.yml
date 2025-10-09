@@ -123,23 +123,18 @@ services:
 
 volumes:
   portfolio_backups:
-    driver: local
     name: portfolio_backups
 
   portfolio_db_data:
-    driver: local
     name: portfolio_db_data
 
   portfolio_static:
-    driver: local
     name: portfolio_static
 
   portfolio_media:
-    driver: local
     name: portfolio_media
 
   portfolio_logs:
-    driver: local
     name: portfolio_logs
 
 networks:
