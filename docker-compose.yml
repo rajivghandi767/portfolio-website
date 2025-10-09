@@ -12,7 +12,7 @@ services:
       POSTGRES_INITDB_ARGS: "--locale=en_US.utf8"
     volumes:
       - portfolio_db_data:/var/lib/postgresql/data
-      - ./backups:/backups
+      - portfolio_backups:/backups
     networks:
       - portfolio
       - database
@@ -122,25 +122,20 @@ services:
       retries: 3
 
 volumes:
-  portfolio_static:
-    driver: local
+  portfolio_backups:
+    name: portfolio_backups
 
   portfolio_db_data:
-    driver: local
+    name: portfolio_db_data
+
+  portfolio_static:
+    name: portfolio_static
 
   portfolio_media:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /opt/portfolio-website/media
+    name: portfolio_media
 
   portfolio_logs:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /opt/portfolio-website/logs
+    name: portfolio_logs
 
 networks:
   portfolio:
