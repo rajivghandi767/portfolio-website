@@ -29,6 +29,7 @@ pip-delete-this-directory.txt
 .env
 *.env.production
 .env.dev
+.env.development
 .venv
 env/
 venv/
