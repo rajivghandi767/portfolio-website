@@ -133,27 +133,27 @@ LOGGING = {
         },
         'info': {
             'handlers': ['file', 'error_file'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': False,
         },
         'projects': {
             'handlers': ['file', 'error_file'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': False,
         },
         'blog': {
             'handlers': ['file', 'error_file'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': False,
         },
         'wallet': {
             'handlers': ['file', 'error_file'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': False,
         },
         'contacts': {
             'handlers': ['file', 'error_file'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': False,
         },
     },

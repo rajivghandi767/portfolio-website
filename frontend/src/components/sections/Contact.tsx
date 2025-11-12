@@ -67,14 +67,16 @@ const Contact = () => {
         setNotification("success");
         resetForm();
         const contactResponse = response.data as ContactResponse;
-        if (contactResponse?.notifications) {
+        if (contactResponse?.notifications && import.meta.env.DEV) {
           console.log("Notification status:", contactResponse.notifications);
         }
       } else {
         throw new Error("Unexpected response format");
       }
     } catch (error) {
-      console.error("Error sending message:", error);
+      if (import.meta.env.DEV) {
+        console.error("Error sending message:", error);
+      }
       setNotification("error");
     } finally {
       setIsSubmitting(false);

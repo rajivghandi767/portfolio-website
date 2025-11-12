@@ -38,7 +38,9 @@ const Bio = () => {
       setResumeUrl(url);
       setIsModalOpen(true);
     } catch (err) {
-      console.error("Error fetching resume:", err);
+      if (import.meta.env.DEV) {
+        console.error("Error fetching resume:", err);
+      }
       setResumeError(
         err instanceof Error ? err.message : "Failed to load resume preview"
       );
@@ -69,7 +71,9 @@ const Bio = () => {
       URL.revokeObjectURL(url);
       document.body.removeChild(a);
     } catch (err) {
-      console.error("Error downloading resume:", err);
+      if (import.meta.env.DEV) {
+        console.error("Error downloading resume:", err);
+      }
       setResumeError("Failed to download resume. Please try again.");
     } finally {
       setIsDownloading(false);

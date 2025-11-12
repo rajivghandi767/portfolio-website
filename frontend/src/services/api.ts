@@ -52,7 +52,9 @@ async function fetchApi<T>(
     let lastError: unknown;
     for (let attempt = 0; attempt < maxRetries; attempt++) {
       try {
-        console.log(`API Request (attempt ${attempt + 1}): ${url}`);
+        if (import.meta.env.DEV) {
+          console.log(`API Request (attempt ${attempt + 1}): ${url}`);
+        }
         
         const response = await fetch(url, fetchOptions);
         clearTimeout(timeoutId);
@@ -69,7 +71,9 @@ async function fetchApi<T>(
             // If we can't read the error body, use the status text
           }
           
-          console.error(`API Error: ${errorMessage}`);
+          if (import.meta.env.DEV) {
+            console.error(`API Error: ${errorMessage}`);
+          }
           
           return {
             data: null,
@@ -79,7 +83,9 @@ async function fetchApi<T>(
         }
         
         const rawData = await response.json();
-        console.log(`Raw API Response for ${endpoint}:`, rawData);
+        if (import.meta.env.DEV) {
+          console.log(`Raw API Response for ${endpoint}:`, rawData);
+        }
         
         // Handle different response formats from Django REST Framework
         let data: T;
@@ -88,13 +94,19 @@ async function fetchApi<T>(
         // But handle legacy pagination format just in case
         if (rawData && typeof rawData === 'object' && 'results' in rawData) {
           data = rawData.results as T;
-          console.log(`Extracted paginated data for ${endpoint}:`, data);
+          if (import.meta.env.DEV) {
+            console.log(`Extracted paginated data for ${endpoint}:`, data);
+          }
         } else if (rawData && typeof rawData === 'object' && 'data' in rawData) {
           data = rawData.data as T;
-          console.log(`Extracted wrapped data for ${endpoint}:`, data);
+          if (import.meta.env.DEV) {
+            console.log(`Extracted wrapped data for ${endpoint}:`, data);
+          }
         } else {
           data = rawData as T;
-          console.log(`Direct data for ${endpoint}:`, data);
+          if (import.meta.env.DEV) {
+            console.log(`Direct data for ${endpoint}:`, data);
+          }
         }
         
         return {
@@ -105,7 +117,9 @@ async function fetchApi<T>(
       } catch (error) {
         lastError = error;
         
-        console.warn(`⚠️ Request attempt ${attempt + 1} failed:`, error);
+        if (import.meta.env.DEV) {
+          console.warn(`⚠️ Request attempt ${attempt + 1} failed:`, error);
+        }
         
         // Don't retry on client errors (4xx)
         if (error instanceof ApiError && error.status >= 400 && error.status < 500) {
@@ -115,7 +129,9 @@ async function fetchApi<T>(
         // Exponential backoff for network/server errors
         if (attempt < maxRetries - 1) {
           const delay = Math.pow(2, attempt) * 1000;
-          console.log(`⏳ Retrying in ${delay}ms...`);
+          if (import.meta.env.DEV) {
+            console.log(`⏳ Retrying in ${delay}ms...`);
+          }
           await new Promise(resolve => setTimeout(resolve, delay));
         }
       }
@@ -124,7 +140,9 @@ async function fetchApi<T>(
     throw lastError;
   } catch (error) {
     clearTimeout(timeoutId);
-    console.error(`💥 API Error (${endpoint}):`, error);
+    if (import.meta.env.DEV) {
+      console.error(`💥 API Error (${endpoint}):`, error);
+    }
     
     let errorMessage = 'An unknown error occurred';
     if (error instanceof TypeError && error.message.includes('fetch')) {
@@ -153,7 +171,9 @@ async function fetchBlob(
   const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.DEFAULT_TIMEOUT);
 
   try {
-    console.log(`📁 Blob Request: ${url}`);
+    if (import.meta.env.DEV) {
+      console.log(`📁 Blob Request: ${url}`);
+    }
     
     const response = await fetch(url, {
       ...options,
@@ -167,7 +187,9 @@ async function fetchBlob(
 
     if (!response.ok) {
       const errorBody = await response.text();
-      console.error(`❌ Blob Error: HTTP ${response.status} - ${errorBody}`);
+      if (import.meta.env.DEV) {
+        console.error(`❌ Blob Error: HTTP ${response.status} - ${errorBody}`);
+      }
       throw new ApiError(
         `HTTP error! Status: ${response.status}, Message: ${errorBody}`, 
         response.status
@@ -175,12 +197,16 @@ async function fetchBlob(
     }
     
     const blob = await response.blob();
-    console.log(`✅ Blob received: ${blob.size} bytes, type: ${blob.type}`);
+    if (import.meta.env.DEV) {
+      console.log(`✅ Blob received: ${blob.size} bytes, type: ${blob.type}`);
+    }
     return blob;
     
   } catch (error) {
     clearTimeout(timeoutId);
-    console.error(`💥 Blob Fetch Error (${endpoint}):`, error);
+    if (import.meta.env.DEV) {
+      console.error(`💥 Blob Fetch Error (${endpoint}):`, error);
+    }
     throw error;
   }
 }
@@ -192,7 +218,7 @@ const apiService = {
   // Bio/Profile Endpoints
   info: {
     get: (): Promise<ApiResponse<Info[]>> => {
-      console.log('🔍 Fetching profile info...');
+      if (import.meta.env.DEV) console.log('🔍 Fetching profile info...');
       return fetchApi<Info[]>('info');
     }
   },
@@ -200,27 +226,27 @@ const apiService = {
   // Resume Endpoints with enhanced error handling
   resume: {
     view: async (): Promise<Blob> => {
-      console.log('👁️ Viewing resume...');
+      if (import.meta.env.DEV) console.log('👁️ Viewing resume...');
       try {
         return await fetchBlob('resume/view');
       } catch (error) {
-        console.error('❌ Resume view failed:', error);
+        if (import.meta.env.DEV) console.error('❌ Resume view failed:', error);
         throw new Error('Failed to load resume for viewing. Please try again.');
       }
     },
     
     download: async (): Promise<Blob> => {
-      console.log('⬇️ Downloading resume...');
+      if (import.meta.env.DEV) console.log('⬇️ Downloading resume...');
       try {
         return await fetchBlob('resume/download');
       } catch (error) {
-        console.error('❌ Resume download failed:', error);
+        if (import.meta.env.DEV) console.error('❌ Resume download failed:', error);
         throw new Error('Failed to download resume. Please try again.');
       }
     },
     
     status: (): Promise<ApiResponse<any>> => {
-      console.log('📊 Checking resume status...');
+      if (import.meta.env.DEV) console.log('📊 Checking resume status...');
       return fetchApi<any>('resume/status');
     }
   },
@@ -228,11 +254,11 @@ const apiService = {
   // Blog endpoints
   blog: {
     getAll: (): Promise<ApiResponse<BlogPost[]>> => {
-      console.log('📝 Fetching blog posts...');
+      if (import.meta.env.DEV) console.log('📝 Fetching blog posts...');
       return fetchApi<BlogPost[]>('post');
     },
     getOne: (id: string): Promise<ApiResponse<BlogPost>> => {
-      console.log(`📄 Fetching blog post ${id}...`);
+      if (import.meta.env.DEV) console.log(`📄 Fetching blog post ${id}...`);
       return fetchApi<BlogPost>(`post/${id}`);
     }
   },
@@ -240,11 +266,11 @@ const apiService = {
   // Project Endpoints
   projects: {
     getAll: (): Promise<ApiResponse<Project[]>> => {
-      console.log('🚀 Fetching projects...');
+      if (import.meta.env.DEV) console.log('🚀 Fetching projects...');
       return fetchApi<Project[]>('projects');
     },
     getOne: (id: string): Promise<ApiResponse<Project>> => {
-      console.log(`🔍 Fetching project ${id}...`);
+      if (import.meta.env.DEV) console.log(`🔍 Fetching project ${id}...`);
       return fetchApi<Project>(`projects/${id}`);
     }
   },
@@ -252,7 +278,7 @@ const apiService = {
   // Contact Endpoint with enhanced error handling
   contact: {
     send: async (formData: ContactForm) => {
-      console.log('📧 Sending contact form...', formData);
+      if (import.meta.env.DEV) console.log('📧 Sending contact form...', formData);
       
       try {
         const response = await fetch(`${API_URL}contact/`, {
@@ -265,19 +291,19 @@ const apiService = {
         });
 
         const data = await response.json();
-        console.log('📬 Contact API Response:', data);
+        if (import.meta.env.DEV) console.log('📬 Contact API Response:', data);
 
         if (!response.ok) {
           const errorMessage = data.detail || data.error || `HTTP ${response.status}: ${response.statusText}`;
-          console.error('❌ Contact form error:', errorMessage);
+          if (import.meta.env.DEV) console.error('❌ Contact form error:', errorMessage);
           return { error: errorMessage };
         }
 
-        console.log('✅ Contact form sent successfully');
+        if (import.meta.env.DEV) console.log('✅ Contact form sent successfully');
         return { data };
         
       } catch (error) {
-        console.error('💥 Contact API Error:', error);
+        if (import.meta.env.DEV) console.error('💥 Contact API Error:', error);
         const errorMessage = error instanceof Error ? error.message : 'Network error occurred';
         return { error: errorMessage };
       }
@@ -287,7 +313,7 @@ const apiService = {
   // Cards/Wallet Endpoint
   cards: {
     getAll: (): Promise<ApiResponse<Card[]>> => {
-      console.log('💳 Fetching cards...');
+      if (import.meta.env.DEV) console.log('💳 Fetching cards...');
       return fetchApi<Card[]>('cards');
     }
   },
@@ -297,20 +323,20 @@ const apiService = {
     // Test API connectivity
     testConnection: async (): Promise<boolean> => {
       try {
-        console.log('🔌 Testing API connection...');
+        if (import.meta.env.DEV) console.log('🔌 Testing API connection...');
         const response = await fetch(API_URL, { method: 'HEAD' });
         const isConnected = response.ok;
-        console.log(`🔌 API connection test: ${isConnected ? 'Success' : 'Failed'}`);
+        if (import.meta.env.DEV) console.log(`🔌 API connection test: ${isConnected ? 'Success' : 'Failed'}`);
         return isConnected;
       } catch (error) {
-        console.error('🔌 API connection test failed:', error);
+        if (import.meta.env.DEV) console.error('🔌 API connection test failed:', error);
         return false;
       }
     },
 
     // Get API health status
     getHealth: (): Promise<ApiResponse<any>> => {
-      console.log('🏥 Checking API health...');
+      if (import.meta.env.DEV) console.log('🏥 Checking API health...');
       return fetchApi<any>('../health');  // Go up one level from /api/
     }
   }
