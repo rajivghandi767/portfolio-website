@@ -47,7 +47,9 @@ function useApi<T>(
         };
       }
     } catch (err) {
-      console.error('Error in API call:', err);
+      if (import.meta.env.DEV) {
+        console.error('Error in API call:', err);
+      }
       setError(err instanceof Error ? err.message : 'An unknown error occurred');
     } finally {
       setIsLoading(false);
@@ -67,7 +69,7 @@ function useApi<T>(
       try {
         await fetchData();
       } catch (err) {
-        if (isMounted) {
+        if (isMounted && import.meta.env.DEV) {
           console.error('Error in API call setup:', err);
         }
       }
