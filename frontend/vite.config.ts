@@ -9,14 +9,6 @@ export default defineConfig({
   plugins: [react(),
     tailwindcss(),
   ],
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: './src/setupTests.ts',
-    env: {
-      VITE_API_URL: 'http://localhost:8000',
-    },
-  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

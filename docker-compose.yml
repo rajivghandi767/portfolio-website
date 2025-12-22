@@ -58,8 +58,8 @@ services:
     networks:
       - portfolio
     depends_on:
-      portfolio-db:
-        condition: service_healthy
+      # portfolio-db:
+      #   condition: service_healthy
       portfolio-backend-init:
         condition: service_completed_successfully
     env_file: .env
