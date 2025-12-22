@@ -15,12 +15,11 @@ services:
     command: >
       sh -c "
         echo 'Waiting for postgres-core...' &&
-        python -c 'import socket,time,os; h=os.environ[\"POSTGRES_HOST\"]; p=5432; print(\"Target: \"+h); 
-        while True: 
-          try: 
-            socket.create_connection((h,p),timeout=2); print(\"Database is ready!\"); break 
-          except Exception as e: 
-            print(\"Retry: \"+str(e)); time.sleep(2)' &&
+        until python -c 'import socket,os; s=socket.socket(socket.AF_INET, socket.SOCK_STREAM); s.settimeout(2); s.connect((os.environ[\"POSTGRES_HOST\"], 5432)); s.close()'; do
+          echo 'Database not ready... waiting 2s';
+          sleep 2;
+        done &&
+        echo 'Database is ready!' &&
         python manage.py migrate --noinput &&
         python manage.py collectstatic --noinput"
 
