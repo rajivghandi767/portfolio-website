@@ -1,36 +1,36 @@
 services:
   # PostgreSQL Database for Portfolio Backend
-  portfolio-db:
-    image: postgres:18-alpine
-    container_name: portfolio-db
-    restart: unless-stopped
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      LC_ALL: "en_US.utf8"
-      POSTGRES_INITDB_ARGS: "--locale=en_US.utf8"
-    volumes:
-      - portfolio_db_data:/var/lib/postgresql/data
-      - portfolio_backups:/backups
-    networks:
-      - portfolio
-      - database
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "pg_isready",
-          "-q",
-          "-d",
-          "${POSTGRES_DB}",
-          "-U",
-          "${POSTGRES_USER}",
-        ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
+  # portfolio-db:
+  #   image: postgres:18-alpine
+  #   container_name: portfolio-db
+  #   restart: unless-stopped
+  #   environment:
+  #     POSTGRES_DB: ${POSTGRES_DB}
+  #     POSTGRES_USER: ${POSTGRES_USER}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  #     LC_ALL: "en_US.utf8"
+  #     POSTGRES_INITDB_ARGS: "--locale=en_US.utf8"
+  #   volumes:
+  #     - portfolio_db_data:/var/lib/postgresql/data
+  #     - portfolio_backups:/backups
+  #   networks:
+  #     - portfolio
+  #     - database
+  #   healthcheck:
+  #     test:
+  #       [
+  #         "CMD",
+  #         "pg_isready",
+  #         "-q",
+  #         "-d",
+  #         "${POSTGRES_DB}",
+  #         "-U",
+  #         "${POSTGRES_USER}",
+  #       ]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  #     start_period: 10s
 
   # DB Migration & Static Files Collection
   portfolio-backend-init:
@@ -44,9 +44,6 @@ services:
     env_file: .env
     volumes:
       - portfolio_static:/home/backend/django/staticfiles
-    depends_on:
-      portfolio-db:
-        condition: service_healthy
     command: >
       sh -c "python manage.py migrate --noinput && 
              python manage.py collectstatic --noinput"
@@ -125,11 +122,11 @@ services:
       retries: 3
 
 volumes:
-  portfolio_backups:
-    name: portfolio_backups
+  # portfolio_backups:
+  #   name: portfolio_backups
 
-  portfolio_db_data:
-    name: portfolio_db_data
+  # portfolio_db_data:
+  #   name: portfolio_db_data
 
   portfolio_static:
     name: portfolio_static
@@ -145,5 +142,5 @@ networks:
     external: true
   core:
     external: true
-  database:
-    external: true
+  # database:
+  #   external: true
