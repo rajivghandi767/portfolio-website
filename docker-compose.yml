@@ -1,9 +1,7 @@
 services:
   # DB Migration & Static Files Collection
   portfolio-backend-init:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile.prod
+    image: ghcr.io/rajivghandi767/portfolio-backend:latest
     container_name: portfolio-backend-init
     user: root
     networks:
@@ -25,9 +23,7 @@ services:
 
   # Portfolio Backend - Django
   portfolio-backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile.prod
+    image: ghcr.io/rajivghandi767/portfolio-backend:latest
     container_name: portfolio-backend
     restart: unless-stopped
     networks:
@@ -50,12 +46,7 @@ services:
       start_period: 60s
 
   portfolio-frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.prod
-      args:
-        - NODE_ENV=production
-        - VITE_API_URL=${VITE_API_URL}
+    image: ghcr.io/rajivghandi767/portfolio-frontend:latest
     container_name: portfolio-frontend
     restart: unless-stopped
     networks:
@@ -72,9 +63,7 @@ services:
 
   # Single unified nginx service
   portfolio-nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
+    image: ghcr.io/rajivghandi767/portfolio-nginx:latest
     container_name: portfolio-nginx
     restart: unless-stopped
     networks:
