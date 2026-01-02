@@ -6,6 +6,8 @@ RUN groupadd --gid 1000 backend_group && \
 
 WORKDIR /home/backend/django
 
+ARG DEBIAN_FRONTEND=noninteractive
+
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libpq-dev \
@@ -32,9 +34,11 @@ COPY --chown=backend:backend_group . .
 # Environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
+    PIP_ROOT_USER_ACTION=ignore \
     PATH="/home/backend/.local/bin:$PATH" \
     DJANGO_SETTINGS_MODULE=config.settings.production \
-    DJANGO_ENV=production
+    DJANGO_ENV=production \
+    
 
 # Create log files with proper permissions
 RUN touch /home/backend/django/logs/portfolio.log \

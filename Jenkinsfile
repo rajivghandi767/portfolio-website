@@ -4,6 +4,7 @@ pipeline {
     environment {
         // --- CONFIGURATION ---
         REGISTRY = "ghcr.io"
+        DOCKER_BUILDKIT = '1'
         IMAGE_BACKEND  = "rajivghandi767/portfolio-backend"
         IMAGE_FRONTEND = "rajivghandi767/portfolio-frontend"
         IMAGE_NGINX    = "rajivghandi767/portfolio-nginx"
@@ -115,29 +116,39 @@ pipeline {
 
         stage('Build & Push') {
             steps {
+                // Fetch Vault Secrets
                 withVault(configuration: [vaultUrl: "${VAULT_ADDR}", vaultCredentialId: "${VAULT_CRED_ID}", engineVersion: 2], 
                 vaultSecrets: [[path: 'secret/portfolio-prod', secretValues: [
                     [envVar: 'VITE_API_URL', vaultKey: 'VITE_API_URL']
                 ]]]) {
-                    script {
-                        docker.withRegistry("https://${REGISTRY}", REGISTRY_CRED_ID) {
-                            parallel(
-                                "Backend": {
-                                    def img = docker.build("${REGISTRY}/${IMAGE_BACKEND}:${BUILD_NUMBER}", "-f backend/Dockerfile.prod ./backend")
-                                    img.push()
-                                    img.push("latest")
-                                },
-                                "Frontend": {
-                                    def img = docker.build("${REGISTRY}/${IMAGE_FRONTEND}:${BUILD_NUMBER}", "-f frontend/Dockerfile.prod --build-arg VITE_API_URL=${VITE_API_URL} ./frontend")
-                                    img.push()
-                                    img.push("latest")
-                                },
-                                "Nginx": {
-                                    def img = docker.build("${REGISTRY}/${IMAGE_NGINX}:${BUILD_NUMBER}", "./nginx")
-                                    img.push()
-                                    img.push("latest")
-                                }
-                            )
+                    withCredentials([usernamePassword(credentialsId: REGISTRY_CRED_ID, usernameVariable: 'REGISTRY_USER', passwordVariable: 'REGISTRY_PASS')]) {
+                        script {
+                            // 1. Secure Login: Echo password to stdin to avoid logging it
+                            sh 'echo $REGISTRY_PASS | docker login ghcr.io -u $REGISTRY_USER --password-stdin'
+                            
+                            try {
+                                // 2. Run Builds in Parallel
+                                parallel(
+                                    "Backend": {
+                                        def img = docker.build("${REGISTRY}/${IMAGE_BACKEND}:${BUILD_NUMBER}", "-f backend/Dockerfile.prod ./backend")
+                                        img.push()
+                                        img.push("latest")
+                                    },
+                                    "Frontend": {
+                                        def img = docker.build("${REGISTRY}/${IMAGE_FRONTEND}:${BUILD_NUMBER}", "-f frontend/Dockerfile.prod --build-arg VITE_API_URL=${VITE_API_URL} ./frontend")
+                                        img.push()
+                                        img.push("latest")
+                                    },
+                                    "Nginx": {
+                                        def img = docker.build("${REGISTRY}/${IMAGE_NGINX}:${BUILD_NUMBER}", "./nginx")
+                                        img.push()
+                                        img.push("latest")
+                                    }
+                                )
+                            } finally {
+                                // 3. Always Logout (Even if build fails)
+                                sh 'docker logout ghcr.io'
+                            }
                         }
                     }
                 }
