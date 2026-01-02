@@ -1,5 +1,13 @@
 FROM python:3.14-slim
 
+# Environment variables
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_ROOT_USER_ACTION=ignore \
+    PATH="/home/backend/.local/bin:$PATH" \
+    DJANGO_SETTINGS_MODULE=config.settings.production \
+    DJANGO_ENV=production
+
 # Create user and group with explicit IDs for consistency
 RUN groupadd --gid 1000 backend_group && \
     useradd --uid 1000 --gid backend_group --create-home --shell /bin/bash backend
@@ -24,22 +32,14 @@ RUN mkdir -p /home/backend/django/staticfiles \
 
 # Copy and install Python dependencies as root
 COPY --chown=backend:backend_group requirements.txt ./
+
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir --no-warn-script-location -r requirements.txt && \
     rm requirements.txt
 
 # Copy application code
 COPY --chown=backend:backend_group . .
-
-# Environment variables
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    PIP_ROOT_USER_ACTION=ignore \
-    PATH="/home/backend/.local/bin:$PATH" \
-    DJANGO_SETTINGS_MODULE=config.settings.production \
-    DJANGO_ENV=production \
     
-
 # Create log files with proper permissions
 RUN touch /home/backend/django/logs/portfolio.log \
           /home/backend/django/logs/errors.log \
