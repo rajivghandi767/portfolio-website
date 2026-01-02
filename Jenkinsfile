@@ -4,7 +4,7 @@ pipeline {
     environment {
         // --- CONFIGURATION ---
         REGISTRY = "ghcr.io"
-        DOCKER_BUILDKIT = '1'
+        // DOCKER_BUILDKIT = '1'
         IMAGE_BACKEND  = "rajivghandi767/portfolio-backend"
         IMAGE_FRONTEND = "rajivghandi767/portfolio-frontend"
         IMAGE_NGINX    = "rajivghandi767/portfolio-nginx"
