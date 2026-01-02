@@ -116,7 +116,7 @@ pipeline {
         stage('Build & Push') {
             steps {
                 withVault(configuration: [vaultUrl: "${VAULT_ADDR}", vaultCredentialId: "${VAULT_CRED_ID}", engineVersion: 2], 
-                vaultSecrets: [[path: 'secret/data/portfolio-prod', secretValues: [
+                vaultSecrets: [[path: 'secret/portfolio-prod', secretValues: [
                     [envVar: 'VITE_API_URL', vaultKey: 'VITE_API_URL']
                 ]]]) {
                     script {
