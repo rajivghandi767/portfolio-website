@@ -18,7 +18,7 @@ pipeline {
                 checkout scm
 
                 // 1. Fetch Secrets from Vault
-                withVault(configuration: [vaultUrl: "${VAULT_ADDR}", vaultCredentialId: "${VAULT_CRED_ID}"], 
+                withVault(configuration: [vaultUrl: "${VAULT_ADDR}", vaultCredentialId: "${VAULT_CRED_ID}", engineVersion: 2], 
                 vaultSecrets: [[path: 'secret/portfolio-prod', secretValues: [
                     [envVar: 'DJANGO_SECRET_KEY', vaultKey: 'DJANGO_SECRET_KEY'],
                     [envVar: 'ALLOWED_HOSTS', vaultKey: 'ALLOWED_HOSTS'],
