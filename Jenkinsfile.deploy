@@ -1,7 +1,7 @@
 pipeline {
     agent any
 
-    // 1. Scheduled Trigger (0330Hrs Daily)
+    // 1. Scheduled Trigger (0330hrs Daily)
     triggers {
         cron('30 3 * * *')
     }
@@ -56,6 +56,7 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: REGISTRY_CRED_ID, usernameVariable: 'REGISTRY_USER', passwordVariable: 'REGISTRY_PASS')]) {
                         script {
                             // C. Generate .env file LOCALLY
+                            // We inject the IMAGE_TAG here so docker-compose sees it
                             def envContent = """
                                 IMAGE_TAG='${params.TAG_TO_DEPLOY}'
                                 DJANGO_SECRET_KEY='${DJANGO_SECRET_KEY}'
@@ -92,7 +93,6 @@ pipeline {
                                 sh "echo \$REGISTRY_PASS | ssh ${DEPLOY_USER}@${DEPLOY_HOST} 'docker login ghcr.io -u ${REGISTRY_USER} --password-stdin'"
 
                                 // STEP B: Check for Updates
-                                // We pull first to see if there are changes. The login from Step A persists for this session.
                                 def isManualDeploy = params.TAG_TO_DEPLOY != 'latest'
                                 
                                 def pullOutput = sh(script: """
@@ -142,7 +142,7 @@ pipeline {
     }
 
     // 3. Discord Notifications
- post {
+    post {
         success {
             script {
                 // Scenario 1: Update Deployed
@@ -158,10 +158,7 @@ pipeline {
 :bar_chart: **Status:** Healthy
 :clock4: **Time:** ${java.time.LocalDateTime.now()}
 """
-                    discordSend description: deployMessage, 
-                                result: 'SUCCESS', 
-                                title: "🚀 Deployment Successful", 
-                                webhookURL: env.JENKINS_DISCORD_WEBHOOK
+                    discordSend description: deployMessage, result: 'SUCCESS', title: "🚀 Deployment Successful", webhookURL: env.JENKINS_DISCORD_WEBHOOK
                 } 
                 // Scenario 2: No Changes
                 else if (env.DEPLOY_STATUS == "SKIPPED") {
@@ -172,10 +169,7 @@ Running services remain unchanged.
 
 :clock4: **Time:** ${java.time.LocalDateTime.now()}
 """
-                    discordSend description: skipMessage, 
-                                result: 'SUCCESS', 
-                                title: "✅ Check Complete: No Changes", 
-                                webhookURL: env.JENKINS_DISCORD_WEBHOOK
+                    discordSend description: skipMessage, result: 'SUCCESS', title: "✅ Check Complete: No Changes", webhookURL: env.JENKINS_DISCORD_WEBHOOK
                 }
             }
         }
@@ -188,10 +182,8 @@ Check Jenkins logs for build #${BUILD_NUMBER}.
 
 :wrench: **Action Required:** Manual intervention needed.
 """
-                discordSend description: failMessage, 
-                            result: 'FAILURE', 
-                            title: "🚨 Critical Deployment Alert", 
-                            webhookURL: env.JENKINS_DISCORD_WEBHOOK
+                discordSend description: failMessage, result: 'FAILURE', title: "🚨 Deployment Alert", webhookURL: env.JENKINS_DISCORD_WEBHOOK
             }
         }
     }
+}
