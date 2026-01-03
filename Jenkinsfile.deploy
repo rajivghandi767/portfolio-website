@@ -8,7 +8,7 @@ pipeline {
 
     // 2. Rollback Parameter
     parameters {
-        string(name: 'TAG_TO_DEPLOY', defaultValue: 'latest', description: 'Tag to deploy (e.g. "latest" or build number "45")')
+        string(name: 'TAG_TO_DEPLOY', defaultValue: 'latest', description: 'Version to deploy (e.g. "latest" or build number "45")')
     }
 
     environment {
@@ -49,14 +49,13 @@ pipeline {
                     [envVar: 'POSTGRES_PASSWORD', vaultKey: 'POSTGRES_PASSWORD'],
                     [envVar: 'POSTGRES_DB', vaultKey: 'POSTGRES_DB'],
                     [envVar: 'ADMIN_URL', vaultKey: 'ADMIN_URL'],
-                    [envVar: 'DISCORD_WEBHOOK_URL', vaultKey: 'DISCORD_WEBHOOK_URL'], // App's own webhook
+                    [envVar: 'DISCORD_WEBHOOK_URL', vaultKey: 'DISCORD_WEBHOOK_URL'],
                 ]]]) {
                     
                     // B. Fetch Registry Credentials
                     withCredentials([usernamePassword(credentialsId: REGISTRY_CRED_ID, usernameVariable: 'REGISTRY_USER', passwordVariable: 'REGISTRY_PASS')]) {
                         script {
                             // C. Generate .env file LOCALLY
-                            // We inject the IMAGE_TAG here so docker-compose sees it
                             def envContent = """
                                 IMAGE_TAG='${params.TAG_TO_DEPLOY}'
                                 DJANGO_SECRET_KEY='${DJANGO_SECRET_KEY}'
@@ -145,6 +144,10 @@ pipeline {
     post {
         success {
             script {
+                // Time Formatting (New York Time, 24h format)
+                def now = java.time.ZonedDateTime.now(java.time.ZoneId.of("America/New_York"))
+                def timestamp = now.format(java.time.format.DateTimeFormatter.ofPattern("EEE, dd MMM yyyy 'at' HH:mm z"))
+
                 // Scenario 1: Update Deployed
                 if (env.DEPLOY_STATUS == "UPDATED") {
                     def deployMessage = """
@@ -156,7 +159,7 @@ pipeline {
 • **Nginx:** ${IMAGE_NGINX}
 
 :bar_chart: **Status:** Healthy
-:clock4: **Time:** ${java.time.LocalDateTime.now()}
+:clock4: **Time:** ${timestamp}
 """
                     discordSend description: deployMessage, result: 'SUCCESS', title: "🚀 Deployment Successful", webhookURL: env.JENKINS_DISCORD_WEBHOOK
                 } 
@@ -167,7 +170,7 @@ pipeline {
 No new Docker images found for tag: **${params.TAG_TO_DEPLOY}**.
 Running services remain unchanged.
 
-:clock4: **Time:** ${java.time.LocalDateTime.now()}
+:clock4: **Time:** ${timestamp}
 """
                     discordSend description: skipMessage, result: 'SUCCESS', title: "✅ Check Complete: No Changes", webhookURL: env.JENKINS_DISCORD_WEBHOOK
                 }
@@ -175,12 +178,18 @@ Running services remain unchanged.
         }
         failure {
             script {
+                // Failure Timestamp
+                def failTime = java.time.ZonedDateTime.now(java.time.ZoneId.of("America/New_York"))
+                                      .format(java.time.format.DateTimeFormatter.ofPattern("EEE, dd MMM yyyy 'at' HH:mm z"))
+
                 def failMessage = """
 :x: **Portfolio Website Deployment Failed**
 **:warning: Error Details:**
 Check Jenkins logs for build #${BUILD_NUMBER}.
 
 :wrench: **Action Required:** Manual intervention needed.
+
+:clock4: **Time:** ${failTime}
 """
                 discordSend description: failMessage, result: 'FAILURE', title: "🚨 Deployment Alert", webhookURL: env.JENKINS_DISCORD_WEBHOOK
             }
