@@ -142,9 +142,10 @@ pipeline {
     }
 
     // 3. Discord Notifications
-    post {
+ post {
         success {
             script {
+                // Scenario 1: Update Deployed
                 if (env.DEPLOY_STATUS == "UPDATED") {
                     def deployMessage = """
 :unicorn: **Portfolio Website Update Deployed**
@@ -157,8 +158,12 @@ pipeline {
 :bar_chart: **Status:** Healthy
 :clock4: **Time:** ${java.time.LocalDateTime.now()}
 """
-                    discordSend description: deployMessage, result: currentBuild.currentResult, title: "🚀 Deployment Successful", webhookURL: env.JENKINS_DISCORD_WEBHOOK, color: '#00ff00'
+                    discordSend description: deployMessage, 
+                                result: 'SUCCESS', 
+                                title: "🚀 Deployment Successful", 
+                                webhookURL: env.JENKINS_DISCORD_WEBHOOK
                 } 
+                // Scenario 2: No Changes
                 else if (env.DEPLOY_STATUS == "SKIPPED") {
                     def skipMessage = """
 :shield: **Portfolio Website Up to Date**
@@ -167,7 +172,10 @@ Running services remain unchanged.
 
 :clock4: **Time:** ${java.time.LocalDateTime.now()}
 """
-                    discordSend description: skipMessage, result: currentBuild.currentResult, title: "✅ Check Complete: No Changes", webhookURL: env.JENKINS_DISCORD_WEBHOOK, color: '#3498db'
+                    discordSend description: skipMessage, 
+                                result: 'SUCCESS', 
+                                title: "✅ Check Complete: No Changes", 
+                                webhookURL: env.JENKINS_DISCORD_WEBHOOK
                 }
             }
         }
@@ -180,8 +188,10 @@ Check Jenkins logs for build #${BUILD_NUMBER}.
 
 :wrench: **Action Required:** Manual intervention needed.
 """
-                discordSend description: failMessage, result: currentBuild.currentResult, title: "🚨 Deployment Alert", webhookURL: env.JENKINS_DISCORD_WEBHOOK, color: '#ff0000'
+                discordSend description: failMessage, 
+                            result: 'FAILURE', 
+                            title: "🚨 Critical Deployment Alert", 
+                            webhookURL: env.JENKINS_DISCORD_WEBHOOK
             }
         }
     }
-}
