@@ -1,14 +1,14 @@
 pipeline {
     agent any
 
-    // 1. Scheduled Trigger (4 AM Daily)
+    // 1. Scheduled Trigger (0330hrs Daily)
     triggers {
-        cron('0 4 * * *')
+        cron('30 3 * * *')
     }
 
     // 2. Rollback Parameter
     parameters {
-        string(name: 'TAG_TO_DEPLOY', defaultValue: 'latest', description: 'Tag to deploy (e.g. "latest" or build number "45")')
+        string(name: 'TAG_TO_DEPLOY', defaultValue: 'latest', description: 'Version to deploy (e.g. "latest" or build number "45")')
     }
 
     environment {
