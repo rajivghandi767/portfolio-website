@@ -1,7 +1,7 @@
 services:
   # DB Migration & Static Files Collection
   portfolio-backend-init:
-    image: ghcr.io/rajivghandi767/portfolio-backend:latest
+    image: ghcr.io/rajivghandi767/portfolio-backend:${IMAGE_TAG:-latest}
     container_name: portfolio-backend-init
     user: root
     networks:
@@ -23,7 +23,7 @@ services:
 
   # Portfolio Backend - Django
   portfolio-backend:
-    image: ghcr.io/rajivghandi767/portfolio-backend:latest
+    image: ghcr.io/rajivghandi767/portfolio-backend:${IMAGE_TAG:-latest}
     container_name: portfolio-backend
     restart: unless-stopped
     networks:
@@ -46,7 +46,7 @@ services:
       start_period: 60s
 
   portfolio-frontend:
-    image: ghcr.io/rajivghandi767/portfolio-frontend:latest
+    image: ghcr.io/rajivghandi767/portfolio-frontend:${IMAGE_TAG:-latest}
     container_name: portfolio-frontend
     restart: unless-stopped
     networks:
@@ -63,7 +63,7 @@ services:
 
   # Single unified nginx service
   portfolio-nginx:
-    image: ghcr.io/rajivghandi767/portfolio-nginx:latest
+    image: ghcr.io/rajivghandi767/portfolio-nginx:${IMAGE_TAG:-latest}
     container_name: portfolio-nginx
     restart: unless-stopped
     networks:
