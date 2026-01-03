@@ -1,9 +1,9 @@
 pipeline {
     agent any
 
-    // 1. Scheduled Trigger (4 AM Daily)
+    // 1. Scheduled Trigger (0330hrs Daily)
     triggers {
-        cron('0 4 * * *')
+        cron('30 3 * * *')
     }
 
     // 2. Rollback Parameter
