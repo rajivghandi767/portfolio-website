@@ -1,14 +1,14 @@
 pipeline {
     agent any
 
-    // 1. Scheduled Trigger (0330hrs Daily)
+    // 1. Scheduled Trigger (4 AM Daily)
     triggers {
-        cron('30 3 * * *')
+        cron('0 4 * * *')
     }
 
     // 2. Rollback Parameter
     parameters {
-        string(name: 'TAG_TO_DEPLOY', defaultValue: 'latest', description: 'Version to deploy (e.g. "latest" or build number "45")')
+        string(name: 'TAG_TO_DEPLOY', defaultValue: 'latest', description: 'Tag to deploy (e.g. "latest" or build number "45")')
     }
 
     environment {
@@ -144,9 +144,8 @@ pipeline {
     post {
         success {
             script {
-                // Time Formatting (New York Time, 24h format)
-                def now = java.time.ZonedDateTime.now(java.time.ZoneId.of("America/New_York"))
-                def timestamp = now.format(java.time.format.DateTimeFormatter.ofPattern("EEE, dd MMM yyyy 'at' HH:mm z"))
+                // Get timestamp via shell - New York Time
+                def timestamp = sh(returnStdout: true, script: "TZ='America/New_York' date +'%a, %d %b %Y at %H:%M %Z'").trim()
 
                 // Scenario 1: Update Deployed
                 if (env.DEPLOY_STATUS == "UPDATED") {
@@ -179,8 +178,7 @@ Running services remain unchanged.
         failure {
             script {
                 // Failure Timestamp
-                def failTime = java.time.ZonedDateTime.now(java.time.ZoneId.of("America/New_York"))
-                                      .format(java.time.format.DateTimeFormatter.ofPattern("EEE, dd MMM yyyy 'at' HH:mm z"))
+                def failTime = sh(returnStdout: true, script: "TZ='America/New_York' date +'%a, %d %b %Y at %H:%M %Z'").trim()
 
                 def failMessage = """
 :x: **Portfolio Website Deployment Failed**
