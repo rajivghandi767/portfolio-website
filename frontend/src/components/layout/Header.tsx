@@ -2,13 +2,13 @@ import { useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { Sun, Moon, Menu, X, Home as HomeIcon } from "lucide-react";
 import { useThemeContext } from "../../context/ThemeContext";
+import { ProjectSwitcher } from "./ProjectSwitcher";
 import apiService from "../../services/api";
 import useApi from "../../hooks/useApi";
 import { NavigationItem, Info } from "../../types";
 
-// Separate component for theme toggle button
 const ThemeToggleButton = () => {
-  const { isDarkMode, toggleTheme } = useThemeContext();
+  const { theme, toggleTheme } = useThemeContext();
 
   return (
     <button
@@ -16,12 +16,16 @@ const ThemeToggleButton = () => {
       onClick={toggleTheme}
       aria-label="Toggle dark mode"
     >
-      {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+      {theme === "dark" ? (
+        <Sun className="w-5 h-5" />
+      ) : (
+        <Moon className="w-5 h-5" />
+      )}
     </button>
   );
 };
 
-// Separate component for mobile menu toggle
+// Removed the w-14 wrapper here so the button flexes cleanly in the new absolute container
 const MobileMenuToggle = ({
   isMenuOpen,
   toggleMenu,
@@ -29,18 +33,15 @@ const MobileMenuToggle = ({
   isMenuOpen: boolean;
   toggleMenu: () => void;
 }) => (
-  <div className="w-14 flex justify-end md:hidden">
-    <button
-      onClick={toggleMenu}
-      className="p-2 text-header hover:text-primary transition-colors"
-      aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-    >
-      {isMenuOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
-    </button>
-  </div>
+  <button
+    onClick={toggleMenu}
+    className="p-2 text-header hover:text-primary transition-colors"
+    aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+  >
+    {isMenuOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
+  </button>
 );
 
-// Navigation items configuration
 const NAVIGATION_ITEMS: NavigationItem[] = [
   { id: 1, label: "Bio", path: "/", sectionRef: "bio" },
   { id: 2, label: "Projects", path: "/projects", sectionRef: "projects" },
@@ -58,29 +59,23 @@ const Header = () => {
   const { data: info } = useApi<Info[]>(() => apiService.info.get());
   const infoData = info?.[0];
 
-  // Compute navigation items based on current page
   const navItems: NavigationItem[] = isHomePage
     ? NAVIGATION_ITEMS
     : [
         { id: 0, label: "Home", path: "/", sectionRef: null },
         ...NAVIGATION_ITEMS.filter((item) => item.label !== "Bio").map(
-          (item) => ({ ...item })
+          (item) => ({ ...item }),
         ),
       ];
 
-  // Handle navigation and scrolling
   const handleNavigation = (item: NavigationItem, event: React.MouseEvent) => {
-    // Scroll to section on home page
     if (isHomePage && item.sectionRef) {
       event.preventDefault();
       scrollToSection(item.sectionRef);
     }
-
-    // Close mobile menu
     setIsMenuOpen(false);
   };
 
-  // Scroll to a specific section
   const scrollToSection = (ref: string): void => {
     const section = document.getElementById(ref);
     if (section) {
@@ -97,7 +92,6 @@ const Header = () => {
     }
   };
 
-  // Render navigation links
   const renderNavLinks = (items: NavigationItem[], isMobile = false) => (
     <ul
       className={
@@ -138,37 +132,45 @@ const Header = () => {
 
   return (
     <div className="block sticky top-0 z-50">
-      {/* Banner */}
       <div className="bg-header">
-        <div className="container mx-auto px-4 py-3">
-          <div className="flex items-center justify-between">
-            <div className="w-14">
+        {/* Relative positioning allows us to absolutely pin left/right items without disturbing the center */}
+        <div className="container mx-auto px-4 py-3 relative flex items-center justify-center min-h-[72px]">
+          {/* MOBILE ONLY: Switchers on the Left */}
+          <div className="absolute left-4 flex md:hidden items-center gap-2">
+            <ProjectSwitcher align="left" />
+            <ThemeToggleButton />
+          </div>
+
+          {/* CENTER: Title & Subtitle */}
+          <div className="text-center z-10 w-full max-w-[50%] md:max-w-[60%]">
+            <h1 className="text-xl md:text-2xl text-header font-bold truncate">
+              <span>{infoData?.site_header}</span>
+            </h1>
+            <h2 className="text-sm md:text-base text-header truncate">
+              {infoData?.professional_title}
+            </h2>
+          </div>
+
+          {/* RIGHT: Switchers (Desktop) OR Hamburger Menu (Mobile) */}
+          <div className="absolute right-4 flex items-center gap-2">
+            <div className="hidden md:flex items-center gap-2">
+              <ProjectSwitcher align="right" />
               <ThemeToggleButton />
             </div>
-
-            <div className="flex-1 text-center">
-              <h1 className="text-2xl text-header">
-                <span>{infoData?.site_header}</span>
-              </h1>
-              <h2 className="text-l text-header">
-                {infoData?.professional_title}
-              </h2>
+            <div className="md:hidden">
+              <MobileMenuToggle
+                isMenuOpen={isMenuOpen}
+                toggleMenu={() => setIsMenuOpen(!isMenuOpen)}
+              />
             </div>
-
-            <MobileMenuToggle
-              isMenuOpen={isMenuOpen}
-              toggleMenu={() => setIsMenuOpen(!isMenuOpen)}
-            />
           </div>
         </div>
       </div>
 
-      {/* Desktop Navigation */}
       <div className="hidden md:block">
         <nav className="bg-nav shadow-lg">{renderNavLinks(navItems)}</nav>
       </div>
 
-      {/* Mobile Navigation */}
       <div className={`md:hidden bg-nav ${isMenuOpen ? "block" : "hidden"}`}>
         <nav>{renderNavLinks(navItems, true)}</nav>
       </div>
