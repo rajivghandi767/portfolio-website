@@ -15,13 +15,13 @@ function createPlaceholderDataUrl(type?: string): string {
   const config = placeholders[type as keyof typeof placeholders] || placeholders.default;
   
   const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="${config.width}" height="${config.height}" viewBox="0 0 ${config.width} ${config.height}">
-      <rect width="100%" height="100%" fill="#e9ecef"/>
-      <text x="50%" y="50%" font-family="sans-serif" font-size="16" text-anchor="middle" dominant-baseline="middle" fill="#6c757d">
-        ${config.text}
-      </text>
-    </svg>
-  `;
+      <svg xmlns="http://www.w3.org/2000/svg" width="${config.width}" height="${config.height}" viewBox="0 0 ${config.width} ${config.height}">
+        <rect width="100%" height="100%" fill="#171717"/>
+        <text x="50%" y="50%" font-family="ui-monospace, monospace" font-size="16" text-anchor="middle" dominant-baseline="middle" fill="#525252">
+          ${config.text}
+        </text>
+      </svg>
+    `;
   
   return `data:image/svg+xml;base64,${btoa(svg.trim())}`;
 }

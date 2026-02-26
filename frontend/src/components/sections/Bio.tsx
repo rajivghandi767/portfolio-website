@@ -42,7 +42,7 @@ const Bio = () => {
         console.error("Error fetching resume:", err);
       }
       setResumeError(
-        err instanceof Error ? err.message : "Failed to load resume preview"
+        err instanceof Error ? err.message : "Failed to load resume preview",
       );
     } finally {
       setIsLoadingResume(false);
@@ -81,7 +81,7 @@ const Bio = () => {
   };
 
   const handleModalBackdropClick = (
-    e: React.MouseEvent<HTMLDivElement>
+    e: React.MouseEvent<HTMLDivElement>,
   ): void => {
     if (e.target === e.currentTarget) handleCloseModal();
   };
@@ -99,13 +99,13 @@ const Bio = () => {
 
           const imageUrl = imageUtils.getImageUrl(
             bioInfo.profile_photo_url,
-            "profile"
+            "profile",
           );
 
           return (
             <div id="bio" className="mx-auto p-4 md:flex md:w-5/6 lg:w-7/12">
               <div className="flex justify-center mb-4 md:mb-0">
-                <div className="w-44 h-44 rounded-full overflow-hidden shrink-0 grow-0 ring-3 ring-black dark:ring-gray-900">
+                <div className="w-44 h-44 rounded-full overflow-hidden shrink-0 grow-0 ring-4 ring-gray-200 dark:ring-neutral-800">
                   <img
                     src={imageUrl}
                     alt={`Profile photo of ${bioInfo.greeting || "user"}`}
@@ -144,14 +144,17 @@ const Bio = () => {
           <div className="card w-full max-w-4xl h-[90vh] overflow-hidden flex flex-col">
             <div className="flex justify-between items-center p-4 border-b-2 border-default">
               <h3 className="text-lg font-semibold">Rajiv Wallace Resume</h3>
-              <button onClick={handleCloseModal} className="hover:text-primary">
+              <button
+                onClick={handleCloseModal}
+                className="hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors"
+              >
                 <X size={20} />
               </button>
             </div>
             <div className="flex-1 min-h-0">
               {isLoadingResume ? (
                 <div className="h-full flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-black dark:border-white"></div>
                 </div>
               ) : resumeError ? (
                 <div className="h-full flex items-center justify-center p-4 text-center">

@@ -19,14 +19,13 @@ const PROJECTS = [
   },
   {
     name: "Prop & Ferry",
-    url: "https://ferry.rajivwallace.com",
+    url: "https://prop-ferry.rajivwallace.com",
     icon: "✈️",
     desc: "Caribbean island hopping made easy",
     color: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
   },
 ];
 
-// Add a prop to control which direction the dropdown opens
 interface ProjectSwitcherProps {
   align?: "left" | "right";
 }
@@ -48,7 +47,6 @@ export function ProjectSwitcher({ align = "right" }: ProjectSwitcherProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Set the CSS classes based on the alignment prop
   const alignmentClasses =
     align === "left" ? "left-0 origin-top-left" : "right-0 origin-top-right";
 
@@ -56,7 +54,7 @@ export function ProjectSwitcher({ align = "right" }: ProjectSwitcherProps) {
     <div className="relative z-50" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-[#333333] transition-colors text-header"
+        className="p-2 rounded-lg text-black dark:text-white hover:bg-gray-100 dark:hover:bg-neutral-900 transition-colors"
         title="More Projects"
       >
         <svg
@@ -79,9 +77,9 @@ export function ProjectSwitcher({ align = "right" }: ProjectSwitcherProps) {
 
       {isOpen && (
         <div
-          className={`absolute mt-3 w-72 bg-white dark:bg-[#1a1a1a] rounded-xl shadow-xl border border-gray-200 dark:border-[#333333] overflow-hidden transform transition-all ${alignmentClasses}`}
+          className={`absolute mt-3 w-72 bg-white dark:bg-black rounded-xl shadow-xl border border-gray-200 dark:border-neutral-800 overflow-hidden transform transition-all ${alignmentClasses}`}
         >
-          <div className="p-3 border-b border-gray-200 dark:border-[#333333] bg-gray-50/50 dark:bg-black/50">
+          <div className="p-3 border-b border-gray-200 dark:border-neutral-800 bg-gray-50/50 dark:bg-neutral-900/50">
             <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
               Projects by Rajiv
             </h3>
@@ -94,7 +92,7 @@ export function ProjectSwitcher({ align = "right" }: ProjectSwitcherProps) {
                 href={project.url}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-[#333333]/50 transition-colors group"
+                className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-neutral-900 transition-colors group"
               >
                 <div
                   className={`w-10 h-10 rounded-lg flex items-center justify-center text-xl shadow-sm ${project.color}`}
@@ -102,7 +100,7 @@ export function ProjectSwitcher({ align = "right" }: ProjectSwitcherProps) {
                   {project.icon}
                 </div>
                 <div>
-                  <div className="font-bold text-gray-700 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  <div className="font-bold text-black dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                     {project.name}
                   </div>
                   <div className="text-xs text-gray-500 dark:text-gray-400 leading-tight mt-0.5">
@@ -113,7 +111,7 @@ export function ProjectSwitcher({ align = "right" }: ProjectSwitcherProps) {
             ))}
           </div>
 
-          <div className="p-2 border-t border-gray-200 dark:border-[#333333] bg-gray-50 dark:bg-black/30 text-center">
+          <div className="p-2 border-t border-gray-200 dark:border-neutral-800 bg-gray-50 dark:bg-neutral-900 text-center">
             <a
               href="https://github.com/rajivghandi767"
               target="_blank"

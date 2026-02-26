@@ -31,7 +31,7 @@ const BlogPost = () => {
       <div className="flex justify-between items-center mb-6">
         <Link
           to="/blog"
-          className="flex items-center gap-2 hover:text-primary transition-colors"
+          className="flex items-center gap-2 hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors"
         >
           <ArrowLeft size={18} />
           <span>Back to All Posts</span>
@@ -67,7 +67,7 @@ const BlogPost = () => {
                     >
                       {new Date(singlePost.created_on).toLocaleDateString(
                         "en-US",
-                        { year: "numeric", month: "long", day: "numeric" }
+                        { year: "numeric", month: "long", day: "numeric" },
                       )}
                     </time>
                   </div>
@@ -79,7 +79,7 @@ const BlogPost = () => {
                   <img
                     src={imageUtils.getImageUrl(
                       singlePost.image_url,
-                      "blogPost"
+                      "blogPost",
                     )}
                     alt={singlePost.title}
                     className="w-full h-64 sm:h-96 object-cover rounded-lg shadow-md border border-default"

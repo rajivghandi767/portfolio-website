@@ -35,7 +35,7 @@ const MobileMenuToggle = ({
 }) => (
   <button
     onClick={toggleMenu}
-    className="p-2 text-header hover:text-primary transition-colors"
+    className="p-2 text-header hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors"
     aria-label={isMenuOpen ? "Close menu" : "Open menu"}
   >
     {isMenuOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
@@ -114,8 +114,8 @@ const Header = () => {
               className={`
                 ${
                   isMobile
-                    ? "flex items-center justify-center gap-1 mx-4 my-2 text-xl text-nav hover:text-primary rounded w-full py-2 text-center"
-                    : "text-xl text-nav hover:text-primary rounded px-3 py-1 flex items-center gap-1"
+                    ? "flex items-center justify-center gap-1 mx-4 my-2 text-xl text-nav hover:text-neutral-500 dark:hover:text-neutral-400 rounded w-full py-2 text-center"
+                    : "text-xl text-nav hover:text-neutral-500 dark:hover:text-neutral-400 rounded px-3 py-1 flex items-center gap-1"
                 }
                 transition-all duration-200 
                 ${isActive ? "text-nav-active" : ""}
@@ -132,32 +132,36 @@ const Header = () => {
 
   return (
     <div className="block sticky top-0 z-50">
-      <div className="bg-header">
-        {/* Relative positioning allows us to absolutely pin left/right items without disturbing the center */}
-        <div className="container mx-auto px-4 py-3 relative flex items-center justify-center min-h-[72px]">
-          {/* MOBILE ONLY: Switchers on the Left */}
-          <div className="absolute left-4 flex md:hidden items-center gap-2">
+      {/* 1. Solid Background: Removed /90 opacity and backdrop-blur-sm */}
+      <div className="bg-white dark:bg-black border-b border-gray-200 dark:border-neutral-800">
+        <div className="container mx-auto px-4 py-3 flex items-center justify-between min-h-[72px]">
+          {/* LEFT ZONE: Project Switcher & Mobile Theme Toggle */}
+          <div className="flex items-center justify-start w-24 gap-1">
             <ProjectSwitcher align="left" />
-            <ThemeToggleButton />
+            {/* 2. Shows Theme Toggle here ONLY on mobile */}
+            <div className="md:hidden flex items-center">
+              <ThemeToggleButton />
+            </div>
           </div>
 
-          {/* CENTER: Title & Subtitle */}
-          <div className="text-center z-10 w-full max-w-[50%] md:max-w-[60%]">
-            <h1 className="text-xl md:text-2xl text-header font-bold truncate">
-              <span>{infoData?.site_header}</span>
+          {/* CENTER ZONE: Symmetrical Title */}
+          <div className="text-center flex-1 px-2">
+            <h1 className="text-lg md:text-2xl font-bold leading-tight text-black dark:text-white">
+              {infoData?.site_header}
             </h1>
-            <h2 className="text-sm md:text-base text-header truncate">
+            <h2 className="text-xs md:text-base leading-tight text-neutral-600 dark:text-neutral-400 mt-0.5">
               {infoData?.professional_title}
             </h2>
           </div>
 
-          {/* RIGHT: Switchers (Desktop) OR Hamburger Menu (Mobile) */}
-          <div className="absolute right-4 flex items-center gap-2">
-            <div className="hidden md:flex items-center gap-2">
-              <ProjectSwitcher align="right" />
+          {/* RIGHT ZONE: Desktop Theme Toggle & Mobile Menu */}
+          <div className="flex items-center justify-end w-24 gap-1">
+            {/* 3. Shows Theme Toggle here ONLY on desktop */}
+            <div className="hidden md:block">
               <ThemeToggleButton />
             </div>
-            <div className="md:hidden">
+            {/* Hamburger Menu (Mobile Only) */}
+            <div className="md:hidden flex items-center">
               <MobileMenuToggle
                 isMenuOpen={isMenuOpen}
                 toggleMenu={() => setIsMenuOpen(!isMenuOpen)}
@@ -167,11 +171,17 @@ const Header = () => {
         </div>
       </div>
 
+      {/* Desktop Navigation Bar */}
       <div className="hidden md:block">
-        <nav className="bg-nav shadow-lg">{renderNavLinks(navItems)}</nav>
+        <nav className="bg-gray-50 dark:bg-neutral-900 border-b border-gray-200 dark:border-neutral-800 shadow-sm">
+          {renderNavLinks(navItems)}
+        </nav>
       </div>
 
-      <div className={`md:hidden bg-nav ${isMenuOpen ? "block" : "hidden"}`}>
+      {/* Mobile Navigation Bar */}
+      <div
+        className={`md:hidden bg-gray-50 dark:bg-neutral-900 border-b border-gray-200 dark:border-neutral-800 ${isMenuOpen ? "block" : "hidden"}`}
+      >
         <nav>{renderNavLinks(navItems, true)}</nav>
       </div>
     </div>

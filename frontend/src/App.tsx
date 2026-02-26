@@ -20,13 +20,13 @@ const ContactPage = lazy(() => import("./components/pages/ContactPage"));
 // Layout component for all pages
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="min-h-screen m-auto font-mono scroll-smooth pt-2 pb-2 flex flex-col">
+    <div className="min-h-screen m-auto font-mono scroll-smooth pt-2 pb-2 flex flex-col bg-white dark:bg-black text-neutral-900 dark:text-white transition-colors duration-200">
       <Header />
-      <main className="pb-16 flex-grow">
+      <main className="pb-16 grow">
         <Suspense
           fallback={
             <div className="flex justify-center items-center pt-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-black dark:border-white"></div>
             </div>
           }
         >
