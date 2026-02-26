@@ -50,8 +50,8 @@ const BlogPage = () => {
               post.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
               (post.tags &&
                 post.tags.some((tag) =>
-                  tag.toLowerCase().includes(searchTerm.toLowerCase())
-                ))
+                  tag.toLowerCase().includes(searchTerm.toLowerCase()),
+                )),
           );
 
           if (filteredPosts.length === 0) {
@@ -106,7 +106,7 @@ const BlogPostCard = ({ post }: { post: BlogPost }) => {
         </div>
 
         <Link to={`/blog/${post.id}`}>
-          <h2 className="text-2xl font-semibold mb-3 hover:text-primary transition-colors">
+          <h2 className="text-2xl font-semibold mb-3 hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors">
             {post.title}
           </h2>
         </Link>
@@ -132,7 +132,7 @@ const BlogPostCard = ({ post }: { post: BlogPost }) => {
         <div className="mt-auto">
           <Link
             to={`/blog/${post.id}`}
-            className="flex items-center gap-1 text-sm hover:text-primary transition-colors group"
+            className="flex items-center gap-1 text-sm hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors group"
           >
             <span>Read full post</span>
             <ArrowRight

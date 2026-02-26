@@ -80,7 +80,7 @@ const BlogPostCard = ({ post }: { post: BlogPost }) => {
       </div>
       <div className="p-4 md:w-2/3 flex flex-col">
         <Link to={`/blog/${post.id}`}>
-          <h2 className="mb-3 text-xl font-medium hover:text-primary transition-all">
+          <h2 className="mb-3 text-xl font-medium hover:text-neutral-500 dark:hover:text-neutral-400 transition-all">
             {post.title}
           </h2>
         </Link>
@@ -92,7 +92,7 @@ const BlogPostCard = ({ post }: { post: BlogPost }) => {
           <div className="text-xs">{formattedDate}</div>
           <Link
             to={`/blog/${post.id}`}
-            className="flex items-center gap-1 text-sm hover:text-primary group"
+            className="flex items-center gap-1 text-sm hover:text-neutral-500 dark:hover:text-neutral-400 group"
           >
             <span>Read more</span>
             <ArrowRight

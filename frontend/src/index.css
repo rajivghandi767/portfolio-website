@@ -1,97 +1,22 @@
 @import "tailwindcss";
 
-/* Custom theme variables with black primary buttons and white cards */
-:root {
-  /* Core colors */
-  --background: #ffffff;
-  --foreground: #1a1a1a;
-
-  /* UI elements - explicitly white in light mode */
-  --card: #ffffff;
-  --card-foreground: #1a1a1a;
-
-  /* Primary colors - black in light mode */
-  --primary: #000000; /* Black */
-  --primary-hover: #333333; /* Dark gray on hover */
-  --primary-foreground: #ffffff;
-
-  /* Accent colors */
-  --accent: #333333; /* Dark gray */
-  --accent-foreground: #ffffff;
-
-  /* Header/banner - white in light mode */
-  --header-bg: #ffffff;
-  --header-text: #1a1a1a;
-
-  /* Navigation */
-  --nav-bg: #1a1a1a;
-  --nav-text: #ffffff;
-  --nav-active: #ffffff;
-
-  /* Borders and utilities */
-  --border: #e6e6e6;
-  --ring: #000000;
-
-  /* Gradient colors */
-  --gradient-from: #000000;
-  --gradient-to: #333333;
-}
-
-.dark {
-  /* Core colors - true black for AMOLED */
-  --background: #000000;
-  --foreground: #e6e6e6;
-
-  /* UI elements - maintain black for AMOLED */
-  --card: #000000;
-  --card-foreground: #e6e6e6;
-
-  /* Primary colors - white in dark mode */
-  --primary: #ffffff; /* White */
-  --primary-hover: #e6e6e6; /* Light gray on hover */
-  --primary-foreground: #000000;
-
-  /* Accent colors */
-  --accent: #e6e6e6; /* Light gray */
-  --accent-foreground: #000000;
-
-  /* Header/banner */
-  --header-bg: #000000;
-  --header-text: #e6e6e6;
-
-  /* Navigation */
-  --nav-bg: #000000;
-  --nav-text: #e6e6e6;
-  --nav-active: #ffffff;
-
-  /* Borders and utilities */
-  --border: #333333;
-  --ring: #ffffff;
-
-  /* Gradient colors */
-  --gradient-from: #e6e6e6;
-  --gradient-to: #cccccc;
-}
+/* Tailwind v4 custom variant for the .dark class */
+@custom-variant dark (&:where(.dark, .dark *));
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  scroll-behavior: smooth;
 }
 
+/* Global Link Styles */
 a:not([class]) {
-  color: var(--accent);
-  transition: all 0.2s;
+  @apply text-neutral-600 dark:text-neutral-400 transition-all duration-200;
 }
 
 a:not([class]):hover {
-  color: var(--primary);
-  text-decoration: underline;
-}
-
-html {
-  scroll-behavior: smooth;
+  @apply text-black dark:text-white underline;
 }
 
 /* Custom animations */
@@ -126,7 +51,6 @@ html {
   }
 }
 
-/* Utility classes for animations */
 .animate-fade-in {
   animation: fadeIn 0.5s ease-in-out;
 }
@@ -137,119 +61,63 @@ html {
   animation: scaleIn 0.3s ease-out;
 }
 
-/* Custom classes for theme */
-.bg-primary {
-  background-color: var(--primary);
-}
-.bg-primary-hover:hover {
-  background-color: var(--primary-hover);
-}
-.text-primary {
-  color: var(--primary);
-}
+/* Custom component classes mapped to AMOLED Tailwind */
 .text-header {
-  color: var(--header-text);
+  @apply text-black dark:text-white;
 }
-.bg-header {
-  background-color: var(--header-bg);
-}
-.bg-nav {
-  background-color: var(--nav-bg);
-}
+
 .text-nav {
-  color: var(--nav-text);
+  @apply text-neutral-600 dark:text-neutral-400;
 }
+
 .text-nav-active {
-  color: var(--nav-active);
+  @apply text-black dark:text-white font-bold;
 }
-.border-default {
-  border-color: var(--border);
-}
+
 .bg-card {
-  background-color: var(--card);
+  @apply bg-white dark:bg-black;
 }
+
 .text-card-foreground {
-  color: var(--card-foreground);
+  @apply text-neutral-900 dark:text-white;
 }
 
-/* Custom component classes */
+.border-default {
+  @apply border-gray-200 dark:border-neutral-800;
+}
+
 .hover-scale {
-  transition: transform 0.3s;
-}
-.hover-scale:hover {
-  transform: scale(1.02);
+  @apply transition-transform duration-300 hover:scale-[1.02];
 }
 
+/* Gradient text */
 .text-gradient-light {
-  background: linear-gradient(
-    to right,
-    var(--gradient-from),
-    var(--gradient-to)
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
+  @apply bg-gradient-to-r from-black to-gray-600 dark:from-white dark:to-gray-400 bg-clip-text text-transparent;
 }
 
-/* Common element styles */
 .rounded-profile {
-  border-radius: 50%;
-  overflow: hidden;
+  @apply rounded-full overflow-hidden border-4 border-gray-200 dark:border-neutral-800;
 }
 
 /* Button styles */
 .btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.375rem;
-  font-weight: 500;
-  transition: all 0.2s;
+  @apply inline-flex items-center justify-center rounded-md font-medium transition-colors duration-200 px-4 py-2;
 }
 
 .btn-primary {
-  background-color: var(--primary);
-  color: var(--primary-foreground);
-}
-
-.btn-primary:hover {
-  background-color: var(--primary-hover);
+  @apply bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-gray-200;
 }
 
 .btn-outline {
-  background-color: transparent;
-  border: 1px solid var(--border);
-  color: var(--foreground);
-}
-
-.btn-outline:hover {
-  border-color: var(--primary);
-  color: var(--primary);
+  @apply bg-transparent border-2 border-gray-200 dark:border-neutral-800 text-neutral-900 dark:text-white hover:border-black dark:hover:border-white;
 }
 
 /* Card styles */
 .card {
-  background-color: var(--card);
-  color: var(--card-foreground);
-  border: 2px solid var(--border);
-  border-radius: 0.5rem;
-  overflow: hidden;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  @apply bg-white dark:bg-black text-neutral-900 dark:text-white border-2 border-gray-200 dark:border-neutral-800 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow;
 }
 
-/* Card image container - always white in light mode */
+/* Card image container - White in both modes or neutral */
 .card-image-container {
-  background-color: #ffffff;
-}
-.dark .card-image-container {
-  background-color: #000000;
-}
-
-/* AMOLED specific optimizations */
-[data-amoled="true"] .dark {
-  --background: #000000;
-  --card: #000000;
-  --header-bg: #000000;
-  --nav-bg: #000000;
+  @apply bg-white dark:bg-neutral-900 flex items-center justify-center;
 }

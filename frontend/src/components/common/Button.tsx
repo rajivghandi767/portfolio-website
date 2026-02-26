@@ -29,14 +29,14 @@ const Button = ({
 
   const variantStyles = {
     primary:
-      "bg-gradient-to-r from-black to-gray-800 dark:from-gray-50 dark:to-white text-white dark:text-black hover:from-gray-800 hover:to-gray-700 dark:hover:from-gray-200 dark:hover:to-gray-100 focus:ring-gray-400 dark:focus:ring-gray-600",
+      "bg-black dark:bg-white text-white dark:text-black hover:bg-neutral-800 dark:hover:bg-gray-200 focus:ring-neutral-400 dark:focus:ring-gray-400",
     secondary:
-      "bg-gray-200 dark:bg-gray-800 text-black dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700 focus:ring-gray-300 dark:focus:ring-gray-700",
+      "bg-gray-100 dark:bg-neutral-900 text-black dark:text-white hover:bg-gray-200 dark:hover:bg-neutral-800 focus:ring-gray-300 dark:focus:ring-neutral-700",
     outline:
-      "border-2 border-black dark:border-gray-300 text-black dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-900 focus:ring-gray-400 dark:focus:ring-gray-600",
+      "border-2 border-gray-200 dark:border-neutral-800 bg-transparent text-black dark:text-white hover:border-black dark:hover:border-white focus:ring-gray-200 dark:focus:ring-neutral-800",
     ghost:
-      "text-black dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-900 focus:ring-gray-400 dark:focus:ring-gray-600",
-    link: "text-black dark:text-gray-300 hover:text-gray-700 dark:hover:text-white underline underline-offset-4 focus:ring-gray-400 dark:focus:ring-gray-600",
+      "text-black dark:text-white hover:bg-gray-100 dark:hover:bg-neutral-900 focus:ring-gray-100 dark:focus:ring-neutral-900",
+    link: "text-black dark:text-white hover:text-neutral-600 dark:hover:text-neutral-400 underline underline-offset-4 focus:ring-gray-400 dark:focus:ring-gray-600",
   };
 
   const sizeStyles = {
@@ -56,7 +56,7 @@ const Button = ({
         sizeStyles[size],
         widthStyle,
         isLoading || disabled ? "opacity-50 cursor-not-allowed" : "",
-        className
+        className,
       )}
       disabled={isLoading || disabled}
       {...props}

@@ -112,7 +112,7 @@ const CreditCard = ({
               href={card.referral_link}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-1 text-sm text-primary hover:underline"
+              className="flex items-center justify-center gap-1 text-sm text-black dark:text-white hover:underline"
               onClick={(e) => e.stopPropagation()}
             >
               <span>Referral</span>
@@ -152,7 +152,10 @@ const CardDetailModal = ({
       <div className="card w-full max-w-xl max-h-[90vh] overflow-hidden flex flex-col">
         <div className="flex justify-between items-center p-4 border-b-2 border-default">
           <h3 className="text-lg font-semibold">{card.card_name}</h3>
-          <button onClick={onClose} className="hover:text-primary">
+          <button
+            onClick={onClose}
+            className="hover:text-neutral-500 dark:hover:text-neutral-400"
+          >
             <X size={20} />
           </button>
         </div>

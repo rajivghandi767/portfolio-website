@@ -79,7 +79,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
         />
       </div>
 
-      <div className="p-4 flex flex-col flex-grow">
+      <div className="p-4 flex flex-col grow">
         <h2 className="text-base font-semibold mb-1 text-center">
           {project.title}
         </h2>
@@ -87,10 +87,10 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
         <div className="flex items-center justify-center gap-4 mb-2">
           {project.repo && (
             <a
-              href={project.repo}
+              href={project.repo} // (and project.deployed_url)
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 hover:text-primary transition-colors text-xs"
+              className="flex items-center gap-1 hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors text-xs"
             >
               <Github size={12} />
               <span>Code</span>
@@ -101,7 +101,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
               href={project.deployed_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 hover:text-primary transition-colors text-xs"
+              className="flex items-center gap-1 hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors text-xs"
             >
               <span>Demo</span>
             </a>
