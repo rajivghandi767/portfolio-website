@@ -179,4 +179,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 **Rajiv Wallace**
 
 - **LinkedIn**: [linkedin.com/in/rajiv-wallace](https://www.linkedin.com/in/rajiv-wallace)
-- **Email**: [rajivghandi972@gmail.com](mailto:rajivghandi972@gmail.com)
+- **Email**: [dev@rajivwallace.com](mailto:dev@rajivwallace.com)
