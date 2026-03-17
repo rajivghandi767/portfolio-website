@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 # ============================================================================
 # LOAD ENV VARIABLES
 # ============================================================================
+# Inherit all base settings, then inject sensitive credentials directly from the .env file
+# into the OS environment so they remain out of version control.
 env_path = BASE_DIR / '.env'
 load_dotenv(dotenv_path=env_path, override=True)
 
@@ -38,12 +40,15 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 # ============================================================================
 # HTTPS SECURITY SETTINGS (Adjusted for NPM/Cloudflare)
 # ============================================================================
+# Disabled internal SSL redirects to prevent infinite loops, as SSL termination
+# is handled upstream by Cloudflare and Nginx Proxy Manager.
 SECURE_SSL_REDIRECT = False
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # ============================================================================
 # STATIC & MEDIA FILES FOR PRODUCTION
 # ============================================================================
+# Absolute paths mapped to the internal Docker container volumes for asset serving.
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/backend/django/staticfiles'
 
@@ -57,6 +62,8 @@ os.makedirs(STATIC_ROOT, exist_ok=True)
 # ============================================================================
 # DATABASE CONFIGURATION FOR PRODUCTION
 # ============================================================================
+# Utilizing the Prometheus wrapper for PostgreSQL to expose query execution metrics
+# to the /metrics endpoint for Grafana visualization.
 DATABASES = {
     'default': {
         'ENGINE': 'django_prometheus.db.backends.postgresql',

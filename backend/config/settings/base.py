@@ -3,6 +3,9 @@ from pathlib import Path
 # ============================================================================
 # BASE DIRECTORY
 # ============================================================================
+# Uses object-oriented pathlib to dynamically establish the absolute path to the backend/ root directory.
+# .parents[2] traverses up from base.py -> settings/ [0] -> config/ [1] -> backend/ [2]
+
 BASE_DIR = Path(__file__).resolve().parents[2]
 
 # ============================================================================
@@ -10,9 +13,9 @@ BASE_DIR = Path(__file__).resolve().parents[2]
 # ============================================================================
 INSTALLED_APPS = [
     # Third-Party apps
-    'django_prometheus',
+    'django_prometheus',  # For monitoring and metrics
     'rest_framework',
-    'django_ckeditor_5',
+    'django_ckeditor_5',  # Rich text blog writing in admin interface
 
     'django.contrib.admin',
     'django.contrib.auth',
