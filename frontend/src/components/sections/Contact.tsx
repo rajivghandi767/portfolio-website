@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { Send, AlertCircle, CheckCircle } from "lucide-react";
-import { ContactForm, ContactResponse, NotificationType } from "../../types";
+import { ContactForm, NotificationType } from "../../types";
 import apiService from "../../services/api";
 
 const Contact = () => {
