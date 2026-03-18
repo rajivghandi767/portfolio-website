@@ -37,7 +37,6 @@ const Modal = ({
 
     if (isOpen) {
       document.addEventListener("keydown", handleEscape);
-      // Prevent scrolling when modal is open
       document.body.style.overflow = "hidden";
     }
 
@@ -49,7 +48,6 @@ const Modal = ({
 
   if (!isOpen) return null;
 
-  // Handle max width classes
   const maxWidthClasses = {
     xs: "max-w-xs",
     sm: "max-w-sm",
@@ -72,26 +70,23 @@ const Modal = ({
     >
       <div
         className={cn(
-          "w-full bg-white dark:bg-black border-2 border-black dark:border-gray-800 rounded-lg shadow-xl flex flex-col max-h-[90vh]",
-          maxWidthClasses[maxWidth]
+          "w-full bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark border-2 border-gray-200 dark:border-neutral-800 rounded-lg shadow-xl flex flex-col max-h-[90vh]",
+          maxWidthClasses[maxWidth],
         )}
         role="dialog"
         aria-modal="true"
         aria-labelledby={title ? "modal-title" : undefined}
       >
         {/* Header */}
-        <div className="flex justify-between items-center p-4 border-b-2 border-black dark:border-gray-800">
+        <div className="flex justify-between items-center p-4 border-b-2 border-gray-200 dark:border-neutral-800">
           {title && (
-            <h3
-              id="modal-title"
-              className="text-lg font-semibold text-transparent bg-clip-text bg-gradient-to-r from-black to-gray-900 dark:from-white dark:to-gray-300"
-            >
+            <h3 id="modal-title" className="text-lg font-semibold">
               {title}
             </h3>
           )}
           <button
             onClick={onClose}
-            className="text-black dark:text-white hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-gray-600 rounded-full"
+            className="text-brand-light dark:text-brand-dark hover:text-gray-500 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-gray-600 rounded-full"
             aria-label="Close modal"
           >
             <X size={20} />
@@ -103,7 +98,7 @@ const Modal = ({
 
         {/* Footer */}
         {footer && (
-          <div className="border-t-2 border-black dark:border-gray-800 p-4 flex justify-end items-center">
+          <div className="border-t-2 border-gray-200 dark:border-neutral-800 p-4 flex justify-end items-center">
             {footer}
           </div>
         )}

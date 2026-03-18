@@ -5,25 +5,21 @@ import { BlogPost as BlogPostType } from "../../types";
 import apiService from "../../services/api";
 import useApi from "../../hooks/useApi";
 import imageUtils from "../../utils/imageUtils";
-import DataLoader from "../common/DataLoader"; // Import DataLoader
+import DataLoader from "../common/DataLoader";
 
 const BlogPost = () => {
   const { id } = useParams<{ id: string }>();
 
-  // Fetch post data using our custom hook
   const {
     data: post,
     isLoading,
     error,
   } = useApi<BlogPostType>(() => apiService.blog.getOne(id || ""), [id]);
 
-  // Scroll to top when post loads
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [id]);
 
-  // The 'data' from DataLoader will be an array, but our API returns a single object.
-  // We wrap it in an array to make it compatible with the DataLoader.
   const postArray = post ? [post] : [];
 
   return (
@@ -45,14 +41,14 @@ const BlogPost = () => {
         emptyMessage="This blog post could not be found."
       >
         {(posts) => {
-          const singlePost = posts[0]; // Get the single post from the array
+          const singlePost = posts[0];
           return (
-            <article className="card p-6">
+            <article className="bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark border-2 border-gray-200 dark:border-neutral-800 rounded-lg shadow-sm p-6">
               <h1 className="text-3xl font-semibold mb-6">
                 {singlePost.title}
               </h1>
 
-              <div className="flex flex-wrap gap-4 items-center text-sm mb-8">
+              <div className="flex flex-wrap gap-4 items-center text-sm mb-8 text-gray-600 dark:text-gray-400">
                 {singlePost.author && (
                   <div className="flex items-center gap-1">
                     <User size={14} />
@@ -82,7 +78,7 @@ const BlogPost = () => {
                       "blogPost",
                     )}
                     alt={singlePost.title}
-                    className="w-full h-64 sm:h-96 object-cover rounded-lg shadow-md border border-default"
+                    className="w-full h-64 sm:h-96 object-cover rounded-lg shadow-md border border-gray-200 dark:border-neutral-800"
                   />
                 </div>
               )}
@@ -93,13 +89,13 @@ const BlogPost = () => {
               />
 
               {singlePost.tags && singlePost.tags.length > 0 && (
-                <div className="mt-12 pt-6 border-t border-default">
+                <div className="mt-12 pt-6 border-t border-gray-200 dark:border-neutral-800">
                   <h3 className="text-sm font-semibold mb-3">Tags:</h3>
                   <div className="flex flex-wrap gap-2">
                     {singlePost.tags.map((tag, index) => (
                       <span
                         key={index}
-                        className="px-3 py-1 bg-gray-100 dark:bg-gray-900 rounded-full text-xs border border-default"
+                        className="px-3 py-1 bg-gray-100 dark:bg-neutral-900 rounded-full text-xs border border-gray-200 dark:border-neutral-800"
                       >
                         {tag}
                       </span>

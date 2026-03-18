@@ -7,11 +7,9 @@ import useApi from "../../hooks/useApi";
 import imageUtils from "../../utils/imageUtils";
 import DataLoader from "../common/DataLoader";
 
-// Main blog page component
 const BlogPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Fetch all blog posts
   const {
     data: posts,
     isLoading,
@@ -20,11 +18,10 @@ const BlogPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-semibold text-center mb-8">
+      <h1 className="text-3xl font-semibold text-center mb-8 text-brand-light dark:text-brand-dark">
         All Blog Posts
       </h1>
 
-      {/* Search input */}
       <div className="mb-8">
         <div className="relative max-w-md mx-auto">
           <input
@@ -32,11 +29,13 @@ const BlogPage = () => {
             placeholder="Search posts..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full p-2 pl-10 bg-transparent border border-default rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+            // Replaced .border-default and .focus:ring-primary
+            className="w-full p-2 pl-10 bg-transparent border border-gray-200 dark:border-neutral-800 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-light dark:focus:ring-brand-dark text-brand-light dark:text-brand-dark placeholder-gray-500"
           />
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
         </div>
       </div>
+
       <DataLoader<BlogPost>
         isLoading={isLoading}
         error={error}
@@ -56,7 +55,7 @@ const BlogPage = () => {
 
           if (filteredPosts.length === 0) {
             return (
-              <div className="text-center p-8">
+              <div className="text-center p-8 text-gray-500">
                 No blog posts found matching your search.
               </div>
             );
@@ -75,12 +74,9 @@ const BlogPage = () => {
   );
 };
 
-// Blog post card component for the blog page view
 const BlogPostCard = ({ post }: { post: BlogPost }) => {
-  // Get image URL using imageUtils
   const imageUrl = imageUtils.getImageUrl(post.image_url, "blogPost");
 
-  // Format date
   const formattedDate = post.created_on
     ? new Date(post.created_on).toLocaleDateString("en-US", {
         year: "numeric",
@@ -90,8 +86,10 @@ const BlogPostCard = ({ post }: { post: BlogPost }) => {
     : "No date available";
 
   return (
-    <div className="card hover-scale md:flex">
-      <div className="card-image-container md:w-1/3 h-60 md:h-auto overflow-hidden">
+    // Replaced .card and .hover-scale
+    <div className="bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark border-2 border-gray-200 dark:border-neutral-800 rounded-lg overflow-hidden shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] md:flex">
+      {/* Replaced .card-image-container */}
+      <div className="bg-white dark:bg-neutral-900 flex items-center justify-center md:w-1/3 h-60 md:h-auto overflow-hidden">
         <img
           src={imageUrl}
           alt={post.title}
@@ -100,7 +98,7 @@ const BlogPostCard = ({ post }: { post: BlogPost }) => {
       </div>
 
       <div className="p-6 md:w-2/3 flex flex-col">
-        <div className="flex items-center gap-2 text-xs mb-2">
+        <div className="flex items-center gap-2 text-xs mb-2 text-gray-500 dark:text-gray-400">
           <Calendar size={12} />
           <span>{formattedDate}</span>
         </div>
@@ -121,7 +119,8 @@ const BlogPostCard = ({ post }: { post: BlogPost }) => {
             {post.tags.map((tag, index) => (
               <span
                 key={index}
-                className="px-2 py-1 bg-gray-100 dark:bg-black text-xs rounded-full border border-default"
+                // Replaced .border-default
+                className="px-2 py-1 bg-gray-100 dark:bg-neutral-900 text-xs rounded-full border border-gray-200 dark:border-neutral-800"
               >
                 {tag}
               </span>

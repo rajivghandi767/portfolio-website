@@ -12,8 +12,8 @@ const ErrorDisplay = ({ error, className }: ErrorDisplayProps) => {
   return (
     <div
       className={cn(
-        "bg-red-50 dark:bg-black text-red-600 dark:text-red-400 p-4 rounded-lg border border-red-200 dark:border-red-900 flex items-start gap-2",
-        className
+        "bg-red-50 dark:bg-bg-dark text-red-600 dark:text-red-400 p-4 rounded-lg border border-red-200 dark:border-red-900 flex items-start gap-2",
+        className,
       )}
       role="alert"
     >

@@ -12,7 +12,7 @@ const Card = ({ children, className, onClick, hover = true }: CardProps) => {
   return (
     <div
       className={cn(
-        "bg-white dark:bg-black rounded-lg shadow-md overflow-hidden border-2 border-gray-200 dark:border-neutral-800",
+        "bg-bg-light dark:bg-bg-dark rounded-lg shadow-md overflow-hidden border-2 border-gray-200 dark:border-neutral-800",
         hover && "transition-all duration-300 hover:shadow-lg",
         onClick && "cursor-pointer",
         className,
@@ -120,7 +120,7 @@ const CardTitle = ({ children, className, as = "h3" }: CardTitleProps) => {
   return (
     <Component
       className={cn(
-        "font-semibold text-transparent bg-clip-text bg-gradient-to-r from-black to-gray-800 dark:from-white dark:to-gray-300",
+        "font-semibold text-transparent bg-clip-text bg-gradient-to-r from-brand-light to-gray-600 dark:from-brand-dark dark:to-gray-400",
         className,
       )}
     >
@@ -136,7 +136,9 @@ interface CardDescriptionProps {
 
 const CardDescription = ({ children, className }: CardDescriptionProps) => {
   return (
-    <div className={cn("text-sm text-black dark:text-gray-300", className)}>
+    <div
+      className={cn("text-sm text-brand-light dark:text-gray-300", className)}
+    >
       {children}
     </div>
   );

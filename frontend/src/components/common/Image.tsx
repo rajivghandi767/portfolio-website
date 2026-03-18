@@ -54,7 +54,7 @@ const Image = ({
           className={cn(
             aspectRatioClasses[aspectRatio],
             objectFitClasses[objectFit],
-            className
+            className,
           )}
           {...props}
         />
@@ -69,12 +69,12 @@ const Image = ({
       return (
         <div
           className={cn(
-            "flex items-center justify-center bg-gray-100 dark:bg-gray-900",
+            "flex items-center justify-center bg-gray-100 dark:bg-neutral-900",
             aspectRatioClasses[aspectRatio],
-            className
+            className,
           )}
         >
-          <span className="text-gray-500 dark:text-gray-600 font-mono text-sm">
+          <span className="text-gray-500 dark:text-gray-400 font-mono text-sm">
             Image Not Available
           </span>
         </div>
@@ -89,7 +89,7 @@ const Image = ({
         className={cn(
           "relative overflow-hidden",
           aspectRatioClasses[aspectRatio],
-          className
+          className,
         )}
       >
         {lowQualitySrc && !isLoaded && (
@@ -98,7 +98,7 @@ const Image = ({
             alt={alt}
             className={cn(
               "w-full h-full absolute inset-0 scale-110 blur-lg transition-opacity",
-              objectFitClasses[objectFit]
+              objectFitClasses[objectFit],
             )}
             aria-hidden="true"
           />
@@ -112,7 +112,7 @@ const Image = ({
             "w-full h-full transition-all duration-300",
             objectFitClasses[objectFit],
             !isLoaded && "opacity-0",
-            isLoaded && "opacity-100"
+            isLoaded && "opacity-100",
           )}
           onLoad={() => setIsLoaded(true)}
           onError={() => setHasError(true)}
@@ -131,7 +131,7 @@ const Image = ({
       className={cn(
         aspectRatioClasses[aspectRatio],
         objectFitClasses[objectFit],
-        className
+        className,
       )}
       onError={() => setHasError(true)}
       {...props}
