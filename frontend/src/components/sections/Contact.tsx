@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { Send, AlertCircle, CheckCircle } from "lucide-react";
-import { ContactForm, ContactResponse, NotificationType } from "../../types";
+import { ContactForm, NotificationType } from "../../types";
 import apiService from "../../services/api";
 
 const Contact = () => {
@@ -67,7 +67,7 @@ const Contact = () => {
     if (notification === "success") {
       return {
         icon: (
-          <CheckCircle className="w-5 h-5 flex-shrink-0 text-green-600 dark:text-green-400" />
+          <CheckCircle className="w-5 h-5 shrink-0 text-green-600 dark:text-green-400" />
         ),
         message: "Message sent successfully!",
         className:
@@ -76,7 +76,7 @@ const Contact = () => {
     } else {
       return {
         icon: (
-          <AlertCircle className="w-5 h-5 flex-shrink-0 text-red-600 dark:text-red-400" />
+          <AlertCircle className="w-5 h-5 shrink-0 text-red-600 dark:text-red-400" />
         ),
         message: "Failed to send message. Please try again.",
         className:
