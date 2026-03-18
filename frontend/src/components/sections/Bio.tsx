@@ -13,14 +13,12 @@ const Bio = () => {
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const [isLoadingResume, setIsLoadingResume] = useState<boolean>(false);
 
-  // Fetch bio information using the custom hook
   const {
     data: info,
     isLoading,
     error,
   } = useApi<Info[]>(() => apiService.info.get());
 
-  // Clean up blob URL when component unmounts or modal closes
   useEffect(() => {
     return () => {
       if (resumeUrl) {
@@ -124,7 +122,8 @@ const Bio = () => {
                   <button
                     onClick={handleViewResume}
                     disabled={isLoadingResume}
-                    className="btn btn-primary px-4 py-2 text-sm rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+                    // Replaced .btn .btn-primary
+                    className="inline-flex items-center justify-center bg-brand-light dark:bg-brand-dark text-bg-light dark:text-bg-dark hover:bg-neutral-800 dark:hover:bg-gray-200 transition-colors duration-200 px-4 py-2 text-sm rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isLoadingResume ? "Loading..." : "View Resume"}
                   </button>
@@ -140,9 +139,10 @@ const Bio = () => {
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
           onClick={handleModalBackdropClick}
         >
-          {/* THE ONLY CHANGE IS ON THE NEXT LINE: max-h-[90vh] becomes h-[90vh] */}
-          <div className="card w-full max-w-4xl h-[90vh] overflow-hidden flex flex-col">
-            <div className="flex justify-between items-center p-4 border-b-2 border-default">
+          {/* Replaced .card with inline styles */}
+          <div className="bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark border-2 border-gray-200 dark:border-neutral-800 rounded-lg shadow-sm w-full max-w-4xl h-[90vh] overflow-hidden flex flex-col">
+            {/* Replaced .border-default */}
+            <div className="flex justify-between items-center p-4 border-b-2 border-gray-200 dark:border-neutral-800">
               <h3 className="text-lg font-semibold">Rajiv Wallace Resume</h3>
               <button
                 onClick={handleCloseModal}
@@ -154,7 +154,7 @@ const Bio = () => {
             <div className="flex-1 min-h-0">
               {isLoadingResume ? (
                 <div className="h-full flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-black dark:border-white"></div>
+                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-light dark:border-brand-dark"></div>
                 </div>
               ) : resumeError ? (
                 <div className="h-full flex items-center justify-center p-4 text-center">
@@ -174,11 +174,13 @@ const Bio = () => {
                 </div>
               )}
             </div>
-            <div className="border-t-2 border-default p-4 flex justify-end items-center">
+            {/* Replaced .border-default */}
+            <div className="border-t-2 border-gray-200 dark:border-neutral-800 p-4 flex justify-end items-center">
               <button
                 onClick={handleDownload}
                 disabled={isDownloading || !resumeUrl}
-                className="btn btn-primary px-4 py-2 text-sm disabled:opacity-50"
+                // Replaced .btn .btn-primary
+                className="inline-flex items-center justify-center bg-brand-light dark:bg-brand-dark text-bg-light dark:text-bg-dark hover:bg-neutral-800 dark:hover:bg-gray-200 transition-colors duration-200 px-4 py-2 text-sm rounded-md disabled:opacity-50"
               >
                 {isDownloading ? "Downloading..." : "Download PDF"}
               </button>

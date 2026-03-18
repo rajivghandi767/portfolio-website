@@ -1,4 +1,3 @@
-// src/components/sections/Contact.tsx
 import { useState, useEffect, useCallback } from "react";
 import { Send, AlertCircle, CheckCircle } from "lucide-react";
 import { ContactForm, ContactResponse, NotificationType } from "../../types";
@@ -10,17 +9,14 @@ const Contact = () => {
     email: "",
     message: "",
   });
-
   const [notification, setNotification] = useState<NotificationType>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  // Clear notification after 5 seconds
   useEffect(() => {
     if (notification) {
       const timer = setTimeout(() => {
         setNotification(null);
       }, 5000);
-
       return () => clearTimeout(timer);
     }
   }, [notification]);
@@ -28,12 +24,9 @@ const Contact = () => {
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
       const { id, value } = e.target;
-      setFormData((prev) => ({
-        ...prev,
-        [id]: value,
-      }));
+      setFormData((prev) => ({ ...prev, [id]: value }));
     },
-    []
+    [],
   );
 
   const resetForm = useCallback((): void => {
@@ -41,10 +34,9 @@ const Contact = () => {
   }, []);
 
   const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>
+    e: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     e.preventDefault();
-
     if (
       !formData.name.trim() ||
       !formData.email.trim() ||
@@ -53,30 +45,18 @@ const Contact = () => {
       setNotification("error");
       return;
     }
-
     setIsSubmitting(true);
-
     try {
       const response = await apiService.contact.send(formData);
-
-      if ("error" in response && response.error) {
+      if ("error" in response && response.error)
         throw new Error(response.error);
-      }
-
       if ("data" in response && response.data) {
         setNotification("success");
         resetForm();
-        const contactResponse = response.data as ContactResponse;
-        if (contactResponse?.notifications && import.meta.env.DEV) {
-          console.log("Notification status:", contactResponse.notifications);
-        }
       } else {
         throw new Error("Unexpected response format");
       }
     } catch (error) {
-      if (import.meta.env.DEV) {
-        console.error("Error sending message:", error);
-      }
       setNotification("error");
     } finally {
       setIsSubmitting(false);
@@ -124,7 +104,7 @@ const Contact = () => {
         </div>
       )}
 
-      <div className="card max-w-md mx-auto">
+      <div className="bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark border-2 border-gray-200 dark:border-neutral-800 rounded-lg shadow-sm max-w-md mx-auto">
         <form onSubmit={handleSubmit} className="p-6 space-y-4" noValidate>
           <div className="space-y-2">
             <label htmlFor="name" className="block text-sm font-medium">
@@ -137,7 +117,7 @@ const Contact = () => {
               value={formData.name}
               onChange={handleChange}
               disabled={isSubmitting}
-              className="w-full p-2 text-sm bg-transparent border border-default rounded-md focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
+              className="w-full p-2 text-sm bg-transparent border border-gray-200 dark:border-neutral-800 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-light dark:focus:ring-brand-dark disabled:opacity-50"
               placeholder="Your name"
             />
           </div>
@@ -153,7 +133,7 @@ const Contact = () => {
               value={formData.email}
               onChange={handleChange}
               disabled={isSubmitting}
-              className="w-full p-2 text-sm bg-transparent border border-default rounded-md focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
+              className="w-full p-2 text-sm bg-transparent border border-gray-200 dark:border-neutral-800 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-light dark:focus:ring-brand-dark disabled:opacity-50"
               placeholder="your.email@example.com"
             />
           </div>
@@ -169,7 +149,7 @@ const Contact = () => {
               onChange={handleChange}
               disabled={isSubmitting}
               rows={4}
-              className="w-full p-2 text-sm bg-transparent border border-default rounded-md focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
+              className="w-full p-2 text-sm bg-transparent border border-gray-200 dark:border-neutral-800 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-light dark:focus:ring-brand-dark disabled:opacity-50"
               placeholder="Your message..."
             />
           </div>
@@ -178,11 +158,11 @@ const Contact = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="btn btn-primary w-full p-2 flex items-center justify-center gap-2 rounded-md disabled:opacity-50"
+              className="inline-flex items-center justify-center bg-brand-light dark:bg-brand-dark text-bg-light dark:text-bg-dark hover:bg-neutral-800 dark:hover:bg-gray-200 transition-colors duration-200 w-full p-2 gap-2 rounded-md disabled:opacity-50 font-medium"
             >
               {isSubmitting ? (
                 <>
-                  <div className="animate-spin h-4 w-4 border-2 border-white dark:border-black border-t-transparent dark:border-t-transparent rounded-full"></div>
+                  <div className="animate-spin h-4 w-4 border-2 border-bg-light dark:border-bg-dark border-t-transparent dark:border-t-transparent rounded-full"></div>
                   <span>Sending...</span>
                 </>
               ) : (

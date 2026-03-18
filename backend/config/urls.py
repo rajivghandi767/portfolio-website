@@ -19,11 +19,13 @@ from contacts.views import ContactViewSet
 from health_check.views import health_detailed, health_simple
 
 
+# Utilizes Python decorators to wrap the view with HTTP method validation and caching logic
+# before the function execution begins.
 @require_http_methods(["GET"])
 @cache_control(max_age=300)  # Cache for 5 minutes
 def api_root(request):
     """
-    API Endpoint List
+    Dynamically generates the base API URL and returns a JSON directory of available endpoints.
     """
     base_url = request.build_absolute_uri('/')
 

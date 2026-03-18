@@ -17,7 +17,10 @@ const Projects = ({ limit = 3 }: PageProps) => {
   return (
     <div id="projects" className="mx-auto px-4 py-8">
       <div className="flex justify-center items-center mb-8">
-        <Link to="/projects" className="text-2xl font-semibold text-center">
+        <Link
+          to="/projects"
+          className="text-2xl font-semibold text-center text-brand-light dark:text-brand-dark hover:underline"
+        >
           Coding Projects
         </Link>
       </div>
@@ -46,7 +49,7 @@ const Projects = ({ limit = 3 }: PageProps) => {
               {shouldShowSeeMore && (
                 <div className="flex justify-center mt-8">
                   <Link to="/projects">
-                    <button className="btn btn-outline flex items-center gap-2 px-4 py-2">
+                    <button className="inline-flex items-center justify-center rounded-md font-medium transition-colors duration-200 px-4 py-2 bg-transparent border-2 border-gray-200 dark:border-neutral-800 text-brand-light dark:text-brand-dark hover:border-brand-light dark:hover:border-brand-dark gap-2">
                       <span>See More Projects</span>
                       <ChevronRight size={16} />
                     </button>
@@ -61,7 +64,6 @@ const Projects = ({ limit = 3 }: PageProps) => {
   );
 };
 
-// Separate component for each project card
 interface ProjectCardProps {
   project: Project;
 }
@@ -70,8 +72,8 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
   const imageUrl = imageUtils.getImageUrl(project.thumbnail_url, "project");
 
   return (
-    <div className="card hover-scale">
-      <div className="card-image-container w-full h-40 overflow-hidden">
+    <div className="bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark border-2 border-gray-200 dark:border-neutral-800 rounded-lg overflow-hidden shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02]">
+      <div className="bg-white dark:bg-neutral-900 flex items-center justify-center w-full h-40 overflow-hidden">
         <img
           src={imageUrl}
           alt={project.title || "Project thumbnail"}
@@ -87,10 +89,10 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
         <div className="flex items-center justify-center gap-4 mb-2">
           {project.repo && (
             <a
-              href={project.repo} // (and project.deployed_url)
+              href={project.repo}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors text-xs"
+              className="flex items-center gap-1 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors text-xs font-medium"
             >
               <Github size={12} />
               <span>Code</span>
@@ -101,8 +103,12 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
               href={project.deployed_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors text-xs"
+              className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 transition-colors text-xs font-medium"
             >
+              <span className="relative flex h-2 w-2 mr-1">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
               <span>Demo</span>
             </a>
           )}
@@ -115,7 +121,9 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
         <div className="mt-auto">
           <p className="text-xs">
             <span className="font-semibold">Stack:</span>{" "}
-            {project.technology || "Not specified"}
+            <span className="text-gray-600 dark:text-gray-400">
+              {project.technology || "Not specified"}
+            </span>
           </p>
         </div>
       </div>

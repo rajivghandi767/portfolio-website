@@ -5,7 +5,6 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { ThemeProvider } from "./context/ThemeContext";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 
@@ -20,13 +19,14 @@ const ContactPage = lazy(() => import("./components/pages/ContactPage"));
 // Layout component for all pages
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="min-h-screen m-auto font-mono scroll-smooth pt-2 pb-2 flex flex-col bg-white dark:bg-black text-neutral-900 dark:text-white transition-colors duration-200">
+    // Replaced hardcoded text/bg colors with theme tokens
+    <div className="min-h-screen m-auto font-mono scroll-smooth pt-2 pb-2 flex flex-col bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark transition-colors duration-200">
       <Header />
       <main className="pb-16 grow">
         <Suspense
           fallback={
             <div className="flex justify-center items-center pt-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-black dark:border-white"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-light dark:border-brand-dark"></div>
             </div>
           }
         >
@@ -40,68 +40,59 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
 function App() {
   return (
-    <ThemeProvider>
-      <Router>
-        <Routes>
-          {/* Main pages */}
-          <Route
-            path="/"
-            element={
-              <Layout>
-                <HomePage />
-              </Layout>
-            }
-          />
-          <Route
-            path="/projects"
-            element={
-              <Layout>
-                <ProjectsPage />
-              </Layout>
-            }
-          />
-
-          {/* Blog routes */}
-          <Route
-            path="/blog"
-            element={
-              <Layout>
-                <BlogPage />
-              </Layout>
-            }
-          />
-          <Route
-            path="/blog/:id"
-            element={
-              <Layout>
-                <BlogPost />
-              </Layout>
-            }
-          />
-
-          {/* Other pages */}
-          <Route
-            path="/wallet"
-            element={
-              <Layout>
-                <WalletPage />
-              </Layout>
-            }
-          />
-          <Route
-            path="/contact"
-            element={
-              <Layout>
-                <ContactPage />
-              </Layout>
-            }
-          />
-
-          {/* Catch-all redirect to home page */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Router>
-    </ThemeProvider>
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Layout>
+              <HomePage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/projects"
+          element={
+            <Layout>
+              <ProjectsPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/blog"
+          element={
+            <Layout>
+              <BlogPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/blog/:id"
+          element={
+            <Layout>
+              <BlogPost />
+            </Layout>
+          }
+        />
+        <Route
+          path="/wallet"
+          element={
+            <Layout>
+              <WalletPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/contact"
+          element={
+            <Layout>
+              <ContactPage />
+            </Layout>
+          }
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Router>
   );
 }
 

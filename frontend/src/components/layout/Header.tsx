@@ -12,7 +12,8 @@ const ThemeToggleButton = () => {
 
   return (
     <button
-      className="btn btn-primary p-2 rounded-lg"
+      // Replaced .btn .btn-primary
+      className="inline-flex items-center justify-center bg-brand-light dark:bg-brand-dark text-bg-light dark:text-bg-dark hover:bg-neutral-800 dark:hover:bg-gray-200 p-2 rounded-lg transition-colors duration-200"
       onClick={toggleTheme}
       aria-label="Toggle dark mode"
     >
@@ -25,7 +26,6 @@ const ThemeToggleButton = () => {
   );
 };
 
-// Removed the w-14 wrapper here so the button flexes cleanly in the new absolute container
 const MobileMenuToggle = ({
   isMenuOpen,
   toggleMenu,
@@ -35,7 +35,8 @@ const MobileMenuToggle = ({
 }) => (
   <button
     onClick={toggleMenu}
-    className="p-2 text-header hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors"
+    // Replaced .text-header
+    className="p-2 text-brand-light dark:text-brand-dark hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors"
     aria-label={isMenuOpen ? "Close menu" : "Open menu"}
   >
     {isMenuOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
@@ -111,14 +112,15 @@ const Header = () => {
             <Link
               to={item.path}
               onClick={(e) => handleNavigation(item, e)}
+              // Replaced .text-nav and .text-nav-active with inline vars
               className={`
                 ${
                   isMobile
-                    ? "flex items-center justify-center gap-1 mx-4 my-2 text-xl text-nav hover:text-neutral-500 dark:hover:text-neutral-400 rounded w-full py-2 text-center"
-                    : "text-xl text-nav hover:text-neutral-500 dark:hover:text-neutral-400 rounded px-3 py-1 flex items-center gap-1"
+                    ? "flex items-center justify-center gap-1 mx-4 my-2 text-xl hover:text-neutral-500 dark:hover:text-neutral-400 rounded w-full py-2 text-center"
+                    : "text-xl hover:text-neutral-500 dark:hover:text-neutral-400 rounded px-3 py-1 flex items-center gap-1"
                 }
                 transition-all duration-200 
-                ${isActive ? "text-nav-active" : ""}
+                ${isActive ? "text-brand-light dark:text-brand-dark font-bold" : "text-neutral-600 dark:text-neutral-400"}
               `}
             >
               {item.label === "Home" && <HomeIcon size={18} />}
@@ -132,21 +134,17 @@ const Header = () => {
 
   return (
     <div className="block sticky top-0 z-50">
-      {/* 1. Solid Background: Removed /90 opacity and backdrop-blur-sm */}
-      <div className="bg-white dark:bg-black border-b border-gray-200 dark:border-neutral-800">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between min-h-[72px]">
-          {/* LEFT ZONE: Project Switcher & Mobile Theme Toggle */}
+      <div className="bg-bg-light dark:bg-bg-dark border-b border-gray-200 dark:border-neutral-800">
+        <div className="container mx-auto px-4 py-3 flex items-center justify-between min-h-18">
           <div className="flex items-center justify-start w-24 gap-1">
             <ProjectSwitcher align="left" />
-            {/* 2. Shows Theme Toggle here ONLY on mobile */}
             <div className="md:hidden flex items-center">
               <ThemeToggleButton />
             </div>
           </div>
 
-          {/* CENTER ZONE: Symmetrical Title */}
           <div className="text-center flex-1 px-2">
-            <h1 className="text-lg md:text-2xl font-bold leading-tight text-black dark:text-white">
+            <h1 className="text-lg md:text-2xl font-bold leading-tight text-brand-light dark:text-brand-dark">
               {infoData?.site_header}
             </h1>
             <h2 className="text-xs md:text-base leading-tight text-neutral-600 dark:text-neutral-400 mt-0.5">
@@ -154,13 +152,10 @@ const Header = () => {
             </h2>
           </div>
 
-          {/* RIGHT ZONE: Desktop Theme Toggle & Mobile Menu */}
           <div className="flex items-center justify-end w-24 gap-1">
-            {/* 3. Shows Theme Toggle here ONLY on desktop */}
             <div className="hidden md:block">
               <ThemeToggleButton />
             </div>
-            {/* Hamburger Menu (Mobile Only) */}
             <div className="md:hidden flex items-center">
               <MobileMenuToggle
                 isMenuOpen={isMenuOpen}
@@ -171,14 +166,12 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Desktop Navigation Bar */}
       <div className="hidden md:block">
         <nav className="bg-gray-50 dark:bg-neutral-900 border-b border-gray-200 dark:border-neutral-800 shadow-sm">
           {renderNavLinks(navItems)}
         </nav>
       </div>
 
-      {/* Mobile Navigation Bar */}
       <div
         className={`md:hidden bg-gray-50 dark:bg-neutral-900 border-b border-gray-200 dark:border-neutral-800 ${isMenuOpen ? "block" : "hidden"}`}
       >

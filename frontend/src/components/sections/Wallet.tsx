@@ -19,7 +19,10 @@ const Wallet = ({ limit = 4 }: { limit?: number }) => {
   return (
     <div id="wallet" className="mx-auto px-4 py-8">
       <div className="flex justify-center items-center mb-8">
-        <Link to="/wallet" className="text-2xl font-semibold text-center">
+        <Link
+          to="/wallet"
+          className="text-2xl font-semibold text-center hover:underline"
+        >
           Credit Card Collection
         </Link>
       </div>
@@ -50,7 +53,7 @@ const Wallet = ({ limit = 4 }: { limit?: number }) => {
               {shouldShowSeeMore && (
                 <div className="flex justify-center mt-8">
                   <Link to="/wallet">
-                    <button className="btn btn-outline flex items-center gap-2 px-4 py-2">
+                    <button className="inline-flex items-center justify-center rounded-md font-medium transition-colors duration-200 px-4 py-2 bg-transparent border-2 border-gray-200 dark:border-neutral-800 text-brand-light dark:text-brand-dark hover:border-brand-light dark:hover:border-brand-dark gap-2">
                       <span>See More Cards</span>
                       <ChevronRight size={16} />
                     </button>
@@ -73,7 +76,6 @@ const Wallet = ({ limit = 4 }: { limit?: number }) => {
   );
 };
 
-// Credit Card component
 const CreditCard = ({
   card,
   onClick,
@@ -85,10 +87,10 @@ const CreditCard = ({
 
   return (
     <div
-      className="card hover-scale cursor-pointer flex flex-col"
+      className="bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark border-2 border-gray-200 dark:border-neutral-800 rounded-lg overflow-hidden shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] cursor-pointer flex flex-col"
       onClick={onClick}
     >
-      <div className="card-image-container w-full aspect-[1.58] p-4 flex items-center justify-center">
+      <div className="bg-white dark:bg-neutral-900 w-full aspect-[1.58] p-4 flex items-center justify-center">
         <img
           src={thumbnailUrl}
           alt={card.card_name}
@@ -102,17 +104,17 @@ const CreditCard = ({
         </p>
 
         <div
-          className="card-prose-preview my-4 prose prose-sm dark:prose-invert text-left"
+          className="my-4 prose prose-sm dark:prose-invert text-left"
           dangerouslySetInnerHTML={{ __html: card.description || "" }}
         />
 
-        <div className="mt-auto pt-4 border-t border-default">
+        <div className="mt-auto pt-4 border-t border-gray-200 dark:border-neutral-800">
           {card.referral_link ? (
             <a
               href={card.referral_link}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-1 text-sm text-black dark:text-white hover:underline"
+              className="flex items-center justify-center gap-1 text-sm hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors"
               onClick={(e) => e.stopPropagation()}
             >
               <span>Referral</span>
@@ -129,7 +131,6 @@ const CreditCard = ({
   );
 };
 
-// Card Detail Modal component
 const CardDetailModal = ({
   card,
   isOpen,
@@ -149,8 +150,8 @@ const CardDetailModal = ({
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="card w-full max-w-xl max-h-[90vh] overflow-hidden flex flex-col">
-        <div className="flex justify-between items-center p-4 border-b-2 border-default">
+      <div className="bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark border-2 border-gray-200 dark:border-neutral-800 rounded-lg shadow-xl w-full max-w-xl max-h-[90vh] overflow-hidden flex flex-col">
+        <div className="flex justify-between items-center p-4 border-b-2 border-gray-200 dark:border-neutral-800">
           <h3 className="text-lg font-semibold">{card.card_name}</h3>
           <button
             onClick={onClose}
@@ -185,13 +186,13 @@ const CardDetailModal = ({
             </div>
           </div>
         </div>
-        <div className="border-t-2 border-default p-4 flex justify-end items-center">
+        <div className="border-t-2 border-gray-200 dark:border-neutral-800 p-4 flex justify-end items-center">
           {card.referral_link && (
             <a
               href={card.referral_link}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-primary px-4 py-2 text-sm flex items-center gap-2"
+              className="inline-flex items-center justify-center bg-brand-light dark:bg-brand-dark text-bg-light dark:text-bg-dark hover:bg-neutral-800 dark:hover:bg-gray-200 transition-colors duration-200 rounded-md font-medium px-4 py-2 text-sm gap-2"
             >
               <span>Apply via Referral</span>
               <ExternalLink size={14} />

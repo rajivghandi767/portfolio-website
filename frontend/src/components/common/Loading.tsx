@@ -17,13 +17,15 @@ const Loading = ({ className, size = "md", text }: LoadingProps) => {
     <div className={cn("flex flex-col items-center justify-center", className)}>
       <div
         className={cn(
-          "animate-spin rounded-full border-t-2 border-b-2 border-black dark:border-gray-100",
-          sizeClasses[size]
+          "animate-spin rounded-full border-t-2 border-b-2 border-brand-light dark:border-brand-dark",
+          sizeClasses[size],
         )}
         role="status"
         aria-label="Loading"
       ></div>
-      {text && <p className="mt-2 text-black dark:text-gray-300">{text}</p>}
+      {text && (
+        <p className="mt-2 text-brand-light dark:text-brand-dark">{text}</p>
+      )}
     </div>
   );
 };

@@ -10,7 +10,7 @@ const Footer = () => {
   const infoData = info?.[0];
 
   return (
-    <footer className="py-6 mt-6 border-t border-default">
+    <footer className="py-6 mt-6 border-t border-gray-200 dark:border-neutral-800">
       <div className="max-w-4xl mx-auto px-4">
         <div className="flex flex-col items-center">
           {/* Social Icons */}
@@ -18,7 +18,7 @@ const Footer = () => {
             <a
               href={infoData?.linkedin}
               aria-label="LinkedIn Profile"
-              className="btn btn-primary p-2 rounded-full"
+              className="inline-flex items-center justify-center bg-brand-light dark:bg-brand-dark text-bg-light dark:text-bg-dark hover:bg-neutral-800 dark:hover:bg-gray-200 transition-colors duration-200 p-2 rounded-full"
               target="_blank"
               rel="noreferrer"
             >
@@ -28,16 +28,24 @@ const Footer = () => {
             <a
               href={infoData?.github}
               aria-label="GitHub Profile"
-              className="btn btn-primary p-2 rounded-full"
+              className="inline-flex items-center justify-center bg-brand-light dark:bg-brand-dark text-bg-light dark:text-bg-dark hover:bg-neutral-800 dark:hover:bg-gray-200 transition-colors duration-200 p-2 rounded-full"
               target="_blank"
               rel="noreferrer"
             >
               <Github className="w-5 h-5" />
             </a>
           </div>
+          <div className="mb-2">
+            <a
+              href="mailto:dev@rajivwallace.com"
+              className="text-brand-light dark:text-brand-dark hover:underline text-sm font-medium transition-colors"
+            >
+              dev@rajivwallace.com
+            </a>
+          </div>
 
           {/* Copyright text */}
-          <div className="text-center">
+          <div className="text-center text-gray-600 dark:text-gray-400">
             <p className="text-sm">
               &copy; {currentYear} {infoData?.site_header}. All rights reserved.
             </p>
