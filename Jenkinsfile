@@ -160,7 +160,7 @@
 //     }
 // }
 
-@Library('homelab-lib') _
+@Library('homelab-library') _
 
 pipeline {
     agent any
