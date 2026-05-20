@@ -4,6 +4,7 @@ pipeline {
     agent any
 
     environment {
+        DOCKER_BUILDKIT     = "1"
         APP_NAME            = "Portfolio Website"
         PROJECT_NAME        = "portfolio" 
         REGISTRY            = "ghcr.io"
