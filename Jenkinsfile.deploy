@@ -92,7 +92,7 @@ pipeline {
                                     scp .env.prod ${env.DEPLOY_USER}@${env.DEPLOY_HOST}:${env.DEPLOY_DIR}/.env
                                 """
 
-                                sh "echo \$REGISTRY_PASS | ssh ${env.DEPLOY_USER}@${env.DEPLOY_HOST} 'docker login ${env.REGISTRY} -u \${REGISTRY_USER} --password-stdin'"
+                                sh "echo \$REGISTRY_PASS | ssh ${env.DEPLOY_USER}@${env.DEPLOY_HOST} 'docker login ${env.REGISTRY} -u ${REGISTRY_USER} --password-stdin'"
 
                                 def isManualDeploy = params.TAG_TO_DEPLOY != 'latest'
                                 def localCommit = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
