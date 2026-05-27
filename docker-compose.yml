@@ -86,18 +86,12 @@ services:
 
 volumes:
   portfolio_static:
-    name: portfolio_static
-
   portfolio_media:
-    name: portfolio_media
-
   portfolio_logs:
-    name: portfolio_logs
 
 networks:
   core:
     external: true
-  portfolio:
-    external: true
   database:
     external: true
+  portfolio:
