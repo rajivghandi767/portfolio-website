@@ -39,22 +39,16 @@ pipeline {
                 stage('Test Backend (Python)') {
                     steps {
                         sh '''
-                            docker run --rm \
-                                -v "$(pwd)/backend:/app" \
-                                -w /app \
-                                python:3.14-slim \
-                                sh -c "pip install --no-cache-dir -r dev-requirements.txt && python manage.py test"
+                            docker build -t portfolio-backend:test -f backend/Dockerfile ./backend
+                            docker run --rm portfolio-backend:test python manage.py test
                         '''
                     }
                 }
                 stage('Test Frontend (React)') {
                     steps {
                         sh '''
-                            docker run --rm \
-                                -v "$(pwd)/frontend:/app" \
-                                -w /app \
-                                node:22-alpine \
-                                sh -c "npm ci && npm run test"
+                            docker build -t portfolio-frontend:test -f frontend/Dockerfile ./frontend
+                            docker run --rm portfolio-frontend:test npm run test
                         '''
                     }
                 }
