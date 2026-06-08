@@ -72,7 +72,7 @@ if os.getenv('GCS_CREDENTIALS'):
     from google.oauth2 import service_account
     
     # Clean the string in case Docker Compose or the Vault wrapped it in quotes
-    gcs_creds = gcs_creds.strip(\"'\").strip('\"')
+    gcs_creds = gcs_creds.strip("'").strip('"')
     
     try:
         try:
