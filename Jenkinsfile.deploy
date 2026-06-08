@@ -48,39 +48,39 @@ pipeline {
             steps {
                 checkout scm
 
-                withVault(configuration: [vaultUrl: "${env.VAULT_URL}", vaultCredentialId: "${env.VAULT_CRED_ID}", engineVersion: 2], 
-                vaultSecrets: [[path: "${env.VAULT_SECRET_PATH}", secretValues: [
-                    [envVar: 'DJANGO_SECRET_KEY', vaultKey: 'DJANGO_SECRET_KEY'],
-                    [envVar: 'ALLOWED_HOSTS', vaultKey: 'ALLOWED_HOSTS'],
-                    [envVar: 'CSRF_TRUSTED_ORIGINS', vaultKey: 'CSRF_TRUSTED_ORIGINS'],
-                    [envVar: 'POSTGRES_HOST', vaultKey: 'POSTGRES_HOST'],
-                    [envVar: 'POSTGRES_PORT', vaultKey: 'POSTGRES_PORT'],
-                    [envVar: 'POSTGRES_USER', vaultKey: 'POSTGRES_USER'],
-                    [envVar: 'POSTGRES_PASSWORD', vaultKey: 'POSTGRES_PASSWORD'],
-                    [envVar: 'POSTGRES_DB', vaultKey: 'POSTGRES_DB'],
-                    [envVar: 'ADMIN_URL', vaultKey: 'ADMIN_URL'],
-                    [envVar: 'DISCORD_WEBHOOK_URL', vaultKey: 'DISCORD_WEBHOOK_URL'],
-                ]]]) {
-                    // Try to fetch GCS credentials from Vault optionally
-                    def gcs_creds = ""
-                    def gcs_bucket = ""
-                    def has_gcs = "false"
-                    try {
-                        withVault(configuration: [vaultUrl: "${env.VAULT_URL}", vaultCredentialId: "${env.VAULT_CRED_ID}", engineVersion: 2], 
-                        vaultSecrets: [[path: "${env.VAULT_SECRET_PATH}", secretValues: [
-                            [envVar: 'TEMP_GCS_CREDS', vaultKey: 'GCS_CREDENTIALS'],
-                            [envVar: 'TEMP_GCS_BUCKET', vaultKey: 'GS_BUCKET_NAME'],
-                        ]]]) {
-                            gcs_creds = env.TEMP_GCS_CREDS
-                            gcs_bucket = env.TEMP_GCS_BUCKET
-                            has_gcs = "true"
+                script {
+                    withVault(configuration: [vaultUrl: "${env.VAULT_URL}", vaultCredentialId: "${env.VAULT_CRED_ID}", engineVersion: 2], 
+                    vaultSecrets: [[path: "${env.VAULT_SECRET_PATH}", secretValues: [
+                        [envVar: 'DJANGO_SECRET_KEY', vaultKey: 'DJANGO_SECRET_KEY'],
+                        [envVar: 'ALLOWED_HOSTS', vaultKey: 'ALLOWED_HOSTS'],
+                        [envVar: 'CSRF_TRUSTED_ORIGINS', vaultKey: 'CSRF_TRUSTED_ORIGINS'],
+                        [envVar: 'POSTGRES_HOST', vaultKey: 'POSTGRES_HOST'],
+                        [envVar: 'POSTGRES_PORT', vaultKey: 'POSTGRES_PORT'],
+                        [envVar: 'POSTGRES_USER', vaultKey: 'POSTGRES_USER'],
+                        [envVar: 'POSTGRES_PASSWORD', vaultKey: 'POSTGRES_PASSWORD'],
+                        [envVar: 'POSTGRES_DB', vaultKey: 'POSTGRES_DB'],
+                        [envVar: 'ADMIN_URL', vaultKey: 'ADMIN_URL'],
+                        [envVar: 'DISCORD_WEBHOOK_URL', vaultKey: 'DISCORD_WEBHOOK_URL'],
+                    ]]]) {
+                        // Try to fetch GCS credentials from Vault optionally
+                        def gcs_creds = ""
+                        def gcs_bucket = ""
+                        def has_gcs = "false"
+                        try {
+                            withVault(configuration: [vaultUrl: "${env.VAULT_URL}", vaultCredentialId: "${env.VAULT_CRED_ID}", engineVersion: 2], 
+                            vaultSecrets: [[path: "${env.VAULT_SECRET_PATH}", secretValues: [
+                                [envVar: 'TEMP_GCS_CREDS', vaultKey: 'GCS_CREDENTIALS'],
+                                [envVar: 'TEMP_GCS_BUCKET', vaultKey: 'GS_BUCKET_NAME'],
+                            ]]]) {
+                                gcs_creds = env.TEMP_GCS_CREDS
+                                gcs_bucket = env.TEMP_GCS_BUCKET
+                                has_gcs = "true"
+                            }
+                        } catch (Exception e) {
+                            echo "ℹ️ GCS credentials not found in Vault. Defaulting to local media volumes."
                         }
-                    } catch (Exception e) {
-                        echo "ℹ️ GCS credentials not found in Vault. Defaulting to local media volumes."
-                    }
 
-                    withCredentials([usernamePassword(credentialsId: env.REGISTRY_CRED_ID, usernameVariable: 'REGISTRY_USER', passwordVariable: 'REGISTRY_PASS')]) {
-                        script {
+                        withCredentials([usernamePassword(credentialsId: env.REGISTRY_CRED_ID, usernameVariable: 'REGISTRY_USER', passwordVariable: 'REGISTRY_PASS')]) {
                             env.CURRENT_TAG = params.TAG_TO_DEPLOY
 
                             def envContent = """
