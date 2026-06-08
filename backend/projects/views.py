@@ -9,6 +9,6 @@ from .serializers import ProjectSerializer
 
 @method_decorator(cache_page(settings.CACHE_TTL), name='dispatch')
 class ProjectViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Project.objects.all()
+    queryset = Project.objects.filter(is_visible=True)
     serializer_class = ProjectSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]

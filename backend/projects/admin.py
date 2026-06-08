@@ -4,8 +4,8 @@ from projects.models import Project, Tag
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('title', 'technology', 'order')
-    list_editable = ('order',)
+    list_display = ('title', 'technology', 'is_visible', 'order')
+    list_editable = ('is_visible', 'order')
     filter_horizontal = ('tags',)
 
 @admin.register(Tag)
