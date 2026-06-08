@@ -87,17 +87,7 @@ urlpatterns = [
     path("ckeditor5/", include('django_ckeditor_5.urls')),  # CKEditor5
 ]
 
-# Static and media file serving fallback
+# Static file serving fallback for development
 if settings.DEBUG:
-    # Development: Serve media files through Django
-    urlpatterns += static(settings.MEDIA_URL,
-                          document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL,
-                          document_root=settings.STATIC_ROOT)
-else:
-    # Production: Add media and static URL patterns for URL resolution.
-    # Nginx will serve the files, but Django needs to be aware of the URLs.
-    urlpatterns += static(settings.MEDIA_URL,
-                          document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL,
                           document_root=settings.STATIC_ROOT)
