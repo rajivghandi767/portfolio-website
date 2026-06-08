@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { ApiResponse } from '../types';
 
 // Simple in-memory cache
-const apiCache: Record<string, { data: any; timestamp: number }> = {};
-const CACHE_TTL = 5 * 60 * 1000; // 5 minutes in milliseconds
+const apiCache: Record<string, { data: unknown; timestamp: number }> = {};
+const CACHE_TTL = import.meta.env.DEV ? 0 : 5 * 60 * 1000; // 0 in dev, 5 mins in prod
 
 function useApi<T>(
   apiCall: () => Promise<ApiResponse<T>>,
@@ -37,7 +37,7 @@ function useApi<T>(
         throw new Error(result.error);
       }
       
-      setData(result.data as T);
+      setData(result.data);
       
       // Store in cache if we have a cache key
       if (cacheKey) {
@@ -75,12 +75,13 @@ function useApi<T>(
       }
     };
 
-    execute();
+    void execute();
     
     // Cleanup function to prevent state updates after unmount
     return () => {
       isMounted = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps
   }, [...dependencies]);
 
   return { 

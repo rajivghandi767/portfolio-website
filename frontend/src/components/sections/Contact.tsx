@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Send, AlertCircle, CheckCircle } from "lucide-react";
+import { Send, AlertCircle, CheckCircle } from "../common/Icons";
 import { ContactForm, NotificationType } from "../../types";
 import apiService from "../../services/api";
 
@@ -49,14 +49,20 @@ const Contact = () => {
     try {
       const response = await apiService.contact.send(formData);
       if ("error" in response && response.error)
-        throw new Error(response.error);
+        throw new Error(String(response.error));
       if ("data" in response && response.data) {
+        if (import.meta.env.DEV) {
+          console.log("📨 Contact message sent successfully:", formData);
+        }
         setNotification("success");
         resetForm();
       } else {
         throw new Error("Unexpected response format");
       }
-    } catch (error) {
+    } catch (err) {
+      if (import.meta.env.DEV) {
+        console.error("❌ Contact message submission failed:", err);
+      }
       setNotification("error");
     } finally {
       setIsSubmitting(false);
@@ -105,7 +111,7 @@ const Contact = () => {
       )}
 
       <div className="bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark border-2 border-gray-200 dark:border-neutral-800 rounded-lg shadow-sm max-w-md mx-auto">
-        <form onSubmit={handleSubmit} className="p-6 space-y-4" noValidate>
+        <form onSubmit={(e) => { void handleSubmit(e); }} className="p-6 space-y-4" noValidate>
           <div className="space-y-2">
             <label htmlFor="name" className="block text-sm font-medium">
               Name

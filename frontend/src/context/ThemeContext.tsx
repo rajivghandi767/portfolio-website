@@ -1,4 +1,4 @@
-import { createContext, useContext, ReactNode } from "react";
+import { createContext, use, ReactNode } from "react";
 import { useTheme } from "../hooks/useTheme";
 
 interface ThemeContextType {
@@ -8,17 +8,17 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType>({
   theme: "dark",
-  toggleTheme: () => {},
+  toggleTheme: () => { /* noop */ },
 });
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const themeValues = useTheme();
 
   return (
-    <ThemeContext.Provider value={themeValues}>
+    <ThemeContext value={themeValues}>
       {children}
-    </ThemeContext.Provider>
+    </ThemeContext>
   );
 };
 
-export const useThemeContext = () => useContext(ThemeContext);
+export const useThemeContext = () => use(ThemeContext);

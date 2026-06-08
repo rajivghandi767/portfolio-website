@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { BlogPost } from "../../types";
-import { ArrowRight, Search, Calendar } from "lucide-react";
+import { ArrowRight, Search, Calendar } from "../common/Icons";
 import apiService from "../../services/api";
 import useApi from "../../hooks/useApi";
 import imageUtils from "../../utils/imageUtils";
@@ -47,8 +47,7 @@ const BlogPage = () => {
             (post) =>
               post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
               post.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              (post.tags &&
-                post.tags.some((tag) =>
+              (post.tags?.some((tag) =>
                   tag.toLowerCase().includes(searchTerm.toLowerCase()),
                 )),
           );
