@@ -39,14 +39,15 @@ pipeline {
                 stage('Test Backend (Python)') {
                     steps {
                         dir('backend') {
-                            echo "✅ BACKEND TESTS PASSED" 
+                            sh "python manage.py test"
                         }
                     }
                 }
                 stage('Test Frontend (React)') {
                     steps {
                         dir('frontend') {
-                            echo "✅ FRONTEND TESTS PASSED"
+                            sh "npm ci"
+                            sh "npm run test"
                         }
                     }
                 }
