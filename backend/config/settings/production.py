@@ -69,11 +69,22 @@ if os.getenv('GCS_CREDENTIALS'):
     gcs_creds = os.getenv('GCS_CREDENTIALS')
     import json
     from google.oauth2 import service_account
+    
+    # Clean the string in case Docker Compose or the Vault wrapped it in quotes
+    gcs_creds = gcs_creds.strip(\"'\")
+    
     try:
         creds_dict = json.loads(gcs_creds)
+        # If the environment variable was double-JSON-encoded, it might parse into a string first
+        if isinstance(creds_dict, str):
+            creds_dict = json.loads(creds_dict)
+            
         GS_CREDENTIALS = service_account.Credentials.from_service_account_info(creds_dict)
-    except Exception:
-        GS_CREDENTIALS = gcs_creds
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).error(f"Failed to parse GCS_CREDENTIALS: {e}")
+        # We must raise instead of falling back to string, otherwise django-storages crashes cryptically
+        raise ValueError(f"Could not parse GCS_CREDENTIALS from environment. Error: {e}")
 else:
     MEDIA_URL = '/media/'
     MEDIA_ROOT = '/home/backend/django/mediafiles'
