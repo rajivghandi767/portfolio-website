@@ -61,23 +61,45 @@ pipeline {
                     [envVar: 'ADMIN_URL', vaultKey: 'ADMIN_URL'],
                     [envVar: 'DISCORD_WEBHOOK_URL', vaultKey: 'DISCORD_WEBHOOK_URL'],
                 ]]]) {
+                    // Try to fetch GCS credentials from Vault optionally
+                    def gcs_creds = ""
+                    def gcs_bucket = ""
+                    def has_gcs = "false"
+                    try {
+                        withVault(configuration: [vaultUrl: "${env.VAULT_URL}", vaultCredentialId: "${env.VAULT_CRED_ID}", engineVersion: 2], 
+                        vaultSecrets: [[path: "${env.VAULT_SECRET_PATH}", secretValues: [
+                            [envVar: 'TEMP_GCS_CREDS', vaultKey: 'GCS_CREDENTIALS'],
+                            [envVar: 'TEMP_GCS_BUCKET', vaultKey: 'GS_BUCKET_NAME'],
+                        ]]]) {
+                            gcs_creds = env.TEMP_GCS_CREDS
+                            gcs_bucket = env.TEMP_GCS_BUCKET
+                            has_gcs = "true"
+                        }
+                    } catch (Exception e) {
+                        echo "ℹ️ GCS credentials not found in Vault. Defaulting to local media volumes."
+                    }
+
                     withCredentials([usernamePassword(credentialsId: env.REGISTRY_CRED_ID, usernameVariable: 'REGISTRY_USER', passwordVariable: 'REGISTRY_PASS')]) {
                         script {
                             env.CURRENT_TAG = params.TAG_TO_DEPLOY
 
-                            sh '''
-                                echo "IMAGE_TAG='${CURRENT_TAG}'" > .env.prod
-                                echo "DJANGO_SECRET_KEY='${DJANGO_SECRET_KEY}'" >> .env.prod
-                                echo "ALLOWED_HOSTS='${ALLOWED_HOSTS}'" >> .env.prod
-                                echo "CSRF_TRUSTED_ORIGINS='${CSRF_TRUSTED_ORIGINS}'" >> .env.prod
-                                echo "POSTGRES_HOST='${POSTGRES_HOST}'" >> .env.prod
-                                echo "POSTGRES_PORT='${POSTGRES_PORT}'" >> .env.prod
-                                echo "POSTGRES_USER='${POSTGRES_USER}'" >> .env.prod
-                                echo "POSTGRES_PASSWORD='${POSTGRES_PASSWORD}'" >> .env.prod
-                                echo "POSTGRES_DB='${POSTGRES_DB}'" >> .env.prod
-                                echo "ADMIN_URL='${ADMIN_URL}'" >> .env.prod
-                                echo "DISCORD_WEBHOOK_URL='${DISCORD_WEBHOOK_URL}'" >> .env.prod
-                            '''
+                            def envContent = """
+IMAGE_TAG='${env.CURRENT_TAG}'
+DJANGO_SECRET_KEY='${DJANGO_SECRET_KEY}'
+ALLOWED_HOSTS='${ALLOWED_HOSTS}'
+CSRF_TRUSTED_ORIGINS='${CSRF_TRUSTED_ORIGINS}'
+POSTGRES_HOST='${POSTGRES_HOST}'
+POSTGRES_PORT='${POSTGRES_PORT}'
+POSTGRES_USER='${POSTGRES_USER}'
+POSTGRES_PASSWORD='${POSTGRES_PASSWORD}'
+POSTGRES_DB='${POSTGRES_DB}'
+ADMIN_URL='${ADMIN_URL}'
+DISCORD_WEBHOOK_URL='${DISCORD_WEBHOOK_URL}'
+"""
+                            if (has_gcs == "true") {
+                                envContent += "\nGCS_CREDENTIALS='${gcs_creds}'\nGS_BUCKET_NAME='${gcs_bucket}'\n"
+                            }
+                            writeFile file: '.env.prod', text: envContent
 
                             sshagent([env.SSH_CRED_ID]) {
                                 sh """

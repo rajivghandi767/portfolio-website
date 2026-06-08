@@ -15,7 +15,7 @@ const Experience = () => {
       <h2 className="text-2xl font-bold mb-6 text-brand-light dark:text-brand-dark">
         Experience
       </h2>
-      <DataLoader<ExperienceType[]>
+      <DataLoader<ExperienceType>
         isLoading={isLoading}
         error={error}
         data={experiences}

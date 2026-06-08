@@ -15,7 +15,7 @@ const Skills = () => {
       <h2 className="text-2xl font-bold mb-6 text-brand-light dark:text-brand-dark">
         Skills
       </h2>
-      <DataLoader<SkillCategory[]>
+      <DataLoader<SkillCategory>
         isLoading={isLoading}
         error={error}
         data={skillCategories}
