@@ -68,16 +68,21 @@ if os.getenv('GCS_CREDENTIALS'):
     # Load GCS credentials from environment variable (JSON string or file path)
     gcs_creds = os.getenv('GCS_CREDENTIALS')
     import json
+    import ast
     from google.oauth2 import service_account
     
     # Clean the string in case Docker Compose or the Vault wrapped it in quotes
-    gcs_creds = gcs_creds.strip(\"'\")
+    gcs_creds = gcs_creds.strip(\"'\").strip('\"')
     
     try:
-        creds_dict = json.loads(gcs_creds)
-        # If the environment variable was double-JSON-encoded, it might parse into a string first
-        if isinstance(creds_dict, str):
-            creds_dict = json.loads(creds_dict)
+        try:
+            creds_dict = json.loads(gcs_creds)
+            # If the environment variable was double-JSON-encoded, it might parse into a string first
+            if isinstance(creds_dict, str):
+                creds_dict = json.loads(creds_dict)
+        except json.JSONDecodeError:
+            # Fallback to ast.literal_eval for single-quoted Python dict literals
+            creds_dict = ast.literal_eval(gcs_creds)
             
         GS_CREDENTIALS = service_account.Credentials.from_service_account_info(creds_dict)
     except Exception as e:
