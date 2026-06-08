@@ -54,7 +54,6 @@ pipeline {
                         [envVar: 'DJANGO_SECRET_KEY', vaultKey: 'DJANGO_SECRET_KEY'],
                         [envVar: 'ALLOWED_HOSTS', vaultKey: 'ALLOWED_HOSTS'],
                         [envVar: 'CSRF_TRUSTED_ORIGINS', vaultKey: 'CSRF_TRUSTED_ORIGINS'],
-                        [envVar: 'CORS_ALLOWED_ORIGINS', vaultKey: 'CORS_ALLOWED_ORIGINS'],
                         [envVar: 'POSTGRES_HOST', vaultKey: 'POSTGRES_HOST'],
                         [envVar: 'POSTGRES_PORT', vaultKey: 'POSTGRES_PORT'],
                         [envVar: 'POSTGRES_USER', vaultKey: 'POSTGRES_USER'],
@@ -90,7 +89,6 @@ IMAGE_TAG='${env.CURRENT_TAG}'
 DJANGO_SECRET_KEY='${DJANGO_SECRET_KEY}'
 ALLOWED_HOSTS='${ALLOWED_HOSTS}'
 CSRF_TRUSTED_ORIGINS='${CSRF_TRUSTED_ORIGINS}'
-CORS_ALLOWED_ORIGINS='${CORS_ALLOWED_ORIGINS}'
 POSTGRES_HOST='${POSTGRES_HOST}'
 POSTGRES_PORT='${POSTGRES_PORT}'
 POSTGRES_USER='${POSTGRES_USER}'

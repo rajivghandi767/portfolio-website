@@ -9,18 +9,8 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
 # ============================================================================
-# CORS & CSRF SETTINGS FOR PRODUCTION
+# CSRF SETTINGS FOR PRODUCTION
 # ============================================================================
-if 'corsheaders' not in INSTALLED_APPS:
-    INSTALLED_APPS += ['corsheaders']
-
-if 'corsheaders.middleware.CorsMiddleware' not in MIDDLEWARE:
-    MIDDLEWARE.insert(1, 'corsheaders.middleware.CorsMiddleware')
-
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = [origin.strip() for origin in os.getenv(
-    'CORS_ALLOWED_ORIGINS', '').split(',') if origin.strip()]
-
 CSRF_COOKIE_SECURE = True
 CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.getenv(
     'CSRF_TRUSTED_ORIGINS', '').split(',') if origin.strip()]
