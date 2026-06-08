@@ -36,6 +36,7 @@ services:
     volumes:
       - portfolio_static:/home/backend/django/staticfiles
       - portfolio_media:/home/backend/django/mediafiles
+      - portfolio_logs:/home/backend/django/logs
     user: "backend:backend_group"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health/"]
@@ -76,6 +77,7 @@ services:
     volumes:
       - portfolio_static:/usr/share/nginx/html/static:ro
       - portfolio_media:/usr/share/nginx/html/media:ro
+      - portfolio_logs:/var/log/nginx
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/nginx-status/"]
       interval: 30s
@@ -87,6 +89,8 @@ volumes:
     name: portfolio_static
   portfolio_media:
     name: portfolio_media
+  portfolio_logs:
+    name: portfolio_logs
 
 networks:
   core:

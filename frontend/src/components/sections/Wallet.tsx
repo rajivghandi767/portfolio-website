@@ -121,7 +121,7 @@ const CreditCard = ({
               <ExternalLink size={14} />
             </a>
           ) : (
-            <span className="text-xs text-gray-400 dark:text-gray-500">
+            <span className="text-xs text-neutral-600 dark:text-neutral-400">
               No referral link
             </span>
           )}
