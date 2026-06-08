@@ -71,7 +71,7 @@ if os.getenv('GCS_CREDENTIALS'):
     from google.oauth2 import service_account
     
     try:
-        creds_dict = json.loads(gcs_creds)
+        creds_dict = json.loads(gcs_creds, strict=False)
         GS_CREDENTIALS = service_account.Credentials.from_service_account_info(creds_dict)
     except Exception as e:
         import logging
