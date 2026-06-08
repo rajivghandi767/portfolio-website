@@ -1,97 +1,83 @@
 services:
-  # DB Migration & Static Files Collection
-  portfolio-backend-init:
-    image: ghcr.io/rajivghandi767/portfolio-backend:${IMAGE_TAG:-latest}
-    container_name: portfolio-backend-init
-    user: root
+  # -----------------------------------------
+  # Database Layer
+  # -----------------------------------------
+  portfolio-local-db:
+    image: postgres:18-alpine
+    container_name: portfolio-local-db
+    restart: unless-stopped
+    env_file: .env.example
     networks:
-      - portfolio
-      - database
-    env_file: .env
+      - portfolio-local
+    ports:
+      - "5432:5432"
     volumes:
-      - portfolio_static:/home/backend/django/staticfiles
+      - portfolio-local-db-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U portfolio-user -d portfolio-db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # -----------------------------------------
+  # Caching Layer
+  # -----------------------------------------
+  portfolio-local-redis:
+    image: redis:7-alpine
+    container_name: portfolio-local-redis
+    restart: unless-stopped
+    networks:
+      - portfolio-local
+    ports:
+      - "6379:6379"
+
+  # -----------------------------------------
+  # Django Backend (Smart Server)
+  # -----------------------------------------
+  portfolio-local-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: portfolio-local-backend
+    env_file: .env.example
+    networks:
+      - portfolio-local
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    depends_on:
+      portfolio-local-db:
+        condition: service_healthy
+      portfolio-local-redis:
+        condition: service_started
     command: >
-      sh -c "
-        echo 'Waiting for postgres-core...' &&
-        until python -c 'import socket,os; s=socket.socket(socket.AF_INET, socket.SOCK_STREAM); s.settimeout(2); s.connect((os.environ[\"POSTGRES_HOST\"], 5432)); s.close()'; do
-          echo 'Database not ready... waiting 2s';
-          sleep 2;
-        done &&
-        echo 'Database is ready!' &&
-        python manage.py migrate --noinput &&
-        python manage.py collectstatic --noinput"
+      sh -c "python manage.py migrate && 
+             python manage.py seed_data && 
+             python manage.py runserver 0.0.0.0:8000"
 
-  # Portfolio Backend - Django
-  portfolio-backend:
-    image: ghcr.io/rajivghandi767/portfolio-backend:${IMAGE_TAG:-latest}
-    container_name: portfolio-backend
-    restart: unless-stopped
+  # -----------------------------------------
+  # React Frontend (Dumb Client)
+  # -----------------------------------------
+  portfolio-local-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: portfolio-local-frontend
+    env_file: .env.example
     networks:
-      - portfolio
-      - database
-    depends_on:
-      portfolio-backend-init:
-        condition: service_completed_successfully
-    env_file: .env
+      - portfolio-local
+    ports:
+      - "5173:5173"
     volumes:
-      - portfolio_static:/home/backend/django/staticfiles
-      - portfolio_media:/home/backend/django/mediafiles
-      - portfolio_logs:/home/backend/django/logs
-    user: "backend:backend_group"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health/"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
-
-  portfolio-frontend:
-    image: ghcr.io/rajivghandi767/portfolio-frontend:${IMAGE_TAG:-latest}
-    container_name: portfolio-frontend
-    restart: unless-stopped
-    networks:
-      - core
-      - portfolio
+      - ./frontend:/app
+      - /app/node_modules
     depends_on:
-      portfolio-backend:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost/"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  # Single unified nginx service
-  portfolio-nginx:
-    image: ghcr.io/rajivghandi767/portfolio-nginx:${IMAGE_TAG:-latest}
-    container_name: portfolio-nginx
-    restart: unless-stopped
-    networks:
-      - core
-      - portfolio
-    depends_on:
-      portfolio-backend:
-        condition: service_healthy
-      portfolio-frontend:
-        condition: service_healthy
-    volumes:
-      - portfolio_static:/usr/share/nginx/html/static:ro
-      - portfolio_media:/usr/share/nginx/html/media:ro
-      - portfolio_logs:/var/log/nginx
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/nginx-status/"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      - portfolio-local-backend
 
 volumes:
-  portfolio_static:
-  portfolio_media:
-  portfolio_logs:
+  portfolio-local-db-data:
+    name: portfolio_local_db_data
 
 networks:
-  core:
-    external: true
-  database:
-    external: true
-  portfolio:
+  portfolio-local:

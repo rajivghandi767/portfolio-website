@@ -1,5 +1,10 @@
 from django.db import models
 
+class Tag(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
 
 class Project(models.Model):
     title = models.CharField(max_length=100)
@@ -12,6 +17,7 @@ class Project(models.Model):
     order = models.PositiveIntegerField(
         default=0, help_text="Set the display order of projects"
     )
+    tags = models.ManyToManyField(Tag, blank=True)
 
     class Meta:
         ordering = ['order']

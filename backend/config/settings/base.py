@@ -8,6 +8,10 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parents[2]
 
+# Global cache TTL (15 minutes by default)
+CACHE_TTL = 60 * 15
+SITE_URL = "https://rajivwallace.com"
+
 # ============================================================================
 # APPLICATION DEFINITION
 # ============================================================================
