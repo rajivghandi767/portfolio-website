@@ -61,6 +61,7 @@ pipeline {
                         [envVar: 'POSTGRES_DB', vaultKey: 'POSTGRES_DB'],
                         [envVar: 'ADMIN_URL', vaultKey: 'ADMIN_URL'],
                         [envVar: 'DISCORD_WEBHOOK_URL', vaultKey: 'DISCORD_WEBHOOK_URL'],
+                        [envVar: 'REDIS_URL', vaultKey: 'REDIS_URL'],
                     ]]]) {
                         // Try to fetch GCS credentials from Vault optionally
                         def gcs_creds = ""
@@ -95,6 +96,7 @@ POSTGRES_PASSWORD='${POSTGRES_PASSWORD}'
 POSTGRES_DB='${POSTGRES_DB}'
 ADMIN_URL='${ADMIN_URL}'
 DISCORD_WEBHOOK_URL='${DISCORD_WEBHOOK_URL}'
+REDIS_URL='${REDIS_URL}'
 """
                             if (has_gcs == "true") {
                                 envContent += "\nGCS_CREDENTIALS='${gcs_creds}'\nGS_BUCKET_NAME='${gcs_bucket}'\n"
