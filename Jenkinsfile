@@ -38,16 +38,17 @@ pipeline {
             parallel {
                 stage('Test Backend (Python)') {
                     steps {
-                        dir('backend') {
-                            sh "python manage.py test"
+                        script {
+                            def workspace = pwd()
+                            sh "docker run --rm -v ${workspace}/backend:/app -w /app python:3.14-slim sh -c 'pip install --no-cache-dir -r requirements.txt && python manage.py test'"
                         }
                     }
                 }
                 stage('Test Frontend (React)') {
                     steps {
-                        dir('frontend') {
-                            sh "npm ci"
-                            sh "npm run test"
+                        script {
+                            def workspace = pwd()
+                            sh "docker run --rm -v ${workspace}/frontend:/app -w /app node:22-alpine sh -c 'npm ci && npm run test'"
                         }
                     }
                 }
