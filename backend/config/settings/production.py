@@ -64,6 +64,14 @@ if os.getenv('GCS_CREDENTIALS'):
         },
     }
     GS_BUCKET_NAME = os.getenv('GS_BUCKET_NAME')
+    
+    # Load GCS credentials from environment variable (JSON string or file path)
+    gcs_creds = os.getenv('GCS_CREDENTIALS')
+    import json
+    try:
+        GS_CREDENTIALS = json.loads(gcs_creds)
+    except json.JSONDecodeError:
+        GS_CREDENTIALS = gcs_creds
 else:
     MEDIA_URL = '/media/'
     MEDIA_ROOT = '/home/backend/django/mediafiles'
