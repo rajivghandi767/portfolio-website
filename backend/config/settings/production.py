@@ -68,9 +68,11 @@ if os.getenv('GCS_CREDENTIALS'):
     # Load GCS credentials from environment variable (JSON string or file path)
     gcs_creds = os.getenv('GCS_CREDENTIALS')
     import json
+    from google.oauth2 import service_account
     try:
-        GS_CREDENTIALS = json.loads(gcs_creds)
-    except json.JSONDecodeError:
+        creds_dict = json.loads(gcs_creds)
+        GS_CREDENTIALS = service_account.Credentials.from_service_account_info(creds_dict)
+    except Exception:
         GS_CREDENTIALS = gcs_creds
 else:
     MEDIA_URL = '/media/'
