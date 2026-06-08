@@ -14,6 +14,8 @@ class Project(models.Model):
     deployed_url = models.URLField(("Link to Deployed App"), blank=True)
     thumbnail = models.ImageField(
         upload_to='project_thumbnails/', blank=True, null=True)
+    emoji = models.CharField(max_length=10, blank=True, help_text="Emoji icon for project switcher")
+    color = models.CharField(max_length=100, blank=True, help_text="Tailwind color classes for project switcher")
     order = models.PositiveIntegerField(
         default=0, help_text="Set the display order of projects"
     )
