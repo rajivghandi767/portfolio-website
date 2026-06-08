@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Card as CardType } from "../../types";
-import { ExternalLink, ChevronRight, X } from "lucide-react";
+import { ExternalLink, ChevronRight, X } from "../common/Icons";
 import apiService from "../../services/api";
 import useApi from "../../hooks/useApi";
 import imageUtils from "../../utils/imageUtils";
@@ -171,7 +171,7 @@ const CardDetailModal = ({
           <div className="w-full md:w-1/2">
             <div className="mb-4">
               <h4 className="text-sm font-medium mb-1">Annual Fee</h4>
-              <p>{card.annual_fee || "No Annual Fee"}</p>
+              <p>{card.annual_fee ?? "No Annual Fee"}</p>
             </div>
             <div>
               <h4 className="text-sm font-medium mb-1">Card Benefits</h4>

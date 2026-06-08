@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { X } from "lucide-react";
+import { X } from "../common/Icons";
 import { Info } from "../../types";
 import apiService from "../../services/api";
 import useApi from "../../hooks/useApi";
@@ -120,7 +120,7 @@ const Bio = () => {
                 </p>
                 <div className="mt-4 text-center md:text-left">
                   <button
-                    onClick={handleViewResume}
+                    onClick={() => { void handleViewResume(); }}
                     disabled={isLoadingResume}
                     // Replaced .btn .btn-primary
                     className="inline-flex items-center justify-center bg-brand-light dark:bg-brand-dark text-bg-light dark:text-bg-dark hover:bg-neutral-800 dark:hover:bg-gray-200 transition-colors duration-200 px-4 py-2 text-sm rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
@@ -177,7 +177,7 @@ const Bio = () => {
             {/* Replaced .border-default */}
             <div className="border-t-2 border-gray-200 dark:border-neutral-800 p-4 flex justify-end items-center">
               <button
-                onClick={handleDownload}
+                onClick={() => { void handleDownload(); }}
                 disabled={isDownloading || !resumeUrl}
                 // Replaced .btn .btn-primary
                 className="inline-flex items-center justify-center bg-brand-light dark:bg-brand-dark text-bg-light dark:text-bg-dark hover:bg-neutral-800 dark:hover:bg-gray-200 transition-colors duration-200 px-4 py-2 text-sm rounded-md disabled:opacity-50"

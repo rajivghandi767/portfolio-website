@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { BlogPost, PageProps } from "../../types";
-import { ArrowRight, ChevronRight } from "lucide-react";
+import { ArrowRight, ChevronRight } from "../common/Icons";
 import apiService from "../../services/api";
 import useApi from "../../hooks/useApi";
 import imageUtils from "../../utils/imageUtils";

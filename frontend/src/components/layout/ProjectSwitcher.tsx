@@ -1,30 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 
-const PROJECTS = [
-  {
-    name: "Portfolio",
-    url: "https://rajivwallace.com",
-    icon: "👨🏾‍💻",
-    desc: "My professional journey & resume",
-    color:
-      "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
-  },
-  {
-    name: "Country Trivia",
-    url: "https://trivia.rajivwallace.com",
-    icon: "🌍",
-    desc: "Test your geography knowledge",
-    color:
-      "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
-  },
-  {
-    name: "Prop & Ferry",
-    url: "https://prop-ferry.rajivwallace.com",
-    icon: "✈️",
-    desc: "Caribbean island hopping made easy",
-    color: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
-  },
-];
+import apiService from "../../services/api";
+import useApi from "../../hooks/useApi";
+import { GlobalLink } from "../../types";
 
 interface ProjectSwitcherProps {
   align?: "left" | "right";
@@ -33,6 +11,8 @@ interface ProjectSwitcherProps {
 export function ProjectSwitcher({ align = "right" }: ProjectSwitcherProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  
+  const { data: links } = useApi<GlobalLink[]>(() => apiService.links.getAll());
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -86,26 +66,28 @@ export function ProjectSwitcher({ align = "right" }: ProjectSwitcherProps) {
           </div>
 
           <div className="p-2 grid gap-1">
-            {PROJECTS.map((project) => (
+            {links?.map((link) => (
               <a
-                key={project.name}
-                href={project.url}
+                key={link.id}
+                href={link.url}
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-neutral-900 transition-colors group"
               >
                 <div
-                  className={`w-10 h-10 rounded-lg flex items-center justify-center text-xl shadow-sm ${project.color}`}
+                  className={`w-10 h-10 rounded-lg flex items-center justify-center text-xl shadow-sm bg-gray-100 text-gray-700 dark:bg-neutral-800 dark:text-gray-300`}
                 >
-                  {project.icon}
+                  {link.icon_name || "🔗"}
                 </div>
                 <div>
                   <div className="font-bold text-brand-light dark:text-brand-dark group-hover:text-brand-light/80 dark:group-hover:text-brand-dark/80 transition-colors">
-                    {project.name}
+                    {link.name}
                   </div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400 leading-tight mt-0.5">
-                    {project.desc}
-                  </div>
+                  {link.short_description && (
+                    <div className="text-xs text-gray-500 dark:text-gray-400 leading-tight mt-0.5">
+                      {link.short_description}
+                    </div>
+                  )}
                 </div>
               </a>
             ))}

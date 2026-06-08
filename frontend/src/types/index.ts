@@ -1,7 +1,7 @@
 /**
  * API Response type for all API calls
  */
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   data: T | null;
   error: string | null;
   status: number;
@@ -29,6 +29,8 @@ export interface Info {
   profile_photo_url: string | null;
   github: string;
   linkedin: string;
+  substack?: string;
+  email?: string;
 }
 
 /**
@@ -57,6 +59,67 @@ export interface Project {
   deployed_url?: string;
   technology: string;
   order?: number;
+  tags?: Tag[];
+}
+
+export interface Tag {
+  id: number;
+  name: string;
+}
+
+export interface Experience {
+  id: number;
+  company: string;
+  role: string;
+  start_date: string;
+  end_date: string | null;
+  description: string;
+  order: number;
+}
+
+export interface Education {
+  id: number;
+  institution: string;
+  degree: string;
+  year: string;
+  order: number;
+}
+
+export interface Certification {
+  id: number;
+  name: string;
+  issuer: string;
+  date_issued: string;
+  url: string | null;
+  order: number;
+}
+
+export interface Skill {
+  id: number;
+  name: string;
+  order: number;
+}
+
+export interface SkillCategory {
+  id: number;
+  name: string;
+  order: number;
+  skills: Skill[];
+}
+
+export interface GlobalLink {
+  id: number;
+  name: string;
+  url: string;
+  icon_name: string;
+  short_description?: string;
+  order: number;
+}
+
+export interface BrandAsset {
+  id: number;
+  name: string;
+  logo_url: string;
 }
 
 /**
