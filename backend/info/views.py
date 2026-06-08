@@ -7,26 +7,13 @@ from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Info, Resume, Experience, GlobalLink
+from .models import Info, Resume
 from .serializers import (
-    InfoSerializer, ResumeSerializer, ResumeListSerializer,
-    ExperienceSerializer, GlobalLinkSerializer
+    InfoSerializer, ResumeSerializer, ResumeListSerializer
 )
 
 logger = logging.getLogger(__name__)
 
-@method_decorator(cache_page(settings.CACHE_TTL), name='dispatch')
-class ExperienceViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Experience.objects.all()
-    serializer_class = ExperienceSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
-
-
-@method_decorator(cache_page(settings.CACHE_TTL), name='dispatch')
-class GlobalLinkViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = GlobalLink.objects.all()
-    serializer_class = GlobalLinkSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 

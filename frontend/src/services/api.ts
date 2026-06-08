@@ -220,57 +220,9 @@ const apiService = {
   
   // Bio/Profile Endpoints
   info: {
-    get: (): Promise<ApiResponse<Info[]>> => {
+    getAll: (): Promise<ApiResponse<Info[]>> => {
       if (import.meta.env.DEV) console.log('🔍 Fetching profile info...');
       return fetchApi<Info[]>('info');
-    }
-  },
-
-  // Experience Endpoints
-  experience: {
-    getAll: (): Promise<ApiResponse<Experience[]>> => {
-      if (import.meta.env.DEV) console.log('💼 Fetching experience...');
-      return fetchApi<Experience[]>('experience');
-    }
-  },
-
-  // Education Endpoints
-  education: {
-    getAll: (): Promise<ApiResponse<Education[]>> => {
-      if (import.meta.env.DEV) console.log('🎓 Fetching education...');
-      return fetchApi<Education[]>('education');
-    }
-  },
-
-  // Certification Endpoints
-  certifications: {
-    getAll: (): Promise<ApiResponse<Certification[]>> => {
-      if (import.meta.env.DEV) console.log('📜 Fetching certifications...');
-      return fetchApi<Certification[]>('certifications');
-    }
-  },
-
-  // Skills Endpoints
-  skills: {
-    getAll: (): Promise<ApiResponse<SkillCategory[]>> => {
-      if (import.meta.env.DEV) console.log('🛠️ Fetching skills...');
-      return fetchApi<SkillCategory[]>('skills');
-    }
-  },
-
-  // Global Links Endpoints
-  links: {
-    getAll: (): Promise<ApiResponse<GlobalLink[]>> => {
-      if (import.meta.env.DEV) console.log('🔗 Fetching global links...');
-      return fetchApi<GlobalLink[]>('links');
-    }
-  },
-
-  // Brand Assets Endpoints
-  brand: {
-    getAll: (): Promise<ApiResponse<BrandAsset[]>> => {
-      if (import.meta.env.DEV) console.log('🎨 Fetching brand assets...');
-      return fetchApi<BrandAsset[]>('brand');
     }
   },
   

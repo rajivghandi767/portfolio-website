@@ -205,34 +205,5 @@ class Resume(models.Model):
             logger.error(f"Error activating resume: {str(e)}")
             raise
 
-class Experience(models.Model):
-    company = models.CharField(max_length=100)
-    role = models.CharField(max_length=100)
-    start_date = models.DateField()
-    end_date = models.DateField(blank=True, null=True, help_text="Leave blank if currently working here")
-    description = models.TextField()
-    order = models.PositiveIntegerField(default=0)
-    
-    class Meta:
-        ordering = ['order', '-start_date']
-        verbose_name_plural = "Experience"
-        
-    def __str__(self):
-        return f"{self.role} at {self.company}"
 
-
-
-
-class GlobalLink(models.Model):
-    name = models.CharField(max_length=50)
-    url = models.URLField()
-    icon_name = models.CharField(max_length=50, blank=True, help_text="Name of the icon to use (e.g., 'github', 'link')")
-    short_description = models.CharField(max_length=150, blank=True, help_text="A short description of the linked project")
-    order = models.PositiveIntegerField(default=0)
-
-    class Meta:
-        ordering = ['order']
-
-    def __str__(self):
-        return self.name
 

@@ -10,7 +10,7 @@ from rest_framework.routers import DefaultRouter
 
 # Import viewsets
 from info.views import (
-    InfoViewSet, ResumeViewSet, ExperienceViewSet, GlobalLinkViewSet
+    InfoViewSet, ResumeViewSet
 )
 from projects.views import ProjectViewSet
 from blog.views import CategoryViewSet, PostViewSet, CommentViewSet
@@ -50,8 +50,6 @@ router = DefaultRouter()
 # Register viewsets with explicit basename for better URL naming
 router.register('info', InfoViewSet, basename='info')
 router.register('resume', ResumeViewSet, basename='resume')
-router.register('experience', ExperienceViewSet, basename='experience')
-router.register('links', GlobalLinkViewSet, basename='link')
 
 router.register('projects', ProjectViewSet, basename='projects')
 router.register('category', CategoryViewSet, basename='category')

@@ -1,7 +1,7 @@
 import logging
 from rest_framework import serializers
 from django.urls import reverse
-from .models import Info, Resume, Experience, GlobalLink
+from .models import Info, Resume
 
 logger = logging.getLogger(__name__)
 
@@ -25,18 +25,6 @@ class InfoSerializer(serializers.ModelSerializer):
                 return request.build_absolute_uri(obj.profile_photo.url)
             return obj.profile_photo.url
         return None
-
-class ExperienceSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Experience
-        fields = '__all__'
-
-
-
-class GlobalLinkSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = GlobalLink
-        fields = '__all__'
 
 
 class ResumeSerializer(serializers.ModelSerializer):

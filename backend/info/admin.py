@@ -3,7 +3,7 @@ from django.utils.html import format_html
 from django.contrib import messages
 import logging
 from .models import (
-    Info, Resume, Experience, GlobalLink
+    Info, Resume
 )
 
 logger = logging.getLogger(__name__)
@@ -127,17 +127,6 @@ class ResumeAdmin(admin.ModelAdmin):
             request, f"{updated} resume(s) deactivated.", messages.SUCCESS)
     make_inactive.short_description = "Deactivate selected resumes"
 
-@admin.register(Experience)
-class ExperienceAdmin(admin.ModelAdmin):
-    list_display = ('role', 'company', 'start_date', 'end_date', 'order')
-    list_editable = ('order',)
-    ordering = ('order', '-start_date')
 
-
-@admin.register(GlobalLink)
-class GlobalLinkAdmin(admin.ModelAdmin):
-    list_display = ('name', 'url', 'order')
-    list_editable = ('order',)
-    ordering = ('order',)
 
 
