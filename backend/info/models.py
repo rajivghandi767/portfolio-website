@@ -34,6 +34,16 @@ class Info(models.Model):
         null=True,
         help_text="Linkedin Profile URL (optional)"
     )
+    substack = models.URLField(
+        blank=True,
+        null=True,
+        help_text="Substack Profile URL (optional)"
+    )
+    email = models.EmailField(
+        blank=True,
+        null=True,
+        help_text="Public Contact Email"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -54,6 +64,10 @@ class Info(models.Model):
         if self.linkedin and not self.linkedin.startswith(('http://', 'https://')):
             raise ValidationError({
                 'linkedin': 'Linkedin URL must start with http:// or https://'
+            })
+        if self.substack and not self.substack.startswith(('http://', 'https://')):
+            raise ValidationError({
+                'substack': 'Substack URL must start with http:// or https://'
             })
         if len(self.bio) < 10:
             raise ValidationError({
@@ -138,6 +152,11 @@ class Resume(models.Model):
             raise
 
     @property
+    def download_filename(self):
+        """Returns the filename to be used when downloading the resume."""
+        return "Rajiv_Wallace_Resume.pdf"
+
+    @property
     def file_size_display(self):
         if self.file and self.file.size:
             size = self.file.size
@@ -185,3 +204,86 @@ class Resume(models.Model):
         except Exception as e:
             logger.error(f"Error activating resume: {str(e)}")
             raise
+
+class Experience(models.Model):
+    company = models.CharField(max_length=100)
+    role = models.CharField(max_length=100)
+    start_date = models.DateField()
+    end_date = models.DateField(blank=True, null=True, help_text="Leave blank if currently working here")
+    description = models.TextField()
+    order = models.PositiveIntegerField(default=0)
+    
+    class Meta:
+        ordering = ['order', '-start_date']
+        verbose_name_plural = "Experience"
+        
+    def __str__(self):
+        return f"{self.role} at {self.company}"
+
+class Education(models.Model):
+    institution = models.CharField(max_length=100)
+    degree = models.CharField(max_length=100)
+    year = models.CharField(max_length=20)
+    order = models.PositiveIntegerField(default=0)
+    
+    class Meta:
+        ordering = ['order']
+        verbose_name_plural = "Education"
+        
+    def __str__(self):
+        return f"{self.degree} at {self.institution}"
+
+class Certification(models.Model):
+    name = models.CharField(max_length=100)
+    issuer = models.CharField(max_length=100)
+    date_issued = models.DateField()
+    url = models.URLField(blank=True, null=True)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order']
+
+    def __str__(self):
+        return self.name
+
+class SkillCategory(models.Model):
+    name = models.CharField(max_length=50)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order']
+        verbose_name_plural = "Skill Categories"
+
+    def __str__(self):
+        return self.name
+
+class Skill(models.Model):
+    category = models.ForeignKey(SkillCategory, related_name='skills', on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order']
+
+    def __str__(self):
+        return self.name
+
+class GlobalLink(models.Model):
+    name = models.CharField(max_length=50)
+    url = models.URLField()
+    icon_name = models.CharField(max_length=50, blank=True, help_text="Name of the icon to use (e.g., 'github', 'link')")
+    short_description = models.CharField(max_length=150, blank=True, help_text="A short description of the linked project")
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order']
+
+    def __str__(self):
+        return self.name
+
+class BrandAsset(models.Model):
+    name = models.CharField(max_length=50)
+    logo = models.FileField(upload_to='brand/')
+
+    def __str__(self):
+        return self.name

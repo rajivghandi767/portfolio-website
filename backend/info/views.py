@@ -1,22 +1,67 @@
 import logging
 from django.http import FileResponse
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.conf import settings
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Info, Resume
-from .serializers import InfoSerializer, ResumeSerializer, ResumeListSerializer
+from .models import Info, Resume, Experience, Education, Certification, SkillCategory, GlobalLink, BrandAsset
+from .serializers import (
+    InfoSerializer, ResumeSerializer, ResumeListSerializer,
+    ExperienceSerializer, EducationSerializer, CertificationSerializer,
+    SkillCategorySerializer, GlobalLinkSerializer, BrandAssetSerializer
+)
 
 logger = logging.getLogger(__name__)
 
+@method_decorator(cache_page(settings.CACHE_TTL), name='dispatch')
+class ExperienceViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Experience.objects.all()
+    serializer_class = ExperienceSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
-class InfoViewSet(viewsets.ModelViewSet):
+@method_decorator(cache_page(settings.CACHE_TTL), name='dispatch')
+class EducationViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Education.objects.all()
+    serializer_class = EducationSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+@method_decorator(cache_page(settings.CACHE_TTL), name='dispatch')
+class CertificationViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Certification.objects.all()
+    serializer_class = CertificationSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+@method_decorator(cache_page(settings.CACHE_TTL), name='dispatch')
+class SkillCategoryViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = SkillCategory.objects.all()
+    serializer_class = SkillCategorySerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+@method_decorator(cache_page(settings.CACHE_TTL), name='dispatch')
+class GlobalLinkViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = GlobalLink.objects.all()
+    serializer_class = GlobalLinkSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+@method_decorator(cache_page(settings.CACHE_TTL), name='dispatch')
+class BrandAssetViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = BrandAsset.objects.all()
+    serializer_class = BrandAssetSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+
+@method_decorator(cache_page(settings.CACHE_TTL), name='dispatch')
+class InfoViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Info.objects.all()
     serializer_class = InfoSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 
-class ResumeViewSet(viewsets.ModelViewSet):
+@method_decorator(cache_page(settings.CACHE_TTL), name='dispatch')
+class ResumeViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Resume.objects.all().order_by('-uploaded_at')
     permission_classes = [IsAuthenticatedOrReadOnly]
 
@@ -39,7 +84,7 @@ class ResumeViewSet(viewsets.ModelViewSet):
                 response = FileResponse(
                     file_handle, content_type='application/pdf', as_attachment=as_attachment)
 
-                filename = "Rajiv_Wallace_Resume.pdf"
+                filename = resume.download_filename
                 if as_attachment:
                     response['Content-Disposition'] = f'attachment; filename="{filename}"'
                     response['Content-Length'] = resume.file.size

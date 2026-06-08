@@ -1,14 +1,5 @@
 from .base import *
 import os
-from dotenv import load_dotenv
-
-# ============================================================================
-# LOAD ENV VARIABLES
-# ============================================================================
-# Inherit all base settings, then inject sensitive credentials directly from the .env file
-# into the OS environment so they remain out of version control.
-env_path = BASE_DIR / '.env'
-load_dotenv(dotenv_path=env_path, override=True)
 
 # ============================================================================
 # PRODUCTION SECURITY SETTINGS
@@ -25,6 +16,16 @@ CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.getenv(
     'CSRF_TRUSTED_ORIGINS', '').split(',') if origin.strip()]
 CSRF_COOKIE_HTTPONLY = False
 CSRF_COOKIE_SAMESITE = 'Lax'
+
+# ============================================================================
+# CACHING CONFIGURATION FOR PRODUCTION
+# ============================================================================
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": os.getenv("REDIS_URL"),
+    }
+}
 
 # ============================================================================
 # SESSION CONFIGURATION
@@ -48,15 +49,27 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # ============================================================================
 # STATIC & MEDIA FILES FOR PRODUCTION
 # ============================================================================
-# Absolute paths mapped to the internal Docker container volumes for asset serving.
+# Static paths mapped to the internal Docker container volumes for asset serving.
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/backend/django/staticfiles'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = '/home/backend/django/mediafiles'
+# Media handled via GCS when configured
+if os.getenv('GCS_CREDENTIALS'):
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
+    }
+    GS_BUCKET_NAME = os.getenv('GS_BUCKET_NAME')
+else:
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = '/home/backend/django/mediafiles'
+    os.makedirs(MEDIA_ROOT, exist_ok=True)
 
-# Ensure directories exist
-os.makedirs(MEDIA_ROOT, exist_ok=True)
+# Ensure static directories exist
 os.makedirs(STATIC_ROOT, exist_ok=True)
 
 # ============================================================================
@@ -99,28 +112,12 @@ LOGGING = {
             'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
             'style': '{',
         },
-        'simple': {
-            'format': '{levelname} {asctime} {name} {message}',
-            'style': '{',
-        },
     },
     'handlers': {
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': '/home/backend/django/logs/portfolio.log',
-            'formatter': 'simple',
-        },
-        'error_file': {
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'filename': '/home/backend/django/logs/errors.log',
-            'formatter': 'verbose',
-        },
         'console': {
             'level': 'INFO',
             'class': 'logging.StreamHandler',
-            'formatter': 'simple',
+            'formatter': 'verbose',
         },
     },
     'root': {
@@ -129,37 +126,37 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers': ['file'],
+            'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,
         },
         'django.request': {
-            'handlers': ['error_file', 'console'],
+            'handlers': ['console'],
             'level': 'ERROR',
             'propagate': False,
         },
         'info': {
-            'handlers': ['file', 'error_file'],
+            'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,
         },
         'projects': {
-            'handlers': ['file', 'error_file'],
+            'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,
         },
         'blog': {
-            'handlers': ['file', 'error_file'],
+            'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,
         },
         'wallet': {
-            'handlers': ['file', 'error_file'],
+            'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,
         },
         'contacts': {
-            'handlers': ['file', 'error_file'],
+            'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,
         },
@@ -192,6 +189,5 @@ HEALTH_CHECK_ENABLED = True
 # ============================================================================
 PROMETHEUS_EXPORT_MIGRATIONS = False
 PROMETHEUS_LATENCY_BUCKETS = (
-    0.008, 0.016, 0.032, 0.064, 0.128, 0.256, 0.512, 1.024, 2.048, 4.096, 8.192, 16.384, float(
-        'inf')
+    0.008, 0.016, 0.032, 0.064, 0.128, 0.256, 0.512, 1.024, 2.048, 4.096, 8.192, 16.384, float('inf')
 )

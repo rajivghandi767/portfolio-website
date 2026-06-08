@@ -9,7 +9,10 @@ from django.utils.decorators import method_decorator
 from rest_framework.routers import DefaultRouter
 
 # Import viewsets
-from info.views import InfoViewSet, ResumeViewSet
+from info.views import (
+    InfoViewSet, ResumeViewSet, ExperienceViewSet, EducationViewSet, 
+    CertificationViewSet, SkillCategoryViewSet, GlobalLinkViewSet, BrandAssetViewSet
+)
 from projects.views import ProjectViewSet
 from blog.views import CategoryViewSet, PostViewSet, CommentViewSet
 from wallet.views import CardViewSet
@@ -22,7 +25,7 @@ from health_check.views import health_detailed, health_simple
 # Utilizes Python decorators to wrap the view with HTTP method validation and caching logic
 # before the function execution begins.
 @require_http_methods(["GET"])
-@cache_control(max_age=300)  # Cache for 5 minutes
+@cache_control(max_age=settings.CACHE_TTL)
 def api_root(request):
     """
     Dynamically generates the base API URL and returns a JSON directory of available endpoints.
@@ -48,6 +51,12 @@ router = DefaultRouter()
 # Register viewsets with explicit basename for better URL naming
 router.register('info', InfoViewSet, basename='info')
 router.register('resume', ResumeViewSet, basename='resume')
+router.register('experience', ExperienceViewSet, basename='experience')
+router.register('education', EducationViewSet, basename='education')
+router.register('certifications', CertificationViewSet, basename='certification')
+router.register('skills', SkillCategoryViewSet, basename='skill')
+router.register('links', GlobalLinkViewSet, basename='link')
+router.register('brand', BrandAssetViewSet, basename='brand')
 router.register('projects', ProjectViewSet, basename='projects')
 router.register('category', CategoryViewSet, basename='category')
 router.register('post', PostViewSet, basename='post')

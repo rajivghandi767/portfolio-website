@@ -1,15 +1,21 @@
 from rest_framework import serializers
-from .models import Project
+from .models import Project, Tag
+
+
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ["id", "name"]
 
 
 class ProjectSerializer(serializers.ModelSerializer):
-
     thumbnail_url = serializers.SerializerMethodField()
+    tags = TagSerializer(many=True, read_only=True)
 
     class Meta:
         model = Project
         fields = ["id", "title", "description", "technology",
-                  "repo", "deployed_url", "thumbnail_url", "order"]
+                  "repo", "deployed_url", "thumbnail_url", "order", "tags"]
 
     def get_thumbnail_url(self, obj):
         if obj.thumbnail and hasattr(obj.thumbnail, 'url'):

@@ -1,0 +1,96 @@
+services:
+  # DB Migration & Static Files Collection
+  portfolio-backend-init:
+    image: ghcr.io/rajivghandi767/portfolio-backend:${IMAGE_TAG:-latest}
+    container_name: portfolio-backend-init
+    user: root
+    networks:
+      - portfolio
+      - database
+    env_file: .env
+    volumes:
+      - portfolio_static:/home/backend/django/staticfiles
+    command: >
+      sh -c "
+        echo 'Waiting for postgres-core...' &&
+        until python -c 'import socket,os; s=socket.socket(socket.AF_INET, socket.SOCK_STREAM); s.settimeout(2); s.connect((os.environ[\"POSTGRES_HOST\"], 5432)); s.close()'; do
+          echo 'Database not ready... waiting 2s';
+          sleep 2;
+        done &&
+        echo 'Database is ready!' &&
+        python manage.py migrate --noinput &&
+        python manage.py collectstatic --noinput"
+
+  # Portfolio Backend - Django
+  portfolio-backend:
+    image: ghcr.io/rajivghandi767/portfolio-backend:${IMAGE_TAG:-latest}
+    container_name: portfolio-backend
+    restart: unless-stopped
+    networks:
+      - portfolio
+      - database
+    depends_on:
+      portfolio-backend-init:
+        condition: service_completed_successfully
+    env_file: .env
+    volumes:
+      - portfolio_static:/home/backend/django/staticfiles
+      - portfolio_media:/home/backend/django/mediafiles
+    user: "backend:backend_group"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  portfolio-frontend:
+    image: ghcr.io/rajivghandi767/portfolio-frontend:${IMAGE_TAG:-latest}
+    container_name: portfolio-frontend
+    restart: unless-stopped
+    networks:
+      - core
+      - portfolio
+    depends_on:
+      portfolio-backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Single unified nginx service
+  portfolio-nginx:
+    image: ghcr.io/rajivghandi767/portfolio-nginx:${IMAGE_TAG:-latest}
+    container_name: portfolio-nginx
+    restart: unless-stopped
+    networks:
+      - core
+      - portfolio
+    depends_on:
+      portfolio-backend:
+        condition: service_healthy
+      portfolio-frontend:
+        condition: service_healthy
+    volumes:
+      - portfolio_static:/usr/share/nginx/html/static:ro
+      - portfolio_media:/usr/share/nginx/html/media:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/nginx-status/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  portfolio_static:
+    name: portfolio_static
+  portfolio_media:
+    name: portfolio_media
+
+networks:
+  core:
+    external: true
+  database:
+    external: true
+  portfolio:

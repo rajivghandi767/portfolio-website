@@ -2,7 +2,10 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django.contrib import messages
 import logging
-from .models import Info, Resume
+from .models import (
+    Info, Resume, Experience, Education, Certification, 
+    SkillCategory, Skill, GlobalLink, BrandAsset
+)
 
 logger = logging.getLogger(__name__)
 
@@ -124,3 +127,42 @@ class ResumeAdmin(admin.ModelAdmin):
         self.message_user(
             request, f"{updated} resume(s) deactivated.", messages.SUCCESS)
     make_inactive.short_description = "Deactivate selected resumes"
+
+@admin.register(Experience)
+class ExperienceAdmin(admin.ModelAdmin):
+    list_display = ('role', 'company', 'start_date', 'end_date', 'order')
+    list_editable = ('order',)
+    ordering = ('order', '-start_date')
+
+@admin.register(Education)
+class EducationAdmin(admin.ModelAdmin):
+    list_display = ('degree', 'institution', 'year', 'order')
+    list_editable = ('order',)
+    ordering = ('order',)
+
+@admin.register(Certification)
+class CertificationAdmin(admin.ModelAdmin):
+    list_display = ('name', 'issuer', 'date_issued', 'order')
+    list_editable = ('order',)
+    ordering = ('order',)
+
+class SkillInline(admin.TabularInline):
+    model = Skill
+    extra = 1
+
+@admin.register(SkillCategory)
+class SkillCategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'order')
+    list_editable = ('order',)
+    ordering = ('order',)
+    inlines = [SkillInline]
+
+@admin.register(GlobalLink)
+class GlobalLinkAdmin(admin.ModelAdmin):
+    list_display = ('name', 'url', 'order')
+    list_editable = ('order',)
+    ordering = ('order',)
+
+@admin.register(BrandAsset)
+class BrandAssetAdmin(admin.ModelAdmin):
+    list_display = ('name',)

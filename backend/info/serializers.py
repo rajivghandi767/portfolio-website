@@ -1,7 +1,7 @@
 import logging
 from rest_framework import serializers
 from django.urls import reverse
-from .models import Info, Resume
+from .models import Info, Resume, Experience, Education, Certification, Skill, SkillCategory, GlobalLink, BrandAsset
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +13,7 @@ class InfoSerializer(serializers.ModelSerializer):
         model = Info
         fields = [
             "id", "site_header", "professional_title", "profile_photo_url",
-            "greeting", "bio", "github", "linkedin",
+            "greeting", "bio", "github", "linkedin", "substack", "email",
             "created_at", "updated_at"
         ]
         read_only_fields = ('created_at', 'updated_at')
@@ -26,6 +26,50 @@ class InfoSerializer(serializers.ModelSerializer):
             return obj.profile_photo.url
         return None
 
+class ExperienceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Experience
+        fields = '__all__'
+
+class EducationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Education
+        fields = '__all__'
+
+class CertificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Certification
+        fields = '__all__'
+
+class SkillSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Skill
+        fields = ['id', 'name', 'order']
+
+class SkillCategorySerializer(serializers.ModelSerializer):
+    skills = SkillSerializer(many=True, read_only=True)
+    class Meta:
+        model = SkillCategory
+        fields = ['id', 'name', 'order', 'skills']
+
+class GlobalLinkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GlobalLink
+        fields = '__all__'
+
+class BrandAssetSerializer(serializers.ModelSerializer):
+    logo_url = serializers.SerializerMethodField()
+    class Meta:
+        model = BrandAsset
+        fields = ['id', 'name', 'logo_url']
+
+    def get_logo_url(self, obj):
+        if obj.logo and hasattr(obj.logo, 'url'):
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.logo.url)
+            return obj.logo.url
+        return None
 
 class ResumeSerializer(serializers.ModelSerializer):
     filename = serializers.CharField(
