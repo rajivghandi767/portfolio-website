@@ -1,6 +1,5 @@
 import { 
-  ApiResponse, BlogPost, Project, Info, Card, ContactForm,
-  Experience, Education, Certification, SkillCategory, GlobalLink, BrandAsset
+  ApiResponse, BlogPost, Project, Info, Card, ContactForm
 } from "../types";
 
 // Configuration
@@ -220,7 +219,7 @@ const apiService = {
   
   // Bio/Profile Endpoints
   info: {
-    getAll: (): Promise<ApiResponse<Info[]>> => {
+    get: (): Promise<ApiResponse<Info[]>> => {
       if (import.meta.env.DEV) console.log('🔍 Fetching profile info...');
       return fetchApi<Info[]>('info');
     }

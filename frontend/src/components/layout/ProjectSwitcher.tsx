@@ -12,7 +12,7 @@ export function ProjectSwitcher({ align = "right" }: ProjectSwitcherProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   
-  const { data: infoData } = useApi<Info[]>(() => apiService.info.getAll());
+  const { data: infoData } = useApi<Info[]>(() => apiService.info.get());
   const info = infoData?.[0];
 
   useEffect(() => {
