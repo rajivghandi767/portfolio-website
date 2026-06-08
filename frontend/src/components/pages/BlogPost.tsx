@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Calendar, User } from "lucide-react";
+import { ArrowLeft, Calendar, User } from "../common/Icons";
 import { BlogPost as BlogPostType } from "../../types";
 import apiService from "../../services/api";
 import useApi from "../../hooks/useApi";
@@ -14,7 +14,7 @@ const BlogPost = () => {
     data: post,
     isLoading,
     error,
-  } = useApi<BlogPostType>(() => apiService.blog.getOne(id || ""), [id]);
+  } = useApi<BlogPostType>(() => apiService.blog.getOne(id ?? ""), [id]);
 
   useEffect(() => {
     window.scrollTo(0, 0);

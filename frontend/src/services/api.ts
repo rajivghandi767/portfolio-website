@@ -1,4 +1,7 @@
-import { ApiResponse, BlogPost, Project, Info, Card, ContactForm } from "../types";
+import { 
+  ApiResponse, BlogPost, Project, Info, Card, ContactForm,
+  Experience, Education, Certification, SkillCategory, GlobalLink, BrandAsset
+} from "../types";
 
 // Configuration
 const API_CONFIG = {
@@ -21,7 +24,7 @@ class ApiError extends Error {
 }
 
 function getApiUrl(): string {
-  const baseUrl = import.meta.env.VITE_API_URL;
+  const baseUrl = (import.meta.env.VITE_API_URL as string | undefined) ?? "";
   return `${baseUrl}/api/`;
 }
 
@@ -82,7 +85,7 @@ async function fetchApi<T>(
           };
         }
         
-        const rawData = await response.json();
+        const rawData = (await response.json()) as Record<string, unknown> | null;
         if (import.meta.env.DEV) {
           console.log(`Raw API Response for ${endpoint}:`, rawData);
         }
@@ -222,6 +225,54 @@ const apiService = {
       return fetchApi<Info[]>('info');
     }
   },
+
+  // Experience Endpoints
+  experience: {
+    getAll: (): Promise<ApiResponse<Experience[]>> => {
+      if (import.meta.env.DEV) console.log('💼 Fetching experience...');
+      return fetchApi<Experience[]>('experience');
+    }
+  },
+
+  // Education Endpoints
+  education: {
+    getAll: (): Promise<ApiResponse<Education[]>> => {
+      if (import.meta.env.DEV) console.log('🎓 Fetching education...');
+      return fetchApi<Education[]>('education');
+    }
+  },
+
+  // Certification Endpoints
+  certifications: {
+    getAll: (): Promise<ApiResponse<Certification[]>> => {
+      if (import.meta.env.DEV) console.log('📜 Fetching certifications...');
+      return fetchApi<Certification[]>('certifications');
+    }
+  },
+
+  // Skills Endpoints
+  skills: {
+    getAll: (): Promise<ApiResponse<SkillCategory[]>> => {
+      if (import.meta.env.DEV) console.log('🛠️ Fetching skills...');
+      return fetchApi<SkillCategory[]>('skills');
+    }
+  },
+
+  // Global Links Endpoints
+  links: {
+    getAll: (): Promise<ApiResponse<GlobalLink[]>> => {
+      if (import.meta.env.DEV) console.log('🔗 Fetching global links...');
+      return fetchApi<GlobalLink[]>('links');
+    }
+  },
+
+  // Brand Assets Endpoints
+  brand: {
+    getAll: (): Promise<ApiResponse<BrandAsset[]>> => {
+      if (import.meta.env.DEV) console.log('🎨 Fetching brand assets...');
+      return fetchApi<BrandAsset[]>('brand');
+    }
+  },
   
   // Resume Endpoints with enhanced error handling
   resume: {
@@ -231,7 +282,7 @@ const apiService = {
         return await fetchBlob('resume/view');
       } catch (error) {
         if (import.meta.env.DEV) console.error('❌ Resume view failed:', error);
-        throw new Error('Failed to load resume for viewing. Please try again.');
+        throw new Error('Failed to load resume for viewing. Please try again.', { cause: error });
       }
     },
     
@@ -241,13 +292,13 @@ const apiService = {
         return await fetchBlob('resume/download');
       } catch (error) {
         if (import.meta.env.DEV) console.error('❌ Resume download failed:', error);
-        throw new Error('Failed to download resume. Please try again.');
+        throw new Error('Failed to download resume. Please try again.', { cause: error });
       }
     },
     
-    status: (): Promise<ApiResponse<any>> => {
+    status: (): Promise<ApiResponse<unknown>> => {
       if (import.meta.env.DEV) console.log('📊 Checking resume status...');
-      return fetchApi<any>('resume/status');
+      return fetchApi<unknown>('resume/status');
     }
   },
   
@@ -290,11 +341,11 @@ const apiService = {
           body: JSON.stringify(formData),
         });
 
-        const data = await response.json();
+        const data = (await response.json()) as { detail?: string; error?: string };
         if (import.meta.env.DEV) console.log('📬 Contact API Response:', data);
 
         if (!response.ok) {
-          const errorMessage = data.detail || data.error || `HTTP ${response.status}: ${response.statusText}`;
+          const errorMessage = data.detail ?? data.error ?? `HTTP ${response.status}: ${response.statusText}`;
           if (import.meta.env.DEV) console.error('❌ Contact form error:', errorMessage);
           return { error: errorMessage };
         }
@@ -335,9 +386,9 @@ const apiService = {
     },
 
     // Get API health status
-    getHealth: (): Promise<ApiResponse<any>> => {
+    getHealth: (): Promise<ApiResponse<unknown>> => {
       if (import.meta.env.DEV) console.log('🏥 Checking API health...');
-      return fetchApi<any>('../health');  // Go up one level from /api/
+      return fetchApi<unknown>('../health');  // Go up one level from /api/
     }
   }
 };

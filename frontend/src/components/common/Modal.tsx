@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { cn } from "@/utils/styleUtils";
-import { X } from "lucide-react";
+import { X } from "./Icons";
 
 interface ModalProps {
   isOpen: boolean;

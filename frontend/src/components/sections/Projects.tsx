@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Github, ChevronRight } from "lucide-react";
+import { ChevronRight, Github } from "../common/Icons";
 import { Project, PageProps } from "../../types";
 import apiService from "../../services/api";
 import useApi from "../../hooks/useApi";
@@ -119,12 +119,21 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
         </p>
 
         <div className="mt-auto">
-          <p className="text-xs">
+          <p className="text-xs mb-2">
             <span className="font-semibold">Stack:</span>{" "}
             <span className="text-gray-600 dark:text-gray-400">
               {project.technology || "Not specified"}
             </span>
           </p>
+          {project.tags && project.tags.length > 0 && (
+            <div className="flex flex-wrap gap-1 mt-1">
+              {project.tags.map((tag) => (
+                <span key={tag.id} className="text-[10px] px-1.5 py-0.5 bg-gray-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 rounded border border-gray-200 dark:border-neutral-700">
+                  {tag.name}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

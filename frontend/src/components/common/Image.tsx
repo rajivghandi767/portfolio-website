@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { cn } from "@/utils/styleUtils";
 
 interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
@@ -22,14 +22,15 @@ const Image = ({
   enableProgressiveLoading = false,
   ...props
 }: ImageProps) => {
+  const [prevSrc, setPrevSrc] = useState(src);
   const [hasError, setHasError] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  useEffect(() => {
-    // Reset loaded state when src changes
+  if (src !== prevSrc) {
+    setPrevSrc(src);
     setIsLoaded(false);
     setHasError(false);
-  }, [src]);
+  }
 
   const aspectRatioClasses = {
     auto: "",

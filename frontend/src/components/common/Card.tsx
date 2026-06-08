@@ -66,7 +66,7 @@ const CardImage = ({
           className,
         )}
       >
-        {fallback || (
+        {fallback ?? (
           <div className="text-gray-500 dark:text-gray-600 font-mono text-sm">
             Image Unavailable
           </div>

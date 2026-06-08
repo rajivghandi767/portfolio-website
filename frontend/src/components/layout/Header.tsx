@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation, Link } from "react-router-dom";
-import { Sun, Moon, Menu, X, Home as HomeIcon } from "lucide-react";
+import { Sun, Moon, Menu, X, Home as HomeIcon } from "../common/Icons";
 import { useThemeContext } from "../../context/ThemeContext";
 import { ProjectSwitcher } from "./ProjectSwitcher";
 import apiService from "../../services/api";
@@ -12,10 +12,11 @@ const ThemeToggleButton = () => {
 
   return (
     <button
-      // Replaced .btn .btn-primary
+      type="button"
       className="inline-flex items-center justify-center bg-brand-light dark:bg-brand-dark text-bg-light dark:text-bg-dark hover:bg-neutral-800 dark:hover:bg-gray-200 p-2 rounded-lg transition-colors duration-200"
       onClick={toggleTheme}
-      aria-label="Toggle dark mode"
+      aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
+      aria-pressed={theme === "dark"}
     >
       {theme === "dark" ? (
         <Sun className="w-5 h-5" />
@@ -34,10 +35,11 @@ const MobileMenuToggle = ({
   toggleMenu: () => void;
 }) => (
   <button
+    type="button"
     onClick={toggleMenu}
-    // Replaced .text-header
     className="p-2 text-brand-light dark:text-brand-dark hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors"
     aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+    aria-expanded={isMenuOpen}
   >
     {isMenuOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
   </button>

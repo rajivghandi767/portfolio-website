@@ -1,5 +1,5 @@
 import { cn } from "@/utils/styleUtils";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle } from "./Icons";
 
 interface ErrorDisplayProps {
   error: string | null;
