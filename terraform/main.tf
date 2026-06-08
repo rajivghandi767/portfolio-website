@@ -1,3 +1,14 @@
+# Create the Terraform state bucket
+resource "google_storage_bucket" "tf_state" {
+  name          = "rajiv-portfolio-tf-state"
+  location      = "US"
+  force_destroy = false
+  uniform_bucket_level_access = true
+  versioning {
+    enabled = true
+  }
+}
+
 # 1. Create the GCS Bucket for Media
 resource "google_storage_bucket" "media" {
   name          = var.media_bucket_name
