@@ -7,11 +7,10 @@ from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Info, Resume, Experience, Education, Certification, SkillCategory, GlobalLink, BrandAsset
+from .models import Info, Resume, Experience, GlobalLink
 from .serializers import (
     InfoSerializer, ResumeSerializer, ResumeListSerializer,
-    ExperienceSerializer, EducationSerializer, CertificationSerializer,
-    SkillCategorySerializer, GlobalLinkSerializer, BrandAssetSerializer
+    ExperienceSerializer, GlobalLinkSerializer
 )
 
 logger = logging.getLogger(__name__)
@@ -22,23 +21,6 @@ class ExperienceViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ExperienceSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
-@method_decorator(cache_page(settings.CACHE_TTL), name='dispatch')
-class EducationViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Education.objects.all()
-    serializer_class = EducationSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
-
-@method_decorator(cache_page(settings.CACHE_TTL), name='dispatch')
-class CertificationViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Certification.objects.all()
-    serializer_class = CertificationSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
-
-@method_decorator(cache_page(settings.CACHE_TTL), name='dispatch')
-class SkillCategoryViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = SkillCategory.objects.all()
-    serializer_class = SkillCategorySerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
 
 @method_decorator(cache_page(settings.CACHE_TTL), name='dispatch')
 class GlobalLinkViewSet(viewsets.ReadOnlyModelViewSet):
@@ -46,11 +28,6 @@ class GlobalLinkViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = GlobalLinkSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
-@method_decorator(cache_page(settings.CACHE_TTL), name='dispatch')
-class BrandAssetViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = BrandAsset.objects.all()
-    serializer_class = BrandAssetSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 @method_decorator(cache_page(settings.CACHE_TTL), name='dispatch')

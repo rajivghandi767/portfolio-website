@@ -10,8 +10,7 @@ from rest_framework.routers import DefaultRouter
 
 # Import viewsets
 from info.views import (
-    InfoViewSet, ResumeViewSet, ExperienceViewSet, EducationViewSet, 
-    CertificationViewSet, SkillCategoryViewSet, GlobalLinkViewSet, BrandAssetViewSet
+    InfoViewSet, ResumeViewSet, ExperienceViewSet, GlobalLinkViewSet
 )
 from projects.views import ProjectViewSet
 from blog.views import CategoryViewSet, PostViewSet, CommentViewSet
@@ -52,11 +51,8 @@ router = DefaultRouter()
 router.register('info', InfoViewSet, basename='info')
 router.register('resume', ResumeViewSet, basename='resume')
 router.register('experience', ExperienceViewSet, basename='experience')
-router.register('education', EducationViewSet, basename='education')
-router.register('certifications', CertificationViewSet, basename='certification')
-router.register('skills', SkillCategoryViewSet, basename='skill')
 router.register('links', GlobalLinkViewSet, basename='link')
-router.register('brand', BrandAssetViewSet, basename='brand')
+
 router.register('projects', ProjectViewSet, basename='projects')
 router.register('category', CategoryViewSet, basename='category')
 router.register('post', PostViewSet, basename='post')

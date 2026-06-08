@@ -3,8 +3,7 @@ from django.utils.html import format_html
 from django.contrib import messages
 import logging
 from .models import (
-    Info, Resume, Experience, Education, Certification, 
-    SkillCategory, Skill, GlobalLink, BrandAsset
+    Info, Resume, Experience, GlobalLink
 )
 
 logger = logging.getLogger(__name__)
@@ -134,28 +133,6 @@ class ExperienceAdmin(admin.ModelAdmin):
     list_editable = ('order',)
     ordering = ('order', '-start_date')
 
-@admin.register(Education)
-class EducationAdmin(admin.ModelAdmin):
-    list_display = ('degree', 'institution', 'year', 'order')
-    list_editable = ('order',)
-    ordering = ('order',)
-
-@admin.register(Certification)
-class CertificationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'issuer', 'date_issued', 'order')
-    list_editable = ('order',)
-    ordering = ('order',)
-
-class SkillInline(admin.TabularInline):
-    model = Skill
-    extra = 1
-
-@admin.register(SkillCategory)
-class SkillCategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'order')
-    list_editable = ('order',)
-    ordering = ('order',)
-    inlines = [SkillInline]
 
 @admin.register(GlobalLink)
 class GlobalLinkAdmin(admin.ModelAdmin):
@@ -163,6 +140,4 @@ class GlobalLinkAdmin(admin.ModelAdmin):
     list_editable = ('order',)
     ordering = ('order',)
 
-@admin.register(BrandAsset)
-class BrandAssetAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+

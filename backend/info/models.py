@@ -220,53 +220,8 @@ class Experience(models.Model):
     def __str__(self):
         return f"{self.role} at {self.company}"
 
-class Education(models.Model):
-    institution = models.CharField(max_length=100)
-    degree = models.CharField(max_length=100)
-    year = models.CharField(max_length=20)
-    order = models.PositiveIntegerField(default=0)
-    
-    class Meta:
-        ordering = ['order']
-        verbose_name_plural = "Education"
-        
-    def __str__(self):
-        return f"{self.degree} at {self.institution}"
 
-class Certification(models.Model):
-    name = models.CharField(max_length=100)
-    issuer = models.CharField(max_length=100)
-    date_issued = models.DateField()
-    url = models.URLField(blank=True, null=True)
-    order = models.PositiveIntegerField(default=0)
 
-    class Meta:
-        ordering = ['order']
-
-    def __str__(self):
-        return self.name
-
-class SkillCategory(models.Model):
-    name = models.CharField(max_length=50)
-    order = models.PositiveIntegerField(default=0)
-
-    class Meta:
-        ordering = ['order']
-        verbose_name_plural = "Skill Categories"
-
-    def __str__(self):
-        return self.name
-
-class Skill(models.Model):
-    category = models.ForeignKey(SkillCategory, related_name='skills', on_delete=models.CASCADE)
-    name = models.CharField(max_length=50)
-    order = models.PositiveIntegerField(default=0)
-
-    class Meta:
-        ordering = ['order']
-
-    def __str__(self):
-        return self.name
 
 class GlobalLink(models.Model):
     name = models.CharField(max_length=50)
@@ -281,9 +236,3 @@ class GlobalLink(models.Model):
     def __str__(self):
         return self.name
 
-class BrandAsset(models.Model):
-    name = models.CharField(max_length=50)
-    logo = models.FileField(upload_to='brand/')
-
-    def __str__(self):
-        return self.name
