@@ -1,28 +1,27 @@
-import test from 'node:test';
-import assert from 'node:assert';
-import imageUtils from './imageUtils.ts';
+import { describe, test, expect } from 'vitest';
+import imageUtils from './imageUtils';
 
-test('imageUtils.getImageUrl helper', async (t) => {
-  await t.test('returns a placeholder data URL if path is invalid or empty', () => {
+describe('imageUtils.getImageUrl', () => {
+  test('returns a placeholder data URL if path is invalid or empty', () => {
     const result = imageUtils.getImageUrl(null, 'project');
-    assert.match(result, /^data:image\/svg\+xml;base64,/);
+    expect(result).toMatch(/^data:image\/svg\+xml;base64,/);
   });
 
-  await t.test('returns the original URL if it starts with http', () => {
+  test('returns the original URL if it starts with http', () => {
     const url = 'https://example.com/image.png';
     const result = imageUtils.getImageUrl(url);
-    assert.strictEqual(result, url);
+    expect(result).toBe(url);
   });
 
-  await t.test('returns the original URL if it starts with data:', () => {
+  test('returns the original URL if it starts with data:', () => {
     const dataUrl = 'data:image/png;base64,iVBORw0KGgoAAA';
     const result = imageUtils.getImageUrl(dataUrl);
-    assert.strictEqual(result, dataUrl);
+    expect(result).toBe(dataUrl);
   });
 
-  await t.test('returns relative path prepended with base URL (empty base URL case)', () => {
+  test('returns relative path prepended with base URL (empty base URL case)', () => {
     const path = '/media/project.png';
     const result = imageUtils.getImageUrl(path);
-    assert.strictEqual(result, '/media/project.png');
+    expect(result).toBe('/media/project.png');
   });
 });
