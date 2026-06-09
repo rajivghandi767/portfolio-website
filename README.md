@@ -1,22 +1,25 @@
-# Portfolio Website 🚀
+# Portfolio Website & Central API 🚀
+
+**🌍 [View the Live Site: rajivwallace.com](https://rajivwallace.com)**
 
 ## 🚀 Overview
 
-This repository contains the source code for my portfolio website, a project that showcases my journey as a Software Engineer with a passion for **Backend Development** and **DevOps**.
+This repository contains the source code for my portfolio website and the **central API backend** serving data to my other applications. It showcases my journey as a self-taught Software Engineer transitioning from a career as a Scientific Researcher and NYC Asbestos Inspector into a passionate **Backend Developer** and **DevOps** practitioner.
 
 More than just a digital resume, this application serves as a live demonstration of my ability to own the entire software development lifecycle—from writing code to managing bare-metal infrastructure. It highlights my capability to build, containerize, deploy, and monitor full-stack applications independently.
 
-The website is built with a **Django REST backend** and a **React TypeScript frontend**. The entire application is self-hosted on a **Raspberry Pi 4B** in my [Home Lab](https://github.com/rajivghandi767/homelab-iac), orchestrated with **Docker**, and features a complete CI/CD pipeline using **Jenkins** for automated builds and zero-downtime deployments. Secrets are dynamically managed by **HashiCorp Vault**, and system health is monitored via **Prometheus** and **Grafana**.
+The application is built with a **Django REST backend** and a **React TypeScript frontend**. The entire stack is self-hosted on a bare-metal **Raspberry Pi 4B** in my [Home Lab](https://github.com/rajivghandi767/homelab-iac), orchestrated with **Docker**, and features a complete CI/CD pipeline using **Jenkins** for automated builds and zero-downtime deployments. Secrets are dynamically managed by **HashiCorp Vault**, and system health is monitored via **Prometheus** and **Grafana**.
 
 ## 🌟 Features & Technical Highlights
 
-- **🚀 Django REST API**: A scalable backend architecture serving dynamic content for my projects, blog, and contact forms.
+- **🚀 Central Django REST API**: A scalable backend architecture serving dynamic content for my projects, blog, contact forms, and powering external applications.
 - **⚛️ React & TypeScript**: A modern, responsive, and strongly-typed frontend built for performance and maintainability.
 - **🐳 DevOps & Containerization**: Both frontend and backend are fully containerized, ensuring perfect parity between development and production environments.
 - **🤖 Automated CI/CD (Jenkins)**: A robust pipeline that automatically runs tests, builds Docker images, and deploys updates to my production server upon merging to `main`.
-- **🔐 Enterprise-Grade Secrets Management**: Integration with HashiCorp Vault to securely inject environment variables, avoiding hardcoded secrets.
-- **🥧 Bare-Metal Self-Hosting**: Production environment successfully runs on constrained hardware (Raspberry Pi 4B running DietPi), demonstrating resource-efficient system design.
-- **📈 Observability**: Integrated Prometheus & Grafana for real-time performance tracking and system health monitoring.
+- **🔐 Enterprise-Grade Secrets Management**: Integration with HashiCorp Vault to securely inject environment variables dynamically, completely eliminating hardcoded secrets.
+- **🔴 Aggressive Redis Caching**: Implements enterprise caching best practices to mitigate the physical infrastructure constraints of the Raspberry Pi, drastically reducing database I/O and accelerating API response times.
+- **🥧 Bare-Metal Self-Hosting**: Production environment successfully runs on constrained hardware (Raspberry Pi 4B running DietPi) within a highly segmented Ubiquiti network.
+- **📈 Observability**: Integrated Prometheus & Grafana stack (Node Exporter, cAdvisor) for real-time performance tracking and system health monitoring, with automated Alertmanager triggers sent to Discord.
 
 ---
 
@@ -33,18 +36,19 @@ The website is built with a **Django REST backend** and a **React TypeScript fro
 - 🔵 TypeScript
 - 🍃 Tailwind CSS
 
-### **Database**
+### **Database & Caching**
 
-- 🐘 PostgreSQL (Self-hosted on Raspberry Pi in Production)
+- 🐘 PostgreSQL (Containerized within a private database network)
+- 🔴 Redis (In-memory data store for high-speed caching)
 
 ### **DevOps & Infrastructure**
 
 - 🐳 Docker & Docker Compose
 - 🤖 Jenkins (CI/CD)
 - 🔐 HashiCorp Vault
-- 🌐 Nginx Proxy Manager & Cloudflare
-- 📈 Prometheus & Grafana
-- 🥧 Raspberry Pi 4B (DietPi OS)
+- 🌐 Nginx Proxy Manager & Cloudflare (Ingress & DNS)
+- 📈 Prometheus, Grafana & Alertmanager
+- 🥧 Raspberry Pi 4B (DietPi OS) & Ubiquiti UniFi Hardware
 
 ---
 
@@ -78,93 +82,79 @@ The website is built with a **Django REST backend** and a **React TypeScript fro
 
 ## 🚀 Deployment & Infrastructure (Production)
 
-This project is deployed in a custom [Home Lab](https://github.com/rajivghandi767/homelab-iac) environment. Below is the architecture of the production setup, designed to mimic enterprise DevOps workflows on a micro-scale.
+This project is deployed in a custom [Home Lab](https://github.com/rajivghandi767/homelab-iac) environment. The architecture is designed to mimic enterprise DevOps workflows on a micro-scale, incorporating Zero-Trust network segmentation and strict access controls.
 
-### Infrastructure
+### Infrastructure & Networking
 
+- **Network Segmentation**: Incoming traffic routes through **Cloudflare** into a **Ubiquiti UXG-Fiber Gateway**, mapped strictly to an isolated **Homelab VLAN**. This VLAN enforces a Zero-Trust posture, blocking unauthorized lateral movement across personal subnets.
 - **Host**: 🥧 Raspberry Pi 4B running a headless Debian distro (DietPi).
-- **Containerization**: 🐳 Docker and Docker Compose manage isolated services and networking.
-- **Reverse Proxy & Routing**: 🌐 Nginx Proxy Manager handles request routing and automatic SSL provisioning.
-- **Registry**: Immutable Docker images are built and pushed to a **Private GitHub Container Registry**.
-- **Database**: Connects to an external self-hosted PostgreSQL instance running on the same host network.
+- **Reverse Proxy & Routing**: 🌐 Nginx Proxy Manager handles request routing, terminating SSL connections before proxying requests into isolated Docker networks.
+- **Database Tier**: Connects to a self-hosted PostgreSQL instance running on a dedicated, isolated `database` Docker network. User roles and catalogs are provisioned dynamically via initialization scripts.
 
 ### CI/CD Pipeline
 
 **Jenkins** monitors the `main` branch. On commit:
 
 1.  Automated tests are executed to ensure code integrity.
-2.  Docker images are built, tagged, and pushed to the private registry.
-3.  The production environment pulls the new images and updates the containers seamlessly.
-4.  Secrets are injected dynamically via **HashiCorp Vault** during the build and deploy stages.
-5.  Success or Failure deployment reports are dispatched via Discord Webhooks.
+2.  Docker images are built, tagged, and pushed to a **Private GitHub Container Registry**.
+3.  **HashiCorp Vault** is securely queried during the deploy stages to dynamically inject environment variables into the host agent.
+4.  The production environment pulls the new images and updates the containers seamlessly with zero-downtime rolling restarts.
+5.  Deployment reports (Success/Failure) are dispatched via **Discord Webhooks**.
 
 ---
 
 ## 💻 Local Replication
 
-This section details how to replicate this environment locally. Since the production `docker-compose.yml` is configured for a private registry and external networks, follow these steps to run it locally from source.
+This section details how to replicate this environment locally. Everything is fully plug-and-play for local development without the need to modify `docker-compose.yml` configurations or environment paths manually.
 
-### 1. Prerequisites
+### Prerequisites
 
+**For Docker Setup (Recommended):**
 - 🐳 Docker & Docker Compose
-- 📝 A `.env` file (see `env.example`)
 
-### 2. Configure Environment (`.env`)
+**For Manual Setup:**
+- 🐍 Python 3.x
+- 🟢 Node.js & npm
 
-Create a `.env` file based on `env.example`.
+### Option 1: Docker (Recommended)
 
-**Key Variable Adjustments:**
+Local `docker-compose.yml` and `Dockerfile` configurations are already set to build directly from the source code folder for local development rather than pulling registry images. The `docker-compose.yml` is hardcoded to use `.env.example`, so absolutely no environment configuration is required.
 
-- `POSTGRES_HOST`: _Set this to `db` (matching the service name added in Step 4)._
-- `DJANGO_ALLOWED_HOSTS`: _Add `localhost,127.0.0.1`._
-- `VITE_API_URL`: _Set to `http://localhost:8000`._
-
-### 3. Modify `docker-compose.yml` for Local Build
-
-Update the compose file to build from source rather than pulling from the private registry.
-
-**A. Switch from Image to Build:**
-Comment out the `image` tags and add `build` contexts for `portfolio-backend-init`, `portfolio-backend`, `portfolio-frontend`, and `portfolio-nginx`.
-
-```yaml
-portfolio-backend:
-  # image: ghcr.io/...
-  build:
-    context: ./backend
-    dockerfile: Dockerfile.prod
-```
-
-**B. Update Networks:**
-Remove `external: true` from the network definitions so Docker creates them automatically.
-
-### 4. Database Setup
-
-Add a local PostgreSQL service to your `docker-compose.yml`:
-
-```yaml
-db:
-  image: postgres:15-alpine
-  container_name: portfolio-db
-  environment:
-    - POSTGRES_DB=portfolio-db
-    - POSTGRES_USER=portfolio-user
-    - POSTGRES_PASSWORD=secret
-  networks:
-    - database
-```
-
-_Ensure your `.env` file matches these credentials._
-
-### 5. Start the Application
-
-Run the following command to build and spin up the environment:
-
+**Spin up the stack:**
 ```bash
 docker compose up -d --build
 ```
+*Note: The database migrations and seed data scripts are automatically executed during container startup!*
 
-- **Frontend**: `http://localhost:5173`
-- **Backend**: `http://localhost:8000`
+**Accessing Local Services:**
+
+- Frontend: `http://localhost:5173`
+- Backend API: `http://localhost:8000`
+
+### Option 2: Manual Setup (Non-Docker)
+
+If you prefer running the servers manually without Docker:
+
+**1. Start the Backend API:**
+
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate
+pip install -r dev-requirements.txt
+cp ../env.example .env
+python manage.py migrate
+python manage.py seed_data
+python manage.py runserver
+```
+
+**2. Start the Frontend SPA:**
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
 ---
 
@@ -176,7 +166,8 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## 👤 Author
 
-**Rajiv Wallace**
+**Rajiv Wallace**  
+Self-taught Software Engineer based in NYC (originally from Dominica 🇩🇲). Aviation nerd, Chelsea FC supporter, and passionate about robust Backend Development and bare-metal DevOps.
 
 - **LinkedIn**: [linkedin.com/in/rajiv-wallace](https://www.linkedin.com/in/rajiv-wallace)
 - **Email**: [dev@rajivwallace.com](mailto:dev@rajivwallace.com)
