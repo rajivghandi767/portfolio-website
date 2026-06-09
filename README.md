@@ -98,7 +98,7 @@ This project is deployed in a custom [Home Lab](https://github.com/rajivghandi76
 1.  Automated tests are executed to ensure code integrity.
 2.  Docker images are built, tagged, and pushed to a **Private GitHub Container Registry**.
 3.  **HashiCorp Vault** is securely queried during the deploy stages to dynamically inject environment variables into the host agent.
-4.  The production environment pulls the new images and updates the containers seamlessly with zero-downtime rolling restarts.
+4.  The production environment pulls the new images and updates the containers seamlessly with zero-downtime rolling restarts. Scheduled deployments also run daily at `02:00 AM` EST.
 5.  Deployment reports (Success/Failure) are dispatched via **Discord Webhooks**.
 
 ---
