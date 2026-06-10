@@ -17,7 +17,7 @@ The application is built with a **Django REST backend** and a **React TypeScript
 - **🐳 DevOps & Containerization**: Both frontend and backend are fully containerized, ensuring perfect parity between development and production environments.
 - **🤖 Automated CI/CD (Jenkins)**: A robust pipeline that automatically runs tests, builds Docker images, and deploys updates to my production server upon merging to `main`.
 - **🔐 Enterprise-Grade Secrets Management**: Integration with HashiCorp Vault to securely inject environment variables dynamically, completely eliminating hardcoded secrets.
-- **🔴 Aggressive Redis Caching**: Implements enterprise caching best practices to mitigate the physical infrastructure constraints of the Raspberry Pi, drastically reducing database I/O and accelerating API response times.
+- **🔴 Aggressive Redis Caching**: Bypasses ORM lookups and JSON rendering to accelerate API response times (see Performance Optimization below).
 - **🥧 Bare-Metal Self-Hosting**: Production environment successfully runs on constrained hardware (Raspberry Pi 4B running DietPi) within a highly segmented Ubiquiti network.
 - **Observability**: Integrated Prometheus & Grafana stack (Node Exporter, cAdvisor) for real-time performance tracking and system health monitoring, with automated Alertmanager triggers sent to Discord.
 
