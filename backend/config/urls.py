@@ -5,7 +5,6 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.cache import cache_control
-from django.utils.decorators import method_decorator
 from rest_framework.routers import DefaultRouter
 
 # Import viewsets

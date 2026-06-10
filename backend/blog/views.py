@@ -21,6 +21,7 @@ class PostViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 
+@method_decorator(cache_page(60 * 5), name='dispatch')
 class CommentViewSet(viewsets.ModelViewSet):
     http_method_names = ['get', 'post', 'head', 'options']
     queryset = Comment.objects.all()
