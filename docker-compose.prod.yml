@@ -98,3 +98,4 @@ networks:
   database:
     external: true
   portfolio:
+    name: portfolio
