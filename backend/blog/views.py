@@ -9,6 +9,12 @@ from .serializers import CategorySerializer, PostSerializer, CommentSerializer
 
 @method_decorator(cache_page(settings.CACHE_TTL), name='dispatch')
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    Serves blog category definitions.
+    
+    Wrapped with cache_page to intercept the Django dispatch cycle and serve responses
+    directly from Redis, drastically reducing DB load for public read-only traffic.
+    """
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -16,6 +22,11 @@ class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
 
 @method_decorator(cache_page(settings.CACHE_TTL), name='dispatch')
 class PostViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    Serves blog posts and their metadata.
+    
+    Wrapped with cache_page to serve serialized post data directly from memory.
+    """
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
