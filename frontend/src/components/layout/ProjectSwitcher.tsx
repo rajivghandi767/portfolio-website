@@ -78,7 +78,7 @@ export function ProjectSwitcher({ align = "right" }: ProjectSwitcherProps) {
                 <div
                   className="w-8 flex-shrink-0 flex items-start justify-start text-xl pt-0.5 text-gray-700 dark:text-gray-300"
                 >
-                  {project.emoji || (project.technology ? project.technology.substring(0, 2).toUpperCase() : "✨")}
+                  {project.emoji || "✨"}
                 </div>
                 <div>
                   <div className="font-bold text-brand-light dark:text-brand-dark group-hover:text-brand-light/80 dark:group-hover:text-brand-dark/80 transition-colors">
