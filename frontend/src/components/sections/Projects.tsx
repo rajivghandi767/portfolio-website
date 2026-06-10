@@ -119,12 +119,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
         </p>
 
         <div className="mt-auto">
-          <p className="text-xs mb-2">
-            <span className="font-semibold">Stack:</span>{" "}
-            <span className="text-gray-600 dark:text-gray-400">
-              {project.technology || "Not specified"}
-            </span>
-          </p>
+
           {project.tags && project.tags.length > 0 && (
             <div className="flex flex-wrap gap-1 mt-1">
               {project.tags.map((tag) => (

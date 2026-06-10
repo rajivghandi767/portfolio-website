@@ -57,7 +57,6 @@ export interface Project {
   thumbnail_url: string;
   repo: string;
   deployed_url?: string;
-  technology: string;
   emoji?: string;
   order?: number;
   tags?: Tag[];
