@@ -8,7 +8,6 @@ class ProjectAPITests(APITestCase):
         self.project = Project.objects.create(
             title="Test Project",
             description="Test Description",
-            technology="React",
             repo="https://github.com/test/project",
             deployed_url="https://testproject.com",
             order=1
@@ -23,7 +22,6 @@ class ProjectAPITests(APITestCase):
         # Verify pagination-free response format
         self.assertEqual(len(response.data), 1)
         self.assertEqual(response.data[0]['title'], "Test Project")
-        self.assertEqual(response.data[0]['technology'], "React")
 
     def test_get_project_detail(self):
         """Test retrieving a single project detail."""

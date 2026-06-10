@@ -8,8 +8,8 @@ describe('apiService', () => {
 
   test('projects.getAll returns list of projects successfully', async () => {
     const mockProjects = [
-      { id: 1, title: 'Project 1', description: 'Desc 1', technology: 'React' },
-      { id: 2, title: 'Project 2', description: 'Desc 2', technology: 'Django' }
+      { id: 1, title: 'Project 1', description: 'Desc 1' },
+      { id: 2, title: 'Project 2', description: 'Desc 2' }
     ];
 
     const mockResponse = {
