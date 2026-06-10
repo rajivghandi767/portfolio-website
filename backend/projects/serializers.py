@@ -14,7 +14,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
-        fields = ('id', 'title', 'description', 'technology',
+        fields = ('id', 'title', 'description',
                   'repo', 'deployed_url', 'thumbnail_url', 'emoji', 'order', 'tags')
 
     def get_thumbnail_url(self, obj):
