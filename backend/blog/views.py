@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.http import HttpResponse, Http404
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
@@ -58,3 +59,38 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+def seo_blog_post(request, slug):
+    try:
+        post = Post.objects.get(slug=slug, status='published')
+        if post.publish_date and post.publish_date > timezone.now():
+            raise Http404()
+    except Post.DoesNotExist:
+        raise Http404()
+
+    # Determine absolute URL for the image
+    image_url = ""
+    if post.image:
+        image_url = request.build_absolute_uri(post.image.url)
+
+    # Simple HTML template for bots
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{post.title}</title>
+    <meta property="og:title" content="{post.title}" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="{request.build_absolute_uri()}" />
+    <meta property="og:image" content="{image_url}" />
+    <meta property="og:description" content="{post.title} on Rajiv Wallace Portfolio" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{post.title}" />
+    <meta name="twitter:description" content="{post.title} on Rajiv Wallace Portfolio" />
+    <meta name="twitter:image" content="{image_url}" />
+</head>
+<body>
+    <h1>{post.title}</h1>
+</body>
+</html>"""
+    return HttpResponse(html)
