@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.conf import settings
@@ -30,6 +31,9 @@ class PostViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        return Post.objects.filter(status='published', publish_date__lte=timezone.now())
 
 
 @method_decorator(cache_page(60 * 5), name='dispatch')

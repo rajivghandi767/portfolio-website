@@ -55,13 +55,13 @@ const BlogPost = () => {
                     <span>{singlePost.author}</span>
                   </div>
                 )}
-                {singlePost.created_on && (
+                {(singlePost.publish_date || singlePost.created_on) && (
                   <div className="flex items-center gap-1">
                     <Calendar size={14} />
                     <time
-                      dateTime={new Date(singlePost.created_on).toISOString()}
+                      dateTime={new Date(singlePost.publish_date || singlePost.created_on!).toISOString()}
                     >
-                      {new Date(singlePost.created_on).toLocaleDateString(
+                      {new Date(singlePost.publish_date || singlePost.created_on!).toLocaleDateString(
                         "en-US",
                         { year: "numeric", month: "long", day: "numeric" },
                       )}
