@@ -146,6 +146,9 @@ CKEDITOR_5_CONFIGS = {
         },
         'language': 'en',
         'width': 'auto',
+        'link': {
+            'addTargetToExternalLinks': True,
+        }
     }
 }
 # ============================================================================

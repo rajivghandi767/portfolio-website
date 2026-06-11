@@ -20,6 +20,26 @@ const BlogPost = () => {
     window.scrollTo(0, 0);
   }, [slug]);
 
+  // Ensure all links in the dynamically injected HTML open in a new tab
+  useEffect(() => {
+    if (post) {
+      // Use setTimeout to ensure the DOM has fully rendered the dangerouslySetInnerHTML content
+      setTimeout(() => {
+        const proseContainer = document.querySelector('.prose');
+        if (proseContainer) {
+          const links = proseContainer.querySelectorAll('a');
+          links.forEach((link) => {
+            // Only modify external links (optional, but good practice)
+            if (link.hostname !== window.location.hostname) {
+              link.setAttribute('target', '_blank');
+              link.setAttribute('rel', 'noopener noreferrer');
+            }
+          });
+        }
+      }, 0);
+    }
+  }, [post]);
+
   const postArray = post ? [post] : [];
 
   return (
