@@ -45,6 +45,7 @@ export interface BlogPost {
   created_on?: string;
   publish_date?: string;
   status?: string;
+  slug?: string;
   tags?: string[];
   order?: number;
 }

@@ -12,7 +12,7 @@ from info.views import (
     InfoViewSet, ResumeViewSet
 )
 from projects.views import ProjectViewSet
-from blog.views import CategoryViewSet, PostViewSet, CommentViewSet
+from blog.views import CategoryViewSet, PostViewSet, CommentViewSet, seo_blog_post
 from wallet.views import CardViewSet
 from contacts.views import ContactViewSet
 
@@ -61,6 +61,9 @@ router.register('contact', ContactViewSet, basename='contact')
 urlpatterns = [
     # Root API Endpoint
     path('', api_root, name='api-root'),
+
+    # SEO Routes for social media bots
+    path('api/seo/blog/<slug:slug>/', seo_blog_post, name='seo-blog-post'),
 
     # API Routes
     path('api/', include(router.urls)),

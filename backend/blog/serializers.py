@@ -16,7 +16,7 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ["id", "title", "body", "created_on",
                   "last_modified", "image_url", "categories", "order",
-                  "status", "publish_date"]
+                  "status", "publish_date", "slug"]
 
     def get_image_url(self, obj):
         if obj.image and hasattr(obj.image, 'url'):
