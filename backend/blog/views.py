@@ -62,7 +62,12 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 def seo_blog_post(request, slug):
     try:
-        post = Post.objects.get(slug=slug, status='published')
+        try:
+            lookup_int = int(slug)
+            post = Post.objects.get(Q(pk=lookup_int) | Q(slug=slug), status='published')
+        except ValueError:
+            post = Post.objects.get(slug=slug, status='published')
+            
         if post.publish_date and post.publish_date > timezone.now():
             raise Http404()
     except Post.DoesNotExist:
