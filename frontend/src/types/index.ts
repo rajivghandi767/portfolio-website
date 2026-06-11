@@ -43,6 +43,8 @@ export interface BlogPost {
   body: string;
   image_url: string;
   created_on?: string;
+  publish_date?: string;
+  status?: string;
   tags?: string[];
   order?: number;
 }

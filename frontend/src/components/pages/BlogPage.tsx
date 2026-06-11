@@ -76,8 +76,9 @@ const BlogPage = () => {
 const BlogPostCard = ({ post }: { post: BlogPost }) => {
   const imageUrl = imageUtils.getImageUrl(post.image_url, "blogPost");
 
-  const formattedDate = post.created_on
-    ? new Date(post.created_on).toLocaleDateString("en-US", {
+  const dateToUse = post.publish_date || post.created_on;
+  const formattedDate = dateToUse
+    ? new Date(dateToUse).toLocaleDateString("en-US", {
         year: "numeric",
         month: "long",
         day: "numeric",

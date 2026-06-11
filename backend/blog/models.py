@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from django_ckeditor_5.fields import CKEditor5Field
 
 
@@ -13,8 +14,14 @@ class Category(models.Model):
 
 
 class Post(models.Model):
+    STATUS_CHOICES = (
+        ('draft', 'Draft'),
+        ('published', 'Published'),
+    )
     title = models.CharField(max_length=255)
     body = CKEditor5Field('Text', config_name='default')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
+    publish_date = models.DateTimeField(default=timezone.now)
     created_on = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
     image = models.ImageField(upload_to='post_images/', blank=True, null=True)
