@@ -1,5 +1,5 @@
 import logging
-from django.http import FileResponse
+from django.http import FileResponse, HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.conf import settings
@@ -107,3 +107,34 @@ class ResumeViewSet(viewsets.ReadOnlyModelViewSet):
             logger.error(
                 f"Error getting resume status: {str(e)}", exc_info=True)
             return Response({'error': 'Failed to retrieve resume status'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+def seo_home_page(request):
+    info = Info.objects.first()
+    title = info.site_header if info else "Rajiv Wallace | Portfolio Website"
+    description = info.bio[:150] if info and info.bio else "Software Developer Portfolio"
+    
+    image_url = ""
+    if info and info.profile_photo:
+        image_url = request.build_absolute_uri(info.profile_photo.url)
+
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{title}</title>
+    <meta property="og:title" content="{title}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{request.build_absolute_uri()}" />
+    <meta property="og:image" content="{image_url}" />
+    <meta property="og:description" content="{description}" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{title}" />
+    <meta name="twitter:description" content="{description}" />
+    <meta name="twitter:image" content="{image_url}" />
+</head>
+<body>
+    <h1>{title}</h1>
+    <p>{description}</p>
+</body>
+</html>"""
+    return HttpResponse(html)

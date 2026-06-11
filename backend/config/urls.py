@@ -9,7 +9,7 @@ from rest_framework.routers import DefaultRouter
 
 # Import viewsets
 from info.views import (
-    InfoViewSet, ResumeViewSet
+    InfoViewSet, ResumeViewSet, seo_home_page
 )
 from projects.views import ProjectViewSet
 from blog.views import CategoryViewSet, PostViewSet, CommentViewSet, seo_blog_post
@@ -64,6 +64,7 @@ urlpatterns = [
 
     # SEO Routes for social media bots
     path('api/seo/blog/<slug:slug>/', seo_blog_post, name='seo-blog-post'),
+    path('api/seo/home/', seo_home_page, name='seo-home-page'),
 
     # API Routes
     path('api/', include(router.urls)),
