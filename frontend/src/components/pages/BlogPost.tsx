@@ -8,17 +8,17 @@ import imageUtils from "../../utils/imageUtils";
 import DataLoader from "../common/DataLoader";
 
 const BlogPost = () => {
-  const { id } = useParams<{ id: string }>();
+  const { slug } = useParams<{ slug: string }>();
 
   const {
     data: post,
     isLoading,
     error,
-  } = useApi<BlogPostType>(() => apiService.blog.getOne(id ?? ""), [id]);
+  } = useApi<BlogPostType>(() => apiService.blog.getOne(slug ?? ""), [slug]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [id]);
+  }, [slug]);
 
   const postArray = post ? [post] : [];
 

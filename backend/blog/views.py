@@ -1,8 +1,10 @@
+from django.db.models import Q
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.conf import settings
 from rest_framework import viewsets
+from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .models import Category, Post, Comment
 from .serializers import CategorySerializer, PostSerializer, CommentSerializer
@@ -34,6 +36,20 @@ class PostViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         return Post.objects.filter(status='published', publish_date__lte=timezone.now())
+
+    def get_object(self):
+        queryset = self.get_queryset()
+        lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
+        lookup = self.kwargs.get(lookup_url_kwarg)
+        
+        try:
+            lookup_int = int(lookup)
+            obj = get_object_or_404(queryset, Q(pk=lookup_int) | Q(slug=lookup))
+        except ValueError:
+            obj = get_object_or_404(queryset, slug=lookup)
+            
+        self.check_object_permissions(self.request, obj)
+        return obj
 
 
 @method_decorator(cache_page(60 * 5), name='dispatch')

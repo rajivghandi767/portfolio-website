@@ -103,7 +103,7 @@ const BlogPostCard = ({ post }: { post: BlogPost }) => {
           <span>{formattedDate}</span>
         </div>
 
-        <Link to={`/blog/${post.id}`}>
+        <Link to={`/blog/${post.slug || post.id}`}>
           <h2 className="text-2xl font-semibold mb-3 hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors">
             {post.title}
           </h2>
@@ -130,7 +130,7 @@ const BlogPostCard = ({ post }: { post: BlogPost }) => {
 
         <div className="mt-auto">
           <Link
-            to={`/blog/${post.id}`}
+            to={`/blog/${post.slug || post.id}`}
             className="flex items-center gap-1 text-sm hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors group"
           >
             <span>Read full post</span>

@@ -13,6 +13,7 @@ class PostAdmin(admin.ModelAdmin):
     list_editable = ('status', 'order')
     list_filter = ('status', 'publish_date')
     search_fields = ('title', 'body')
+    prepopulated_fields = {'slug': ('title',)}
 
 
 @admin.register(Comment)
