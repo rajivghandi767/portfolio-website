@@ -1,10 +1,12 @@
 import os
 from datetime import date
+from django.core.files.storage import storages
 
-from django.core.files.storage import default_storage
+# Dynamically inherit from whatever storage backend is configured in settings
+# (GoogleCloudStorage in production, FileSystemStorage locally)
+DefaultStorageClass = storages['default'].__class__
 
-
-class CKEditor5Storage(default_storage.__class__):
+class CKEditor5Storage(DefaultStorageClass):
     """
     Custom storage backend for django-ckeditor-5 image uploads.
 

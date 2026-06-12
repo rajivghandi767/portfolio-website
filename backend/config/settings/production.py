@@ -71,7 +71,6 @@ if os.getenv('GCS_CREDENTIALS'):
     # A signed URL becomes a 400 after 24h; an unsigned public URL never expires.
     # REQUIREMENT: the GCS bucket must have allUsers -> Storage Object Viewer granted.
     GS_QUERYSTRING_AUTH = False
-    GS_DEFAULT_ACL = "publicRead"  # Mark newly uploaded objects as publicly readable
 
     # Set Cache-Control so browsers and CDNs cache public media efficiently
     GS_OBJECT_PARAMETERS = {
