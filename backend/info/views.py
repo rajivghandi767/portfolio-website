@@ -1,3 +1,4 @@
+import html
 import logging
 from django.http import FileResponse, HttpResponse
 from django.utils.decorators import method_decorator
@@ -110,31 +111,60 @@ class ResumeViewSet(viewsets.ReadOnlyModelViewSet):
 
 def seo_home_page(request):
     info = Info.objects.first()
-    title = info.site_header if info else "Rajiv Wallace | Portfolio Website"
-    description = info.bio[:150] if info and info.bio else "Software Developer Portfolio"
-    
+
+    # og:title — mapped from info.site_header and info.professional_title
+    site_header = info.site_header if info else "Rajiv Wallace"
+    professional_title = info.professional_title if info else "Software Developer"
+    title = f"{site_header} | {professional_title}"
+
+    # og:description — mapped from info.bio
+    bio = info.bio if info and info.bio else "Software Developer Portfolio"
+    description = bio[:160]
+
+    # og:image — mapped from info.profile_photo (GCS returns an absolute URL)
     image_url = ""
     if info and info.profile_photo:
         image_url = request.build_absolute_uri(info.profile_photo.url)
 
-    html = f"""<!DOCTYPE html>
+    # Canonical URL — always the public frontend domain
+    canonical_url = f"{settings.SITE_URL}/"
+
+    # Escape all dynamic content before embedding in HTML attributes
+    safe_title = html.escape(title)
+    safe_site_name = html.escape(site_header)
+    safe_description = html.escape(description)
+    safe_image_url = html.escape(image_url)
+    safe_canonical_url = html.escape(canonical_url)
+
+    response_html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{title}</title>
-    <meta property="og:title" content="{title}" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="{request.build_absolute_uri()}" />
-    <meta property="og:image" content="{image_url}" />
-    <meta property="og:description" content="{description}" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="{title}" />
-    <meta name="twitter:description" content="{description}" />
-    <meta name="twitter:image" content="{image_url}" />
+    <title>{safe_title}</title>
+    <meta name="description" content="{safe_description}" />
+
+    <!-- Open Graph -->
+    <meta property="og:type"         content="website" />
+    <meta property="og:url"          content="{safe_canonical_url}" />
+    <meta property="og:site_name"    content="{safe_site_name}" />
+    <meta property="og:locale"       content="en_US" />
+    <meta property="og:title"        content="{safe_title}" />
+    <meta property="og:description"  content="{safe_description}" />
+    <meta property="og:image"        content="{safe_image_url}" />
+    <meta property="og:image:alt"    content="{safe_site_name}" />
+    <meta property="og:image:width"  content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:title"       content="{safe_title}" />
+    <meta name="twitter:description" content="{safe_description}" />
+    <meta name="twitter:image"       content="{safe_image_url}" />
+    <meta name="twitter:image:alt"   content="{safe_site_name}" />
 </head>
 <body>
-    <h1>{title}</h1>
-    <p>{description}</p>
+    <h1>{safe_title}</h1>
+    <p>{safe_description}</p>
 </body>
 </html>"""
-    return HttpResponse(html)
+    return HttpResponse(response_html)
