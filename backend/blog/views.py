@@ -118,15 +118,15 @@ def seo_blog_post(request, slug):
     <meta name="description" content="{safe_description}" />
 
     <!-- Open Graph -->
-    <meta property="og:type"         content="article" />
-    <meta property="og:url"          content="{safe_canonical_url}" />
-    <meta property="og:site_name"    content="{safe_author}" />
-    <meta property="og:locale"       content="en_US" />
-    <meta property="og:title"        content="{safe_title}" />
-    <meta property="og:description"  content="{safe_description}" />
-    <meta property="og:image"        content="{safe_image_url}" />
-    <meta property="og:image:alt"    content="{safe_title}" />
-    <meta property="og:image:width"  content="1200" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="{safe_canonical_url}" />
+    <meta property="og:site_name" content="{safe_author}" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="{safe_title}" />
+    <meta property="og:description" content="{safe_description}" />
+    <meta property="og:image" content="{safe_image_url}" />
+    <meta property="og:image:alt" content="{safe_title}" />
+    <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
 
     <!-- Article metadata (post.publish_date, post.last_modified, post.categories) -->
@@ -134,11 +134,11 @@ def seo_blog_post(request, slug):
 {optional_tags_html}
 
     <!-- Twitter / X Card -->
-    <meta name="twitter:card"        content="summary_large_image" />
-    <meta name="twitter:title"       content="{safe_title}" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{safe_title}" />
     <meta name="twitter:description" content="{safe_description}" />
-    <meta name="twitter:image"       content="{safe_image_url}" />
-    <meta name="twitter:image:alt"   content="{safe_title}" />
+    <meta name="twitter:image" content="{safe_image_url}" />
+    <meta name="twitter:image:alt" content="{safe_title}" />
 </head>
 <body>
     <h1>{safe_title}</h1>
