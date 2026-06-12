@@ -12,7 +12,7 @@ from info.views import (
     InfoViewSet, ResumeViewSet, seo_home_page
 )
 from projects.views import ProjectViewSet
-from blog.views import CategoryViewSet, PostViewSet, CommentViewSet, seo_blog_post
+from blog.views import CategoryViewSet, PostViewSet, seo_blog_post
 from wallet.views import CardViewSet
 from contacts.views import ContactViewSet
 
@@ -53,7 +53,6 @@ router.register('resume', ResumeViewSet, basename='resume')
 router.register('projects', ProjectViewSet, basename='projects')
 router.register('category', CategoryViewSet, basename='category')
 router.register('post', PostViewSet, basename='post')
-router.register('comment', CommentViewSet, basename='comment')
 router.register('cards', CardViewSet, basename='cards')
 router.register('contact', ContactViewSet, basename='contact')
 

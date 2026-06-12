@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Post, Comment
+from .models import Category, Post
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -25,10 +25,3 @@ class PostSerializer(serializers.ModelSerializer):
                 return request.build_absolute_uri(obj.image.url)
             return obj.image.url
         return None
-
-
-class CommentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Comment
-        fields = ["id", "author", "body", "created_on",
-                  "post"]

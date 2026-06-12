@@ -1,5 +1,5 @@
 from django.contrib import admin
-from blog.models import Category, Comment, Post
+from blog.models import Category, Post
 
 
 @admin.register(Category)
@@ -14,8 +14,3 @@ class PostAdmin(admin.ModelAdmin):
     list_filter = ('status', 'publish_date')
     search_fields = ('title', 'body')
     prepopulated_fields = {'slug': ('title',)}
-
-
-@admin.register(Comment)
-class CommentAdmin(admin.ModelAdmin):
-    pass
