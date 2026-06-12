@@ -126,7 +126,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CKEDITOR CONFIGURATION
 # ============================================================================
 
-CKEDITOR_UPLOAD_PATH = "uploads/"
+# Route CKEditor5 uploads through a custom storage class that organises
+# files under blog_images/YYYY/MM/ instead of dumping them at the bucket root.
+# CKEDITOR_UPLOAD_PATH is a django-ckeditor v4 setting; django-ckeditor_5 ignores it.
+CKEDITOR_5_FILE_STORAGE = "config.storage.CKEditor5Storage"
 
 CKEDITOR_5_CUSTOM_CSS = "admin/css/ckeditor_custom.css"
 

@@ -64,7 +64,20 @@ if os.getenv('GCS_CREDENTIALS'):
         },
     }
     GS_BUCKET_NAME = os.getenv('GS_BUCKET_NAME')
-    
+
+    # Disable signed URLs — return permanent unsigned public URLs instead.
+    # Signed URLs (the default) expire after GS_EXPIRATION seconds. When CKEditor5
+    # uploads an image, it bakes the URL directly into post.body HTML stored in the DB.
+    # A signed URL becomes a 400 after 24h; an unsigned public URL never expires.
+    # REQUIREMENT: the GCS bucket must have allUsers -> Storage Object Viewer granted.
+    GS_QUERYSTRING_AUTH = False
+    GS_DEFAULT_ACL = "publicRead"  # Mark newly uploaded objects as publicly readable
+
+    # Set Cache-Control so browsers and CDNs cache public media efficiently
+    GS_OBJECT_PARAMETERS = {
+        "cache_control": "public, max-age=31536000",  # 1 year for immutable media
+    }
+
     # Load GCS credentials from environment variable (JSON string or file path)
     gcs_creds = os.getenv('GCS_CREDENTIALS')
     import json
