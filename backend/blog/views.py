@@ -10,8 +10,8 @@ from django.conf import settings
 from rest_framework import viewsets
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from .models import Category, Post, Comment
-from .serializers import CategorySerializer, PostSerializer, CommentSerializer
+from .models import Category, Post
+from .serializers import CategorySerializer, PostSerializer
 from info.models import Info
 
 
@@ -55,15 +55,6 @@ class PostViewSet(viewsets.ReadOnlyModelViewSet):
             
         self.check_object_permissions(self.request, obj)
         return obj
-
-
-@method_decorator(cache_page(60 * 5), name='dispatch')
-class CommentViewSet(viewsets.ModelViewSet):
-    http_method_names = ['get', 'post', 'head', 'options']
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
-
 def seo_blog_post(request, slug):
     try:
         try:
