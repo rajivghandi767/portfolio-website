@@ -110,7 +110,7 @@ const BlogPostCard = ({ post }: { post: BlogPost }) => {
         </Link>
 
         <div
-          className="text-sm mb-4 prose prose-sm dark:prose-invert max-w-none line-clamp-4"
+          className="text-sm mb-4 prose prose-sm dark:prose-invert max-w-none line-clamp-4 prose-a:break-words"
           dangerouslySetInnerHTML={{ __html: post.body }}
         />
 
