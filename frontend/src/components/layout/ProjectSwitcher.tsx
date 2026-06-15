@@ -13,7 +13,9 @@ export function ProjectSwitcher({ align = "right" }: ProjectSwitcherProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   
   const { data: projectsData } = useApi<Project[]>(() => apiService.projects.getAll());
-  const projects = projectsData || [];
+  const projects = (projectsData || [])
+    .filter((p) => p.is_visible_switcher)
+    .sort((a, b) => (a.switcher_order || 0) - (b.switcher_order || 0));
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {

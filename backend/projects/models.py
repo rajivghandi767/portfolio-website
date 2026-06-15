@@ -14,9 +14,13 @@ class Project(models.Model):
     thumbnail = models.ImageField(
         upload_to='project_thumbnails/', blank=True, null=True)
     emoji = models.CharField(max_length=10, blank=True, help_text="Emoji icon for project switcher")
-    is_visible = models.BooleanField(default=True, help_text="Toggle to show or hide this project from the public API.")
+    is_visible = models.BooleanField(default=True, help_text="Toggle to show or hide this project on the homepage.")
     order = models.PositiveIntegerField(
-        default=0, help_text="Set the display order of projects"
+        default=0, help_text="Set the display order of projects on the homepage"
+    )
+    is_visible_switcher = models.BooleanField(default=True, help_text="Toggle to show or hide this project in the Project Switcher.")
+    switcher_order = models.PositiveIntegerField(
+        default=0, help_text="Set the display order of projects in the Project Switcher"
     )
     tags = models.ManyToManyField(Tag, blank=True)
 
