@@ -145,14 +145,14 @@ const Header = () => {
             </div>
           </div>
 
-          <div className="text-center flex-1 px-2">
+          <Link to="/" className="text-center flex-1 px-2 hover:opacity-80 transition-opacity">
             <h1 className="text-lg md:text-2xl font-bold leading-tight text-brand-light dark:text-brand-dark">
               {infoData?.site_header}
             </h1>
             <h2 className="text-xs md:text-base leading-tight text-neutral-600 dark:text-neutral-400 mt-0.5">
               {infoData?.professional_title}
             </h2>
-          </div>
+          </Link>
 
           <div className="flex items-center justify-end w-24 gap-1">
             <div className="hidden md:block">
