@@ -62,6 +62,9 @@ export interface Project {
   deployed_url?: string;
   emoji?: string;
   order?: number;
+  switcher_order?: number;
+  is_visible?: boolean;
+  is_visible_switcher?: boolean;
   tags?: Tag[];
 }
 

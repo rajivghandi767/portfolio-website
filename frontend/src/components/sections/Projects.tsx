@@ -32,11 +32,15 @@ const Projects = ({ limit = 3 }: PageProps) => {
         emptyMessage="Stay Tuned! But if you cant wait, check out my GitHub (github.com/rajivghandi767) for my latest work."
       >
         {(allProjects) => {
+          const homepageProjects = allProjects
+            .filter((p) => p.is_visible)
+            .sort((a, b) => (a.order || 0) - (b.order || 0));
+
           const displayedProjects = isProjectsPage
-            ? allProjects
-            : allProjects.slice(0, limit);
+            ? homepageProjects
+            : homepageProjects.slice(0, limit);
           const shouldShowSeeMore =
-            !isProjectsPage && allProjects.length > limit;
+            !isProjectsPage && homepageProjects.length > limit;
 
           return (
             <>

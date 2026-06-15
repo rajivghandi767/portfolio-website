@@ -15,7 +15,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = ('id', 'title', 'description',
-                  'repo', 'deployed_url', 'thumbnail_url', 'emoji', 'order', 'tags')
+                  'repo', 'deployed_url', 'thumbnail_url', 'emoji', 'order', 'switcher_order', 'is_visible', 'is_visible_switcher', 'tags')
 
     def get_thumbnail_url(self, obj):
         if obj.thumbnail and hasattr(obj.thumbnail, 'url'):
