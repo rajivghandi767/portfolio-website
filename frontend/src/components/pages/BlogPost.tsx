@@ -104,7 +104,7 @@ const BlogPost = () => {
               )}
 
               <div
-                className="prose max-w-none dark:prose-invert"
+                className="prose max-w-none dark:prose-invert prose-a:break-words"
                 dangerouslySetInnerHTML={{ __html: singlePost.body }}
               />
 
