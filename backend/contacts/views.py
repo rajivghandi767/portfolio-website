@@ -31,7 +31,7 @@ class ContactViewSet(viewsets.ModelViewSet):
         # Save the contact submission to database
         contact = serializer.save()
 
-        # Send notifications (Discord, Resend)
+        # Send notifications (Discord)
         notification_status = contact.send_notifications()
 
         # Return success response with notification status
