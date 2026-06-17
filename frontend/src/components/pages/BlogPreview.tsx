@@ -40,14 +40,7 @@ const BlogPreview = () => {
             }
           });
 
-          // Lightbox click handler
-          const images = proseContainer.querySelectorAll('img');
-          images.forEach((img) => {
-            img.style.cursor = 'pointer';
-            img.onclick = () => {
-              setLightboxImage(img.src);
-            };
-          });
+          // Lightbox event delegation handled by the wrapper div onClick now
         }
       }, 0);
     }
@@ -107,21 +100,27 @@ const BlogPreview = () => {
               </div>
 
               {singlePost.image_url && (
-                <div className="mb-8 bg-neutral-100 dark:bg-neutral-900 rounded-lg overflow-hidden flex items-center justify-center border border-gray-200 dark:border-neutral-800">
+                <div className="mb-8 rounded-lg overflow-hidden border border-gray-200 dark:border-neutral-800">
                   <img
                     src={imageUtils.getImageUrl(
                       singlePost.image_url,
                       "blogPost",
                     )}
                     alt={singlePost.title}
-                    className="w-full h-64 sm:h-96 object-contain"
+                    className="w-full h-64 sm:h-96 object-cover"
                   />
                 </div>
               )}
 
               <div
-                className="prose max-w-none dark:prose-invert prose-a:break-words"
+                className="prose max-w-none dark:prose-invert prose-a:break-words prose-img:cursor-pointer"
                 dangerouslySetInnerHTML={{ __html: singlePost.body }}
+                onClick={(e) => {
+                  const target = e.target as HTMLElement;
+                  if (target.tagName === 'IMG') {
+                    setLightboxImage((target as HTMLImageElement).src);
+                  }
+                }}
               />
 
               {singlePost.tags && singlePost.tags.length > 0 && (

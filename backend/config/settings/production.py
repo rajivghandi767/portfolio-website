@@ -90,9 +90,8 @@ if os.getenv('GCS_CREDENTIALS'):
         logging.getLogger(__name__).error(f"Failed to parse GCS_CREDENTIALS: {e}")
         raise ValueError(f"Could not parse GCS_CREDENTIALS from environment. Error: {e}")
 else:
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = '/home/backend/django/mediafiles'
-    os.makedirs(MEDIA_ROOT, exist_ok=True)
+    from django.core.exceptions import ImproperlyConfigured
+    raise ImproperlyConfigured("GCS_CREDENTIALS environment variable must be set in production.")
 
 # Ensure static directories exist
 os.makedirs(STATIC_ROOT, exist_ok=True)
