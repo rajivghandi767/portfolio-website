@@ -151,16 +151,14 @@ const BlogPreview = () => {
       <Modal
         isOpen={!!lightboxImage}
         onClose={() => setLightboxImage(null)}
-        maxWidth="5xl"
+        variant="lightbox"
       >
         {lightboxImage && (
-          <div className="flex justify-center items-center">
-            <img
-              src={lightboxImage}
-              alt="Fullscreen view"
-              className="max-h-[80vh] max-w-full object-contain"
-            />
-          </div>
+          <img
+            src={lightboxImage}
+            alt="Fullscreen view"
+            className="max-h-[90vh] max-w-full object-contain rounded-md"
+          />
         )}
       </Modal>
     </div>
