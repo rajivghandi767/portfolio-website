@@ -18,7 +18,7 @@ export const BlogPostCard = ({ post }: BlogPostCardProps) => {
 
   return (
     <div className="bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark border-2 border-gray-200 dark:border-neutral-800 rounded-lg overflow-hidden shadow-sm transition-all duration-200 hover:shadow-md hover:scale-[1.02] md:flex group">
-      <div className="w-full md:w-1/3 aspect-[16/9] md:aspect-[4/3] flex-shrink-0 overflow-hidden relative">
+      <div className="w-full md:w-1/3 aspect-[4/3] flex-shrink-0 overflow-hidden relative">
         <img
           src={imageUtils.getImageUrl(post.image_url, "blogCard")}
           alt={post.title}
