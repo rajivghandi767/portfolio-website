@@ -1,10 +1,10 @@
 import { useState, useMemo } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { BlogPost } from "../../types";
-import { ArrowRight, Search, Calendar } from "../common/Icons";
+import { Search } from "../common/Icons";
+import { BlogPostCard } from "../common/BlogPostCard";
 import apiService from "../../services/api";
 import useApi from "../../hooks/useApi";
-import imageUtils from "../../utils/imageUtils";
 import DataLoader from "../common/DataLoader";
 
 const BlogPage = () => {
@@ -116,74 +116,6 @@ const BlogPage = () => {
   );
 };
 
-const BlogPostCard = ({ post }: { post: BlogPost }) => {
-  const dateToUse = post.publish_date || post.created_on;
-  const formattedDate = dateToUse
-    ? new Date(dateToUse).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
-    : "No date available";
 
-  return (
-    // Replaced .card and .hover-scale
-    <div className="bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark border-2 border-gray-200 dark:border-neutral-800 rounded-lg overflow-hidden shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] md:flex">
-      {/* Replaced .card-image-container */}
-      <div className="md:w-1/3 aspect-[4/3] flex-shrink-0 overflow-hidden relative">
-        <img
-          src={imageUtils.getImageUrl(post.image_url, "blogCard")}
-          alt={post.title}
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-      </div>
-
-      <div className="p-6 md:w-2/3 flex flex-col">
-        <div className="flex items-center gap-2 text-xs mb-2 text-gray-500 dark:text-gray-400">
-          <Calendar size={12} />
-          <span>{formattedDate}</span>
-        </div>
-
-        <Link to={`/blog/${post.slug || post.id}`}>
-          <h2 className="text-2xl font-semibold mb-3 hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors">
-            {post.title}
-          </h2>
-        </Link>
-
-        <div
-          className="text-sm mb-4 prose prose-sm dark:prose-invert max-w-none line-clamp-4 prose-a:break-words"
-          dangerouslySetInnerHTML={{ __html: post.body }}
-        />
-
-        {post.tags && post.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-4">
-            {post.tags.map((tag, index) => (
-              <Link
-                key={index}
-                to={`/blog?tag=${encodeURIComponent(tag)}`}
-                className="px-2 py-1 bg-gray-100 dark:bg-neutral-900 text-xs rounded-full border border-gray-200 dark:border-neutral-800 hover:bg-gray-200 dark:hover:bg-neutral-800 transition-colors"
-              >
-                {tag}
-              </Link>
-            ))}
-          </div>
-        )}
-
-        <div className="mt-auto">
-          <Link
-            to={`/blog/${post.slug || post.id}`}
-            className="flex items-center gap-1 text-sm hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors group"
-          >
-            <span>Read full post</span>
-            <ArrowRight
-              size={16}
-              className="group-hover:translate-x-1 transition-transform"
-            />
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export default BlogPage;

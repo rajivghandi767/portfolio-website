@@ -35,8 +35,15 @@ async function fetchApi<T>(
   options: RequestInit = {},
   maxRetries = API_CONFIG.RETRY_ATTEMPTS
 ): Promise<ApiResponse<T>> {
-  const normalizedEndpoint = endpoint.replace(/^\/+/, "").replace(/\/$/, "");
-  const url = normalizedEndpoint ? `${API_URL}${normalizedEndpoint}/` : API_URL;
+  let path = endpoint;
+  let queryString = "";
+  if (endpoint.includes("?")) {
+      const parts = endpoint.split("?");
+      path = parts[0];
+      queryString = "?" + parts.slice(1).join("?");
+  }
+  const normalizedPath = path.replace(/^\/+/, "").replace(/\/$/, "");
+  const url = normalizedPath ? `${API_URL}${normalizedPath}/${queryString}` : `${API_URL}${queryString}`;
   
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.DEFAULT_TIMEOUT);
@@ -166,8 +173,15 @@ async function fetchBlob(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<Blob> {
-  const normalizedEndpoint = endpoint.replace(/^\/+/, "").replace(/\/$/, "");
-  const url = normalizedEndpoint ? `${API_URL}${normalizedEndpoint}/` : API_URL;
+  let path = endpoint;
+  let queryString = "";
+  if (endpoint.includes("?")) {
+      const parts = endpoint.split("?");
+      path = parts[0];
+      queryString = "?" + parts.slice(1).join("?");
+  }
+  const normalizedPath = path.replace(/^\/+/, "").replace(/\/$/, "");
+  const url = normalizedPath ? `${API_URL}${normalizedPath}/${queryString}` : `${API_URL}${queryString}`;
   
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.DEFAULT_TIMEOUT);
