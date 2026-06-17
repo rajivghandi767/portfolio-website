@@ -13,7 +13,7 @@ const Card = ({ children, className, onClick, hover = true }: CardProps) => {
     <div
       className={cn(
         "bg-bg-light dark:bg-bg-dark rounded-lg shadow-md overflow-hidden border-2 border-gray-200 dark:border-neutral-800",
-        hover && "transition-all duration-300 hover:shadow-lg",
+        hover && "transition-all duration-200 hover:shadow-lg",
         onClick && "cursor-pointer",
         className,
       )}
@@ -87,7 +87,7 @@ const CardImage = ({
         src={src}
         alt={alt}
         className={cn(
-          "w-full h-full transition-transform duration-300 hover:scale-105",
+          "w-full h-full transition-transform duration-200 hover:scale-105",
           objectFitClasses[objectFit],
         )}
         onError={() => setHasError(true)}
