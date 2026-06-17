@@ -76,7 +76,7 @@ const BlogPostCard = ({ post }: { post: BlogPost }) => {
         <img
           src={imageUtils.getImageUrl(post.image_url, "blogCard")}
           alt={post.title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </div>
       <div className="p-4 md:w-2/3 flex flex-col">

@@ -97,14 +97,14 @@ const BlogPost = () => {
               </div>
 
               {singlePost.image_url && (
-                <div className="mb-8 rounded-lg overflow-hidden border border-gray-200 dark:border-neutral-800">
+                <div className="mb-8 w-full flex justify-center h-64 sm:h-96">
                   <img
                     src={imageUtils.getImageUrl(
                       singlePost.image_url,
                       "blogPost",
                     )}
                     alt={singlePost.title}
-                    className="w-full h-64 sm:h-96 object-cover"
+                    className="max-w-full max-h-full object-contain rounded-lg"
                   />
                 </div>
               )}
@@ -123,14 +123,15 @@ const BlogPost = () => {
               {singlePost.tags && singlePost.tags.length > 0 && (
                 <div className="mt-12 pt-6 border-t border-gray-200 dark:border-neutral-800">
                   <h3 className="text-sm font-semibold mb-3">Tags:</h3>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 mb-8">
                     {singlePost.tags.map((tag, index) => (
-                      <span
+                      <Link
                         key={index}
-                        className="px-3 py-1 bg-gray-100 dark:bg-neutral-900 rounded-full text-xs border border-gray-200 dark:border-neutral-800"
+                        to={`/blog?tag=${encodeURIComponent(tag)}`}
+                        className="px-3 py-1 bg-gray-100 dark:bg-neutral-900 text-sm rounded-full border border-gray-200 dark:border-neutral-800 hover:bg-gray-200 dark:hover:bg-neutral-800 transition-colors"
                       >
                         {tag}
-                      </span>
+                      </Link>
                     ))}
                   </div>
                 </div>

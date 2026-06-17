@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useMemo } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { BlogPost } from "../../types";
 import { ArrowRight, Search, Calendar } from "../common/Icons";
 import apiService from "../../services/api";
@@ -9,12 +9,31 @@ import DataLoader from "../common/DataLoader";
 
 const BlogPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeTag = searchParams.get("tag") || "";
 
   const {
     data: posts,
     isLoading,
     error,
   } = useApi<BlogPost[]>(() => apiService.blog.getAll());
+
+  // Extract unique tags for pills
+  const uniqueTags = useMemo(() => {
+    if (!posts) return [];
+    const tags = new Set<string>();
+    posts.forEach(post => post.tags?.forEach(tag => tags.add(tag)));
+    return Array.from(tags).sort();
+  }, [posts]);
+
+  const toggleTag = (tag: string) => {
+    if (activeTag === tag) {
+      searchParams.delete("tag");
+    } else {
+      searchParams.set("tag", tag);
+    }
+    setSearchParams(searchParams);
+  };
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
@@ -23,7 +42,7 @@ const BlogPage = () => {
       </h1>
 
       <div className="mb-8">
-        <div className="relative max-w-md mx-auto">
+        <div className="relative max-w-md mx-auto mb-4">
           <input
             type="text"
             placeholder="Search posts..."
@@ -34,6 +53,24 @@ const BlogPage = () => {
           />
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
         </div>
+
+        {uniqueTags.length > 0 && (
+          <div className="flex flex-wrap justify-center gap-2 max-w-2xl mx-auto">
+            {uniqueTags.map(tag => (
+              <button
+                key={tag}
+                onClick={() => toggleTag(tag)}
+                className={`px-3 py-1 text-sm rounded-full border transition-colors ${
+                  activeTag === tag 
+                    ? "bg-brand-light dark:bg-brand-dark text-bg-light dark:text-bg-dark border-brand-light dark:border-brand-dark" 
+                    : "bg-transparent border-gray-200 dark:border-neutral-800 text-brand-light dark:text-brand-dark hover:border-gray-400 dark:hover:border-neutral-600"
+                }`}
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       <DataLoader<BlogPost>
@@ -44,12 +81,18 @@ const BlogPage = () => {
       >
         {(allPosts) => {
           const filteredPosts = allPosts.filter(
-            (post) =>
-              post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              post.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              (post.tags?.some((tag) =>
-                  tag.toLowerCase().includes(searchTerm.toLowerCase()),
-                )),
+            (post) => {
+              const matchesSearch = 
+                post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                post.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                (post.tags?.some((tag) =>
+                    tag.toLowerCase().includes(searchTerm.toLowerCase()),
+                  ));
+              
+              const matchesTag = activeTag ? post.tags?.includes(activeTag) : true;
+              
+              return matchesSearch && matchesTag;
+            }
           );
 
           if (filteredPosts.length === 0) {
@@ -115,13 +158,13 @@ const BlogPostCard = ({ post }: { post: BlogPost }) => {
         {post.tags && post.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-4">
             {post.tags.map((tag, index) => (
-              <span
+              <Link
                 key={index}
-                // Replaced .border-default
-                className="px-2 py-1 bg-gray-100 dark:bg-neutral-900 text-xs rounded-full border border-gray-200 dark:border-neutral-800"
+                to={`/blog?tag=${encodeURIComponent(tag)}`}
+                className="px-2 py-1 bg-gray-100 dark:bg-neutral-900 text-xs rounded-full border border-gray-200 dark:border-neutral-800 hover:bg-gray-200 dark:hover:bg-neutral-800 transition-colors"
               >
                 {tag}
-              </span>
+              </Link>
             ))}
           </div>
         )}

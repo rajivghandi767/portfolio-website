@@ -263,9 +263,10 @@ const apiService = {
       if (import.meta.env.DEV) console.log(`📄 Fetching blog post ${id}...`);
       return fetchApi<BlogPost>(`post/${id}`);
     },
-    getPreview: (id: string): Promise<ApiResponse<BlogPost>> => {
+    getPreview: (id: string, token: string | null = null): Promise<ApiResponse<BlogPost>> => {
       if (import.meta.env.DEV) console.log(`📄 Fetching blog post preview ${id}...`);
-      return fetchApi<BlogPost>(`post-preview/${id}`);
+      const url = token ? `post-preview/${id}?token=${token}` : `post-preview/${id}`;
+      return fetchApi<BlogPost>(url);
     }
   },
   

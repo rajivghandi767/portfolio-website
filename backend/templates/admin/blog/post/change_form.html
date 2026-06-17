@@ -1,0 +1,13 @@
+{% extends "admin/change_form.html" %}
+
+{% block admin_change_form_document_ready %}
+{{ block.super }}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var viewOnSiteLink = document.querySelector('.object-tools a.viewsitelink');
+        if (viewOnSiteLink) {
+            viewOnSiteLink.setAttribute('target', '_blank');
+        }
+    });
+</script>
+{% endblock %}
