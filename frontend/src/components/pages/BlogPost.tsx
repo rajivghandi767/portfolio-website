@@ -97,14 +97,17 @@ const BlogPost = () => {
               </div>
 
               {singlePost.image_url && (
-                <div className="mb-8 w-full flex justify-center h-64 sm:h-96">
+                <div 
+                  className="mb-8 w-full flex justify-center cursor-pointer"
+                  onClick={() => setLightboxImage(imageUtils.getImageUrl(singlePost.image_url, "blogPost"))}
+                >
                   <img
                     src={imageUtils.getImageUrl(
                       singlePost.image_url,
                       "blogPost",
                     )}
                     alt={singlePost.title}
-                    className="max-w-full max-h-full object-contain rounded-lg"
+                    className="max-w-full h-auto max-h-[70vh] object-contain rounded-lg"
                   />
                 </div>
               )}

@@ -87,14 +87,14 @@ const CreditCard = ({
 
   return (
     <div
-      className="bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark border-2 border-gray-200 dark:border-neutral-800 rounded-lg overflow-hidden shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] cursor-pointer flex flex-col"
+      className="bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark border-2 border-gray-200 dark:border-neutral-800 rounded-lg overflow-hidden shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] cursor-pointer flex flex-col group"
       onClick={onClick}
     >
-      <div className="bg-white dark:bg-neutral-900 w-full aspect-[1.58] p-4 flex items-center justify-center">
+      <div className="bg-transparent flex items-center justify-center w-full aspect-[4/3] overflow-hidden relative">
         <img
           src={thumbnailUrl}
           alt={card.card_name}
-          className="max-w-full max-h-full object-contain"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </div>
       <div className="p-4 flex flex-col flex-grow text-center">
