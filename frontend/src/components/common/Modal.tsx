@@ -66,12 +66,12 @@ const Modal = ({
   if (variant === "lightbox") {
     return (
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm cursor-zoom-out"
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/80 dark:bg-black/80 backdrop-blur-sm cursor-zoom-out"
         onClick={onClose}
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors z-[60] focus:outline-none"
+          className="absolute top-4 right-4 text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-300 transition-colors z-[60] focus:outline-none"
           aria-label="Close lightbox"
         >
           <X size={32} />
