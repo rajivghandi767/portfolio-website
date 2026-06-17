@@ -150,33 +150,39 @@ const CardDetailModal = ({
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark border-2 border-gray-200 dark:border-neutral-800 rounded-lg shadow-xl w-full max-w-xl max-h-[90vh] overflow-hidden flex flex-col">
-        <div className="flex justify-between items-center p-4 border-b-2 border-gray-200 dark:border-neutral-800">
-          <h3 className="text-lg font-semibold">{card.card_name}</h3>
+      <div className="bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark border-2 border-gray-200 dark:border-neutral-800 rounded-lg shadow-xl w-full max-w-xl max-h-[90vh] overflow-hidden flex flex-col relative">
+        
+        {/* Full width hero image spanning the top */}
+        <div className="w-full aspect-[4/3] sm:aspect-[16/9] relative bg-transparent overflow-hidden flex-shrink-0">
+          <img
+            src={imageUrl}
+            alt={card.card_name}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
           <button
             onClick={onClose}
-            className="hover:text-neutral-500 dark:hover:text-neutral-400"
+            className="absolute top-4 right-4 bg-black/50 hover:bg-black/70 text-white rounded-full p-1.5 transition-colors z-10 focus:outline-none"
           >
             <X size={20} />
           </button>
         </div>
-        <div className="flex flex-col md:flex-row md:space-x-6 p-4 overflow-y-auto">
-          <div className="w-full md:w-1/2 h-48 mb-4 md:mb-0 flex items-center justify-center">
-            <img
-              src={imageUrl}
-              alt={card.card_name}
-              className="max-w-full max-h-full object-contain"
-            />
+
+        {/* Scrollable Content Area */}
+        <div className="flex flex-col overflow-y-auto">
+          {/* Header Title */}
+          <div className="p-6 pb-4 border-b border-gray-200 dark:border-neutral-800 flex-shrink-0">
+            <h3 className="text-2xl font-semibold">{card.card_name}</h3>
           </div>
-          <div className="w-full md:w-1/2">
-            <div className="mb-4">
-              <h4 className="text-sm font-medium mb-1">Annual Fee</h4>
-              <p>{card.annual_fee ?? "No Annual Fee"}</p>
+
+          <div className="p-6 flex flex-col">
+            <div className="mb-6">
+              <h4 className="text-xs font-semibold mb-2 text-gray-500 dark:text-gray-400 uppercase tracking-wider">Annual Fee</h4>
+              <p className="text-lg font-medium">{card.annual_fee ?? "No Annual Fee"}</p>
             </div>
             <div>
-              <h4 className="text-sm font-medium mb-1">Card Benefits</h4>
+              <h4 className="text-xs font-semibold mb-2 text-gray-500 dark:text-gray-400 uppercase tracking-wider">Card Benefits</h4>
               <div
-                className="prose prose-sm dark:prose-invert"
+                className="prose prose-sm dark:prose-invert max-w-none"
                 dangerouslySetInnerHTML={{
                   __html:
                     card.description ||
@@ -186,7 +192,8 @@ const CardDetailModal = ({
             </div>
           </div>
         </div>
-        <div className="border-t-2 border-gray-200 dark:border-neutral-800 p-4 flex justify-end items-center">
+
+        <div className="border-t border-gray-200 dark:border-neutral-800 p-4 flex justify-end items-center flex-shrink-0">
           {card.referral_link && (
             <a
               href={card.referral_link}
