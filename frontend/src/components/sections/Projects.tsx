@@ -77,11 +77,11 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
 
   return (
     <div className="bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark border-2 border-gray-200 dark:border-neutral-800 rounded-lg overflow-hidden shadow-sm transition-all duration-200 hover:shadow-md hover:scale-[1.02] group">
-      <div className="bg-transparent flex items-center justify-center w-full h-40 overflow-hidden relative">
+      <div className="bg-transparent flex items-center justify-center w-full md:h-40 overflow-hidden relative">
         <img
           src={imageUrl}
           alt={project.title || "Project thumbnail"}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="w-full h-auto md:absolute md:inset-0 md:h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </div>
 
