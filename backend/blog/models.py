@@ -39,11 +39,9 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        # Admin 'View on site' button conditional routing
-        slug = self.slug or self.pk
-        if self.status == 'draft':
-            return f'/blog/preview/{slug}'
-        return f'/blog/{slug}'
+        from django.conf import settings
+        path = f"/blog/preview/{self.slug}" if self.status == 'draft' else f"/blog/{self.slug}"
+        return f"{settings.SITE_URL.rstrip('/')}{path}"
 
     def save(self, *args, **kwargs):
         if not self.slug:
