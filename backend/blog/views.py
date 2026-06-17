@@ -9,10 +9,34 @@ from django.views.decorators.cache import cache_page
 from django.conf import settings
 from rest_framework import viewsets
 from rest_framework.generics import get_object_or_404
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from .models import Category, Post
 from .serializers import CategorySerializer, PostSerializer
 from info.models import Info
+
+
+class PostPreviewViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    Serves blog posts and drafts for previewing by authenticated users (admins).
+    Not cached.
+    """
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        queryset = self.get_queryset()
+        lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
+        lookup = self.kwargs.get(lookup_url_kwarg)
+        
+        try:
+            lookup_int = int(lookup)
+            obj = get_object_or_404(queryset, Q(pk=lookup_int) | Q(slug=lookup))
+        except ValueError:
+            obj = get_object_or_404(queryset, slug=lookup)
+            
+        self.check_object_permissions(self.request, obj)
+        return obj
 
 
 @method_decorator(cache_page(settings.CACHE_TTL), name='dispatch')

@@ -13,6 +13,7 @@ const HomePage = lazy(() => import("./components/pages/HomePage"));
 const ProjectsPage = lazy(() => import("./components/pages/ProjectsPage"));
 const BlogPage = lazy(() => import("./components/pages/BlogPage"));
 const BlogPost = lazy(() => import("./components/pages/BlogPost"));
+const BlogPreview = lazy(() => import("./components/pages/BlogPreview"));
 const WalletPage = lazy(() => import("./components/pages/WalletPage"));
 const ContactPage = lazy(() => import("./components/pages/ContactPage"));
 
@@ -71,6 +72,14 @@ function App() {
           element={
             <Layout>
               <BlogPost />
+            </Layout>
+          }
+        />
+        <Route
+          path="/blog/preview/:slug"
+          element={
+            <Layout>
+              <BlogPreview />
             </Layout>
           }
         />

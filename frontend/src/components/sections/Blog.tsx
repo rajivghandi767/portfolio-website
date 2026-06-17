@@ -73,11 +73,11 @@ const BlogPostCard = ({ post }: { post: BlogPost }) => {
 
   return (
     <div className="bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark border-2 border-gray-200 dark:border-neutral-800 rounded-lg overflow-hidden shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] md:flex">
-      <div className="bg-white dark:bg-neutral-900 flex items-center justify-center md:w-1/3 h-48 md:h-auto overflow-hidden">
+      <div className="bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center md:w-1/3 aspect-[4/3] flex-shrink-0 overflow-hidden relative">
         <img
           src={imageUrl}
           alt={post.title}
-          className="w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-contain p-2"
         />
       </div>
       <div className="p-4 md:w-2/3 flex flex-col">

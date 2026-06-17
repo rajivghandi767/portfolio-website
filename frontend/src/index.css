@@ -93,3 +93,30 @@
     }
   }
 }
+
+/* =========================================
+   4. CKEDITOR STYLES
+========================================= */
+.prose .image-style-align-left {
+  float: left;
+  margin-right: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.prose .image-style-align-right {
+  float: right;
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.prose .image-style-align-center {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  display: block;
+}
+
+.prose .image-style-align-center img {
+  margin-left: auto;
+  margin-right: auto;
+}

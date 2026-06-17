@@ -151,6 +151,20 @@ CKEDITOR_5_CONFIGS = {
         'width': 'auto',
         'link': {
             'addTargetToExternalLinks': True,
+        },
+        'image': {
+            'toolbar': [
+                'imageTextAlternative', '|',
+                'imageStyle:alignLeft',
+                'imageStyle:alignCenter',
+                'imageStyle:alignRight',
+            ],
+            'styles': [
+                'full',
+                'alignLeft',
+                'alignCenter',
+                'alignRight',
+            ]
         }
     }
 }
