@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { BlogPost, PageProps } from "../../types";
-import { ArrowRight, ChevronRight } from "../common/Icons";
 import apiService from "../../services/api";
 import useApi from "../../hooks/useApi";
-import imageUtils from "../../utils/imageUtils";
 import DataLoader from "../common/DataLoader";
+import { BlogPostCard } from "../common/BlogPostCard";
+import { ChevronRight } from "../common/Icons";
 
 const Blog = ({ limit = 3 }: PageProps) => {
   const {
@@ -60,53 +60,6 @@ const Blog = ({ limit = 3 }: PageProps) => {
   );
 };
 
-const BlogPostCard = ({ post }: { post: BlogPost }) => {
-  const dateToUse = post.publish_date || post.created_on;
-  const formattedDate = dateToUse
-    ? new Date(dateToUse).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
-    : "No date";
 
-  return (
-    <div className="bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark border-2 border-gray-200 dark:border-neutral-800 rounded-lg overflow-hidden shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] md:flex">
-      <div className="md:w-1/3 aspect-[4/3] flex-shrink-0 overflow-hidden relative">
-        <img
-          src={imageUtils.getImageUrl(post.image_url, "blogCard")}
-          alt={post.title}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-      </div>
-      <div className="p-4 md:w-2/3 flex flex-col">
-        <Link to={`/blog/${post.slug || post.id}`}>
-          <h2 className="mb-3 text-xl font-medium hover:text-neutral-500 dark:hover:text-neutral-400 transition-all">
-            {post.title}
-          </h2>
-        </Link>
-        <div
-          className="mb-4 line-clamp-3 text-sm prose prose-sm dark:prose-invert max-w-none"
-          dangerouslySetInnerHTML={{ __html: post.body }}
-        />
-        <div className="mt-auto pt-4 border-t border-gray-200 dark:border-neutral-800 flex justify-between items-center">
-          <div className="text-xs text-gray-500 dark:text-gray-400">
-            {formattedDate}
-          </div>
-          <Link
-            to={`/blog/${post.slug || post.id}`}
-            className="flex items-center gap-1 text-sm hover:text-neutral-500 dark:hover:text-neutral-400 group"
-          >
-            <span>Read more</span>
-            <ArrowRight
-              size={16}
-              className="group-hover:translate-x-1 transition-transform"
-            />
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export default Blog;

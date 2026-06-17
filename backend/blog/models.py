@@ -41,8 +41,12 @@ class Post(models.Model):
     def get_absolute_url(self):
         from django.conf import settings
         from django.core.signing import TimestampSigner
+        from django.utils import timezone
         
-        if self.status == 'draft':
+        # True if it's a draft OR if it's published but scheduled for the future
+        is_preview = self.status == 'draft' or (self.status == 'published' and self.publish_date and self.publish_date > timezone.now())
+        
+        if is_preview:
             signer = TimestampSigner()
             token = signer.sign(self.slug or str(self.pk))
             path = f"/blog/preview/{self.slug}?token={token}"

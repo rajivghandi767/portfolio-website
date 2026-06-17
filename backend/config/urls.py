@@ -38,7 +38,6 @@ def api_root(request):
         "endpoints": {
             "admin": f"{base_url}admin/",
             "api": f"{base_url}api/",
-            "auth": f"{base_url}api-auth/",
 
         }
     })
@@ -71,9 +70,6 @@ urlpatterns = [
 
     # Admin Interface
     path('admin/', admin.site.urls),
-
-    # DRF Authentication
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
     # Health Check Endpoints
     path('health/', health_simple, name='health_simple'),
