@@ -19,6 +19,7 @@ interface ModalProps {
     | "4xl"
     | "5xl"
     | "full";
+  variant?: "default" | "lightbox";
 }
 
 const Modal = ({
@@ -28,6 +29,7 @@ const Modal = ({
   children,
   footer,
   maxWidth = "lg",
+  variant = "default",
 }: ModalProps) => {
   // Close on ESC key
   useEffect(() => {
@@ -60,6 +62,29 @@ const Modal = ({
     "5xl": "max-w-5xl",
     full: "max-w-full",
   };
+
+  if (variant === "lightbox") {
+    return (
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm cursor-zoom-out"
+        onClick={onClose}
+      >
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors z-[60] focus:outline-none"
+          aria-label="Close lightbox"
+        >
+          <X size={32} />
+        </button>
+        <div 
+          className="relative max-w-full max-h-[95vh] flex items-center justify-center cursor-default"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {children}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
