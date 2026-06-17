@@ -33,10 +33,17 @@ class Post(models.Model):
     )
 
     class Meta:
-        ordering = ['order', '-created_on']
+        ordering = ['-order', '-publish_date']
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        # Admin 'View on site' button conditional routing
+        slug = self.slug or self.pk
+        if self.status == 'draft':
+            return f'/blog/preview/{slug}'
+        return f'/blog/{slug}'
 
     def save(self, *args, **kwargs):
         if not self.slug:

@@ -262,6 +262,10 @@ const apiService = {
     getOne: (id: string): Promise<ApiResponse<BlogPost>> => {
       if (import.meta.env.DEV) console.log(`📄 Fetching blog post ${id}...`);
       return fetchApi<BlogPost>(`post/${id}`);
+    },
+    getPreview: (id: string): Promise<ApiResponse<BlogPost>> => {
+      if (import.meta.env.DEV) console.log(`📄 Fetching blog post preview ${id}...`);
+      return fetchApi<BlogPost>(`post-preview/${id}`);
     }
   },
   

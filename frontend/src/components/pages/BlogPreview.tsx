@@ -8,14 +8,14 @@ import imageUtils from "../../utils/imageUtils";
 import DataLoader from "../common/DataLoader";
 import { Modal } from "../common/Modal";
 
-const BlogPost = () => {
+const BlogPreview = () => {
   const { slug } = useParams<{ slug: string }>();
 
   const {
     data: post,
     isLoading,
     error,
-  } = useApi<BlogPostType>(() => apiService.blog.getOne(slug ?? ""), [slug]);
+  } = useApi<BlogPostType>(() => apiService.blog.getPreview(slug ?? ""), [slug]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -71,13 +71,16 @@ const BlogPost = () => {
         isLoading={isLoading}
         error={error}
         data={postArray}
-        emptyMessage="This blog post could not be found."
+        emptyMessage="This draft post could not be found or you are not authorized to view it."
       >
         {(posts) => {
           const singlePost = posts[0];
           return (
-            <article className="bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark border-2 border-gray-200 dark:border-neutral-800 rounded-lg shadow-sm p-6">
-              <h1 className="text-3xl font-semibold mb-6">
+            <article className="bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark border-2 border-gray-200 dark:border-neutral-800 rounded-lg shadow-sm p-6 relative">
+              <div className="absolute top-4 right-4 bg-yellow-100 text-yellow-800 text-xs font-bold px-2 py-1 rounded">
+                DRAFT PREVIEW
+              </div>
+              <h1 className="text-3xl font-semibold mb-6 pr-24">
                 {singlePost.title}
               </h1>
 
@@ -160,4 +163,4 @@ const BlogPost = () => {
   );
 };
 
-export default BlogPost;
+export default BlogPreview;
