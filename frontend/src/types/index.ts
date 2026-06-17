@@ -47,6 +47,8 @@ export interface BlogPost {
   status?: string;
   slug?: string;
   tags?: string[];
+  categories?: number[];
+  last_modified?: string;
   order?: number;
 }
 
