@@ -9,7 +9,9 @@ from django.views.decorators.cache import cache_page
 from django.conf import settings
 from rest_framework import viewsets
 from rest_framework.generics import get_object_or_404
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, AllowAny
+from rest_framework.exceptions import PermissionDenied
+from django.core.signing import TimestampSigner, BadSignature, SignatureExpired
 from .models import Category, Post
 from .serializers import CategorySerializer, PostSerializer
 from info.models import Info
@@ -22,12 +24,26 @@ class PostPreviewViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_object(self):
         queryset = self.get_queryset()
         lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
         lookup = self.kwargs.get(lookup_url_kwarg)
+        
+        # Validate secure preview token
+        token = self.request.query_params.get('token')
+        if not token:
+            # Fallback for admin browser if no token
+            if not self.request.user.is_authenticated:
+                raise PermissionDenied("Authentication or secure preview token required.")
+        else:
+            try:
+                signer = TimestampSigner()
+                # Tokens expire in 2 hours
+                signer.unsign(token, max_age=7200)
+            except (BadSignature, SignatureExpired):
+                raise PermissionDenied("Invalid or expired preview token.")
         
         try:
             lookup_int = int(lookup)

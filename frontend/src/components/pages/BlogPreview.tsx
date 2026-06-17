@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useSearchParams } from "react-router-dom";
 import { ArrowLeft, Calendar, User } from "../common/Icons";
 import { BlogPost as BlogPostType } from "../../types";
 import apiService from "../../services/api";
@@ -10,12 +10,14 @@ import { Modal } from "../common/Modal";
 
 const BlogPreview = () => {
   const { slug } = useParams<{ slug: string }>();
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get("token");
 
   const {
     data: post,
     isLoading,
     error,
-  } = useApi<BlogPostType>(() => apiService.blog.getPreview(slug ?? ""), [slug]);
+  } = useApi<BlogPostType>(() => apiService.blog.getPreview(slug ?? "", token), [slug, token]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -100,14 +102,14 @@ const BlogPreview = () => {
               </div>
 
               {singlePost.image_url && (
-                <div className="mb-8 rounded-lg overflow-hidden border border-gray-200 dark:border-neutral-800">
+                <div className="mb-8 w-full flex justify-center h-64 sm:h-96">
                   <img
                     src={imageUtils.getImageUrl(
                       singlePost.image_url,
                       "blogPost",
                     )}
                     alt={singlePost.title}
-                    className="w-full h-64 sm:h-96 object-cover"
+                    className="max-w-full max-h-full object-contain rounded-lg"
                   />
                 </div>
               )}

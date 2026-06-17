@@ -40,7 +40,15 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         from django.conf import settings
-        path = f"/blog/preview/{self.slug}" if self.status == 'draft' else f"/blog/{self.slug}"
+        from django.core.signing import TimestampSigner
+        
+        if self.status == 'draft':
+            signer = TimestampSigner()
+            token = signer.sign(self.slug or str(self.pk))
+            path = f"/blog/preview/{self.slug}?token={token}"
+        else:
+            path = f"/blog/{self.slug}"
+            
         return f"{settings.SITE_URL.rstrip('/')}{path}"
 
     def save(self, *args, **kwargs):
