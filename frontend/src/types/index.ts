@@ -76,7 +76,7 @@ export interface Project {
   tags?: Tag[];
 }
 
-export interface Tag {
+interface Tag {
   id: number;
   name: string;
 }
@@ -106,40 +106,16 @@ export interface ContactForm {
   message: string;
 }
 
-/**
- * Contact response type
- */
-export interface ContactResponse {
-  status: string;
-  message: string;
-  notifications?: {
-    email: boolean;
-    discord: boolean;
-  };
-}
+
 
 /**
  * Notification types for UI feedback
  */
 export type NotificationType = 'success' | 'error' | null;
 
-/**
- * Theme context type
- */
-export interface ThemeContextType {
-  isDarkMode: boolean;
-  toggleTheme: () => void;
-}
 
-/**
- * Section components props
- */
-export interface SectionProps {
-  id?: string;
-  title?: string;
-  className?: string;
-  children: React.ReactNode;
-}
+
+
 
 /**
  * Common props for page components 

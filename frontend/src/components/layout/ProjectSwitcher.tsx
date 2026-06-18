@@ -117,4 +117,4 @@ export function ProjectSwitcher({ align = "right" }: ProjectSwitcherProps) {
   );
 }
 
-export default ProjectSwitcher;
+
