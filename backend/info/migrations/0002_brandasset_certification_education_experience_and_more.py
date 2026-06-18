@@ -5,109 +5,189 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('info', '0001_initial'),
+        ("info", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='BrandAsset',
+            name="BrandAsset",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50)),
-                ('logo', models.FileField(upload_to='brand/')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
+                ("logo", models.FileField(upload_to="brand/")),
             ],
         ),
         migrations.CreateModel(
-            name='Certification',
+            name="Certification",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
-                ('issuer', models.CharField(max_length=100)),
-                ('date_issued', models.DateField()),
-                ('url', models.URLField(blank=True, null=True)),
-                ('order', models.PositiveIntegerField(default=0)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100)),
+                ("issuer", models.CharField(max_length=100)),
+                ("date_issued", models.DateField()),
+                ("url", models.URLField(blank=True, null=True)),
+                ("order", models.PositiveIntegerField(default=0)),
             ],
             options={
-                'ordering': ['order'],
+                "ordering": ["order"],
             },
         ),
         migrations.CreateModel(
-            name='Education',
+            name="Education",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('institution', models.CharField(max_length=100)),
-                ('degree', models.CharField(max_length=100)),
-                ('year', models.CharField(max_length=20)),
-                ('order', models.PositiveIntegerField(default=0)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("institution", models.CharField(max_length=100)),
+                ("degree", models.CharField(max_length=100)),
+                ("year", models.CharField(max_length=20)),
+                ("order", models.PositiveIntegerField(default=0)),
             ],
             options={
-                'verbose_name_plural': 'Education',
-                'ordering': ['order'],
+                "verbose_name_plural": "Education",
+                "ordering": ["order"],
             },
         ),
         migrations.CreateModel(
-            name='Experience',
+            name="Experience",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('company', models.CharField(max_length=100)),
-                ('role', models.CharField(max_length=100)),
-                ('start_date', models.DateField()),
-                ('end_date', models.DateField(blank=True, help_text='Leave blank if currently working here', null=True)),
-                ('description', models.TextField()),
-                ('order', models.PositiveIntegerField(default=0)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("company", models.CharField(max_length=100)),
+                ("role", models.CharField(max_length=100)),
+                ("start_date", models.DateField()),
+                (
+                    "end_date",
+                    models.DateField(
+                        blank=True,
+                        help_text="Leave blank if currently working here",
+                        null=True,
+                    ),
+                ),
+                ("description", models.TextField()),
+                ("order", models.PositiveIntegerField(default=0)),
             ],
             options={
-                'verbose_name_plural': 'Experience',
-                'ordering': ['order', '-start_date'],
+                "verbose_name_plural": "Experience",
+                "ordering": ["order", "-start_date"],
             },
         ),
         migrations.CreateModel(
-            name='GlobalLink',
+            name="GlobalLink",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50)),
-                ('url', models.URLField()),
-                ('icon_name', models.CharField(blank=True, help_text="Name of the icon to use (e.g., 'github', 'link')", max_length=50)),
-                ('order', models.PositiveIntegerField(default=0)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
+                ("url", models.URLField()),
+                (
+                    "icon_name",
+                    models.CharField(
+                        blank=True,
+                        help_text="Name of the icon to use (e.g., 'github', 'link')",
+                        max_length=50,
+                    ),
+                ),
+                ("order", models.PositiveIntegerField(default=0)),
             ],
             options={
-                'ordering': ['order'],
+                "ordering": ["order"],
             },
         ),
         migrations.CreateModel(
-            name='SkillCategory',
+            name="SkillCategory",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50)),
-                ('order', models.PositiveIntegerField(default=0)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
+                ("order", models.PositiveIntegerField(default=0)),
             ],
             options={
-                'verbose_name_plural': 'Skill Categories',
-                'ordering': ['order'],
+                "verbose_name_plural": "Skill Categories",
+                "ordering": ["order"],
             },
         ),
         migrations.AddField(
-            model_name='info',
-            name='email',
-            field=models.EmailField(blank=True, help_text='Public Contact Email', max_length=254, null=True),
+            model_name="info",
+            name="email",
+            field=models.EmailField(
+                blank=True, help_text="Public Contact Email", max_length=254, null=True
+            ),
         ),
         migrations.AddField(
-            model_name='info',
-            name='substack',
-            field=models.URLField(blank=True, help_text='Substack Profile URL (optional)', null=True),
+            model_name="info",
+            name="substack",
+            field=models.URLField(
+                blank=True, help_text="Substack Profile URL (optional)", null=True
+            ),
         ),
         migrations.CreateModel(
-            name='Skill',
+            name="Skill",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50)),
-                ('order', models.PositiveIntegerField(default=0)),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='skills', to='info.skillcategory')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
+                ("order", models.PositiveIntegerField(default=0)),
+                (
+                    "category",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="skills",
+                        to="info.skillcategory",
+                    ),
+                ),
             ],
             options={
-                'ordering': ['order'],
+                "ordering": ["order"],
             },
         ),
     ]

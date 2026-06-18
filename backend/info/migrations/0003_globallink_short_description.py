@@ -4,15 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('info', '0002_brandasset_certification_education_experience_and_more'),
+        ("info", "0002_brandasset_certification_education_experience_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='globallink',
-            name='short_description',
-            field=models.CharField(blank=True, help_text='A short description of the linked project', max_length=150),
+            model_name="globallink",
+            name="short_description",
+            field=models.CharField(
+                blank=True,
+                help_text="A short description of the linked project",
+                max_length=150,
+            ),
         ),
     ]

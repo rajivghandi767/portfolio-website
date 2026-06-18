@@ -18,7 +18,7 @@ class Contact(models.Model):
         return f"Message from {self.name} ({self.created_at.strftime('%Y-%m-%d')})"
 
     class Meta:
-        ordering = ['-created_at']  # Newest messages first
+        ordering = ["-created_at"]  # Newest messages first
 
     def send_notifications(self):
         """
@@ -26,16 +26,14 @@ class Contact(models.Model):
         Returns a dictionary of notification statuses.
         """
         discord_sent = self._send_discord_notification()
-        
-        return {
-            'discord': discord_sent
-        }
+
+        return {"discord": discord_sent}
 
     def _get_site_url(self):
-        return getattr(settings, 'SITE_URL', 'https://rajivwallace.com')
+        return getattr(settings, "SITE_URL", "https://rajivwallace.com")
 
     def _send_discord_notification(self):
-        webhook_url = getattr(settings, 'DISCORD_WEBHOOK_URL', None)
+        webhook_url = getattr(settings, "DISCORD_WEBHOOK_URL", None)
         if not webhook_url:
             logger.warning("Discord webhook URL not configured")
             return False
@@ -43,24 +41,25 @@ class Contact(models.Model):
         try:
             embed = {
                 "title": "🔔 New Contact Form Submission",
-                "color": 0x00ff00,
+                "color": 0x00FF00,
                 "fields": [
                     {"name": "👤 Name", "value": self.name, "inline": True},
                     {"name": "📧 Email", "value": self.email, "inline": True},
                     {
-                        "name": "💬 Message", 
-                        "value": self.message[:1000] + ("..." if len(self.message) > 1000 else ""), 
-                        "inline": False
-                    }
+                        "name": "💬 Message",
+                        "value": self.message[:1000]
+                        + ("..." if len(self.message) > 1000 else ""),
+                        "inline": False,
+                    },
                 ],
                 "footer": {"text": "Portfolio Website Contact Form"},
-                "timestamp": self.created_at.isoformat()
+                "timestamp": self.created_at.isoformat(),
             }
 
             payload = {
                 "username": "Portfolio Bot",
                 "avatar_url": f"{self._get_site_url()}/static/images/bot-avatar.png",
-                "embeds": [embed]
+                "embeds": [embed],
             }
 
             response = requests.post(webhook_url, json=payload, timeout=10)
@@ -68,11 +67,11 @@ class Contact(models.Model):
                 logger.info("Discord notification sent successfully")
                 return True
             else:
-                logger.error(f"Discord webhook failed with status {response.status_code}: {response.text}")
+                logger.error(
+                    f"Discord webhook failed with status {response.status_code}: {response.text}"
+                )
                 return False
 
         except Exception as e:
             logger.error(f"Error sending Discord notification: {str(e)}")
             return False
-
-

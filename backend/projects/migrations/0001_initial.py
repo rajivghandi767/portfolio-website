@@ -4,27 +4,46 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Project',
+            name="Project",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=100)),
-                ('description', models.TextField()),
-                ('technology', models.CharField(max_length=50)),
-                ('repo', models.URLField(verbose_name='Link to Repo')),
-                ('deployed_url', models.URLField(blank=True, verbose_name='Link to Deployed App')),
-                ('thumbnail', models.ImageField(blank=True, null=True, upload_to='project_thumbnails/')),
-                ('order', models.PositiveIntegerField(default=0, help_text='Set the display order of projects')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=100)),
+                ("description", models.TextField()),
+                ("technology", models.CharField(max_length=50)),
+                ("repo", models.URLField(verbose_name="Link to Repo")),
+                (
+                    "deployed_url",
+                    models.URLField(blank=True, verbose_name="Link to Deployed App"),
+                ),
+                (
+                    "thumbnail",
+                    models.ImageField(
+                        blank=True, null=True, upload_to="project_thumbnails/"
+                    ),
+                ),
+                (
+                    "order",
+                    models.PositiveIntegerField(
+                        default=0, help_text="Set the display order of projects"
+                    ),
+                ),
             ],
             options={
-                'ordering': ['order'],
+                "ordering": ["order"],
             },
         ),
     ]

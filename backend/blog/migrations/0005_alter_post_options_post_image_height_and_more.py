@@ -4,29 +4,34 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('blog', '0004_delete_comment'),
+        ("blog", "0004_delete_comment"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='post',
-            options={'ordering': ['-order', '-publish_date']},
+            name="post",
+            options={"ordering": ["-order", "-publish_date"]},
         ),
         migrations.AddField(
-            model_name='post',
-            name='image_height',
+            model_name="post",
+            name="image_height",
             field=models.PositiveIntegerField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='post',
-            name='image_width',
+            model_name="post",
+            name="image_width",
             field=models.PositiveIntegerField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name='post',
-            name='image',
-            field=models.ImageField(blank=True, height_field='image_height', null=True, upload_to='post_images/', width_field='image_width'),
+            model_name="post",
+            name="image",
+            field=models.ImageField(
+                blank=True,
+                height_field="image_height",
+                null=True,
+                upload_to="post_images/",
+                width_field="image_width",
+            ),
         ),
     ]

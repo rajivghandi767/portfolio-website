@@ -4,25 +4,24 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('info', '0003_globallink_short_description'),
+        ("info", "0003_globallink_short_description"),
     ]
 
     operations = [
         migrations.DeleteModel(
-            name='BrandAsset',
+            name="BrandAsset",
         ),
         migrations.DeleteModel(
-            name='Certification',
+            name="Certification",
         ),
         migrations.DeleteModel(
-            name='Education',
+            name="Education",
         ),
         migrations.DeleteModel(
-            name='Skill',
+            name="Skill",
         ),
         migrations.DeleteModel(
-            name='SkillCategory',
+            name="SkillCategory",
         ),
     ]

@@ -4,30 +4,40 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('projects', '0005_remove_project_technology'),
+        ("projects", "0005_remove_project_technology"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='project',
-            name='is_visible_switcher',
-            field=models.BooleanField(default=True, help_text='Toggle to show or hide this project in the Project Switcher.'),
+            model_name="project",
+            name="is_visible_switcher",
+            field=models.BooleanField(
+                default=True,
+                help_text="Toggle to show or hide this project in the Project Switcher.",
+            ),
         ),
         migrations.AddField(
-            model_name='project',
-            name='switcher_order',
-            field=models.PositiveIntegerField(default=0, help_text='Set the display order of projects in the Project Switcher'),
+            model_name="project",
+            name="switcher_order",
+            field=models.PositiveIntegerField(
+                default=0,
+                help_text="Set the display order of projects in the Project Switcher",
+            ),
         ),
         migrations.AlterField(
-            model_name='project',
-            name='is_visible',
-            field=models.BooleanField(default=True, help_text='Toggle to show or hide this project on the homepage.'),
+            model_name="project",
+            name="is_visible",
+            field=models.BooleanField(
+                default=True,
+                help_text="Toggle to show or hide this project on the homepage.",
+            ),
         ),
         migrations.AlterField(
-            model_name='project',
-            name='order',
-            field=models.PositiveIntegerField(default=0, help_text='Set the display order of projects on the homepage'),
+            model_name="project",
+            name="order",
+            field=models.PositiveIntegerField(
+                default=0, help_text="Set the display order of projects on the homepage"
+            ),
         ),
     ]

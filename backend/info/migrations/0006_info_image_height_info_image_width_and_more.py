@@ -4,25 +4,30 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('info', '0005_delete_experience_delete_globallink'),
+        ("info", "0005_delete_experience_delete_globallink"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='info',
-            name='image_height',
+            model_name="info",
+            name="image_height",
             field=models.PositiveIntegerField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='info',
-            name='image_width',
+            model_name="info",
+            name="image_width",
             field=models.PositiveIntegerField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name='info',
-            name='profile_photo',
-            field=models.ImageField(blank=True, height_field='image_height', null=True, upload_to='profile_photos/', width_field='image_width'),
+            model_name="info",
+            name="profile_photo",
+            field=models.ImageField(
+                blank=True,
+                height_field="image_height",
+                null=True,
+                upload_to="profile_photos/",
+                width_field="image_width",
+            ),
         ),
     ]

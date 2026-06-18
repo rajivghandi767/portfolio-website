@@ -7,7 +7,7 @@ from .models import Card
 from .serializers import CardSerializer
 
 
-@method_decorator(cache_page(settings.CACHE_TTL), name='dispatch')
+@method_decorator(cache_page(settings.CACHE_TTL), name="dispatch")
 class CardViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Card.objects.all()
     serializer_class = CardSerializer

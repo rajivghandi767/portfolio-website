@@ -4,25 +4,30 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('wallet', '0001_initial'),
+        ("wallet", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='card',
-            name='image_height',
+            model_name="card",
+            name="image_height",
             field=models.PositiveIntegerField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='card',
-            name='image_width',
+            model_name="card",
+            name="image_width",
             field=models.PositiveIntegerField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name='card',
-            name='image',
-            field=models.ImageField(blank=True, height_field='image_height', null=True, upload_to='card_images/', width_field='image_width'),
+            model_name="card",
+            name="image",
+            field=models.ImageField(
+                blank=True,
+                height_field="image_height",
+                null=True,
+                upload_to="card_images/",
+                width_field="image_width",
+            ),
         ),
     ]
