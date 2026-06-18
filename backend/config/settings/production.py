@@ -57,7 +57,7 @@ STATIC_ROOT = '/home/backend/django/staticfiles'
 if os.getenv('GCS_CREDENTIALS'):
     STORAGES = {
         "default": {
-            "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
+            "BACKEND": "config.storage.WebPOptimizedStorage",
         },
         "staticfiles": {
             "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",

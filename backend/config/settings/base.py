@@ -174,3 +174,13 @@ CKEDITOR_5_CONFIGS = {
 STATICFILES_DIRS = [
     BASE_DIR / "static",  # To find custom static files
 ]
+
+# Default storages configuration (wraps local FileSystemStorage by default)
+STORAGES = {
+    "default": {
+        "BACKEND": "config.storage.WebPOptimizedStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
