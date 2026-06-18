@@ -55,7 +55,7 @@ const Projects = ({ limit = 3 }: PageProps) => {
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-w-4xl mx-auto">
                 {displayedProjects.map((project, index) => (
-                  <ProjectCard key={project.id} project={project} index={index} isEager={index < limit} />
+                  <ProjectCard key={project.id} project={project} isEager={index < limit} />
                 ))}
               </div>
 
@@ -79,11 +79,10 @@ const Projects = ({ limit = 3 }: PageProps) => {
 
 interface ProjectCardProps {
   project: Project;
-  index?: number;
   isEager?: boolean;
 }
 
-const ProjectCard = ({ project, index = 1, isEager = false }: ProjectCardProps) => {
+const ProjectCard = ({ project, isEager = false }: ProjectCardProps) => {
   const imageUrl = imageUtils.getImageUrl(project.thumbnail_url, "project");
 
   return (
