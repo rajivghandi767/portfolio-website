@@ -84,7 +84,7 @@ interface ProjectCardProps {
 
 const ProjectCard = ({ project, index = 1 }: ProjectCardProps) => {
   const imageUrl = imageUtils.getImageUrl(project.thumbnail_url, "project");
-  const isLcp = index === 0;
+  const isEager = index < 3;
 
   return (
     <div className="bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark border-2 border-gray-200 dark:border-neutral-800 rounded-lg overflow-hidden shadow-sm transition-all duration-200 hover:shadow-md hover:scale-[1.02] group">
@@ -94,8 +94,9 @@ const ProjectCard = ({ project, index = 1 }: ProjectCardProps) => {
           alt={project.title || "Project thumbnail"}
           width={project.image_width}
           height={project.image_height}
-          loading={isLcp ? "eager" : "lazy"}
-          fetchPriority={isLcp ? "high" : "auto"}
+          loading={isEager ? "eager" : "lazy"}
+          fetchPriority={index === 0 ? "high" : "auto"}
+          decoding="async"
           className="w-full h-auto md:absolute md:inset-0 md:h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </div>
