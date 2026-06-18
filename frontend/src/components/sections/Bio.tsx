@@ -163,11 +163,22 @@ const Bio = () => {
                   </div>
                 </div>
               ) : resumeUrl ? (
-                <iframe
-                  src={resumeUrl}
-                  title="Resume Preview"
+                <object
+                  data={resumeUrl}
+                  type="application/pdf"
                   className="w-full h-full border-0"
-                />
+                >
+                  <div className="flex flex-col items-center justify-center h-full p-4 text-center">
+                    <p className="mb-4">Your browser does not support inline PDF viewing.</p>
+                    <button
+                      onClick={() => { void handleDownload(); }}
+                      disabled={isDownloading}
+                      className="inline-flex items-center justify-center bg-brand-light dark:bg-brand-dark text-bg-light dark:text-bg-dark hover:bg-neutral-800 dark:hover:bg-gray-200 transition-colors duration-200 px-4 py-2 text-sm rounded-md disabled:opacity-50"
+                    >
+                      {isDownloading ? "Downloading..." : "Download PDF"}
+                    </button>
+                  </div>
+                </object>
               ) : (
                 <div className="h-full flex items-center justify-center">
                   <p>Could not load resume preview.</p>

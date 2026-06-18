@@ -288,7 +288,7 @@ const apiService = {
   projects: {
     getAll: (): Promise<ApiResponse<Project[]>> => {
       if (import.meta.env.DEV) console.log('🚀 Fetching projects...');
-      return fetchApi<Project[]>('projects');
+      return fetchApi<Project[]>('projects?all=true');
     },
     getOne: (id: string): Promise<ApiResponse<Project>> => {
       if (import.meta.env.DEV) console.log(`🔍 Fetching project ${id}...`);
