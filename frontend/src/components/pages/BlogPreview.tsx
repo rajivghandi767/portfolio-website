@@ -112,6 +112,8 @@ const BlogPreview = () => {
                       "blogPost",
                     )}
                     alt={singlePost.title || "Blog post image"}
+                    width={singlePost.image_width}
+                    height={singlePost.image_height}
                     className="max-w-full h-auto max-h-[70vh] object-contain rounded-lg"
                   />
                 </div>

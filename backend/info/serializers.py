@@ -12,7 +12,7 @@ class InfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Info
         fields = [
-            "id", "site_header", "professional_title", "profile_photo_url",
+            "id", "site_header", "professional_title", "profile_photo_url", "image_width", "image_height",
             "greeting", "bio", "github", "linkedin", "substack", "email",
             "created_at", "updated_at"
         ]

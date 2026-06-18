@@ -9,7 +9,7 @@ class CardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Card
         fields = ["id", "card_name", "description",
-                  "annual_fee", "referral_link", "image_url", "order"]
+                  "annual_fee", "referral_link", "image_url", "image_width", "image_height", "order"]
 
     def get_image_url(self, obj):
         if obj.image and hasattr(obj.image, 'url'):

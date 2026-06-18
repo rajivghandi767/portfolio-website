@@ -22,6 +22,8 @@ export const BlogPostCard = ({ post }: BlogPostCardProps) => {
         <img
           src={imageUtils.getImageUrl(post.image_url, "blogCard")}
           alt={post.title}
+          width={post.image_width}
+          height={post.image_height}
           className="w-full h-auto md:absolute md:inset-0 md:h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </div>

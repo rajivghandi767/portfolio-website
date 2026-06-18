@@ -31,6 +31,8 @@ interface CardImageProps {
   fallback?: React.ReactNode;
   aspectRatio?: "auto" | "square" | "video" | "3/2" | "4/3" | "16/9";
   objectFit?: "contain" | "cover";
+  width?: number;
+  height?: number;
 }
 
 const CardImage = ({
@@ -40,6 +42,8 @@ const CardImage = ({
   fallback,
   aspectRatio = "auto",
   objectFit = "cover",
+  width,
+  height,
 }: CardImageProps) => {
   const [hasError, setHasError] = useState(false);
 
@@ -86,6 +90,8 @@ const CardImage = ({
       <img
         src={src}
         alt={alt}
+        width={width}
+        height={height}
         className={cn(
           "w-full h-full transition-transform duration-200 hover:scale-105",
           objectFitClasses[objectFit],

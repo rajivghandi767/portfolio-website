@@ -27,6 +27,8 @@ export interface Info {
   greeting: string;
   bio: string;
   profile_photo_url: string | null;
+  image_width?: number;
+  image_height?: number;
   github: string;
   linkedin: string;
   substack?: string;
@@ -42,6 +44,8 @@ export interface BlogPost {
   author?: string;
   body: string;
   image_url: string;
+  image_width?: number;
+  image_height?: number;
   created_on?: string;
   publish_date?: string;
   status?: string;
@@ -60,6 +64,8 @@ export interface Project {
   title: string;
   description: string;
   thumbnail_url: string;
+  image_width?: number;
+  image_height?: number;
   repo: string;
   deployed_url?: string;
   emoji?: string;
@@ -76,7 +82,6 @@ export interface Tag {
 }
 
 
-
 /**
  * Credit card type for wallet section
  */
@@ -86,6 +91,8 @@ export interface Card {
   description: string;
   annual_fee?: string;
   image_url?: string;
+  image_width?: number;
+  image_height?: number;
   referral_link?: string;
   order?: number;
 }

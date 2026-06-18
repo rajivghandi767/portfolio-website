@@ -11,8 +11,15 @@ class Project(models.Model):
     description = models.TextField()
     repo = models.URLField(("Link to Repo"))
     deployed_url = models.URLField(("Link to Deployed App"), blank=True)
+    image_width = models.PositiveIntegerField(null=True, blank=True)
+    image_height = models.PositiveIntegerField(null=True, blank=True)
     thumbnail = models.ImageField(
-        upload_to='project_thumbnails/', blank=True, null=True)
+        upload_to='project_thumbnails/', 
+        blank=True, 
+        null=True,
+        width_field='image_width',
+        height_field='image_height'
+    )
     emoji = models.CharField(max_length=10, blank=True, help_text="Emoji icon for project switcher")
     is_visible = models.BooleanField(default=True, help_text="Toggle to show or hide this project on the homepage.")
     order = models.PositiveIntegerField(

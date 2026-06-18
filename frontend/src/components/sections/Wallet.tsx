@@ -94,6 +94,8 @@ const CreditCard = ({
         <img
           src={thumbnailUrl}
           alt={card.card_name}
+          width={card.image_width}
+          height={card.image_height}
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </div>
@@ -157,6 +159,8 @@ const CardDetailModal = ({
           <img
             src={imageUrl}
             alt={card.card_name}
+            width={card.image_width}
+            height={card.image_height}
             className="absolute inset-0 w-full h-full object-cover"
           />
           <button

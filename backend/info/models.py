@@ -14,8 +14,15 @@ class Info(models.Model):
         max_length=100,
         default="Software Developer",
         help_text="Professional Title (displayed under Site Header)")
+    image_width = models.PositiveIntegerField(null=True, blank=True)
+    image_height = models.PositiveIntegerField(null=True, blank=True)
     profile_photo = models.ImageField(
-        upload_to='profile_photos/', blank=True, null=True)
+        upload_to='profile_photos/', 
+        blank=True, 
+        null=True,
+        width_field='image_width',
+        height_field='image_height'
+    )
     greeting = models.CharField(
         max_length=100,
         default="Hello!",

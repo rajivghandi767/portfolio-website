@@ -26,7 +26,15 @@ class Post(models.Model):
     publish_date = models.DateTimeField(default=timezone.now)
     created_on = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
-    image = models.ImageField(upload_to='post_images/', blank=True, null=True)
+    image_width = models.PositiveIntegerField(null=True, blank=True)
+    image_height = models.PositiveIntegerField(null=True, blank=True)
+    image = models.ImageField(
+        upload_to='post_images/', 
+        blank=True, 
+        null=True,
+        width_field='image_width',
+        height_field='image_height'
+    )
     categories = models.ManyToManyField("Category", related_name="posts")
     order = models.PositiveIntegerField(
         default=0, help_text="Manually set order for blog posts. Default is newest first."
