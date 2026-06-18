@@ -4,7 +4,7 @@ import DataLoader from './DataLoader';
 
 describe('DataLoader Component', () => {
   test('renders loading container when isLoading is true', () => {
-    const { container } = render(
+    render(
       <DataLoader isLoading={true} error={null} data={null} skeleton={<div data-testid="skeleton" />}>
         {(data: unknown[]) => <div>{String(data[0])}</div>}
       </DataLoader>
