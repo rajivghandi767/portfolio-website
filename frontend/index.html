@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Personal portfolio and blog of Rajiv Wallace, showcasing software engineering projects, technical writing, and professional experience." />
     <title>Rajiv Wallace | Portfolio Website</title>
+    <!-- Preconnect to the API domain -->
+    <link rel="preconnect" href="%VITE_API_URL%" crossorigin>
+    <link rel="dns-prefetch" href="%VITE_API_URL%">
+    <!-- Preload critical initial data -->
+    <link rel="preload" href="%VITE_API_URL%/api/info/" as="fetch" crossorigin="anonymous">
+    <link rel="preload" href="%VITE_API_URL%/api/projects/?all=true" as="fetch" crossorigin="anonymous">
   </head>
   <body>
     <div id="root"></div>
