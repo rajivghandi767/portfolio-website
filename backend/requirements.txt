@@ -54,18 +54,12 @@ gunicorn==23.0.0
     # via -r requirements.in
 idna==3.10
     # via requests
-iniconfig==2.3.0
-    # via pytest
 packaging==25.0
-    # via
-    #   gunicorn
-    #   pytest
+    # via gunicorn
 pillow==11.3.0
     # via
     #   -r common.in
     #   django-ckeditor-5
-pluggy==1.6.0
-    # via pytest
 prometheus-client==0.23.1
     # via django-prometheus
 proto-plus==1.28.0
@@ -83,12 +77,6 @@ pyasn1-modules==0.4.2
     # via google-auth
 pycparser==3.0
     # via cffi
-pytest==8.0.0
-    # via
-    #   -r requirements.in
-    #   pytest-django
-pytest-django==4.8.0
-    # via -r requirements.in
 redis==5.2.1
     # via -r common.in
 requests==2.32.5

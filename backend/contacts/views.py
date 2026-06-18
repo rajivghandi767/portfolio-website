@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class ContactViewSet(viewsets.ModelViewSet):
-    http_method_names = ['get', 'post', 'head', 'options']
+    http_method_names = ["get", "post", "head", "options"]
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
 
@@ -18,7 +18,7 @@ class ContactViewSet(viewsets.ModelViewSet):
         Allow anyone to create a contact,
         but require authentication for other actions
         """
-        if self.action == 'create':
+        if self.action == "create":
             permission_classes = [AllowAny]
         else:
             permission_classes = [IsAuthenticated]
@@ -35,8 +35,10 @@ class ContactViewSet(viewsets.ModelViewSet):
         notification_status = contact.send_notifications()
 
         # Return success response with notification status
-        return Response({
-            'status': 'success',
-            'message': 'Your message has been sent successfully!',
-            'notifications': notification_status
-        })
+        return Response(
+            {
+                "status": "success",
+                "message": "Your message has been sent successfully!",
+                "notifications": notification_status,
+            }
+        )

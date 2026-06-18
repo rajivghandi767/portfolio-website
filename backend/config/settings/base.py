@@ -17,70 +17,66 @@ SITE_URL = "https://rajivwallace.com"
 # ============================================================================
 INSTALLED_APPS = [
     # Third-Party apps
-    'django_prometheus',  # For monitoring and metrics
-    'rest_framework',
-    'django_ckeditor_5',  # Rich text blog writing in admin interface
-
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
+    "django_prometheus",  # For monitoring and metrics
+    "rest_framework",
+    "django_ckeditor_5",  # Rich text blog writing in admin interface
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
     # Local apps
-    'info',
-    'projects',
-    'blog',
-    'wallet',
-    'contacts',
+    "info",
+    "projects",
+    "blog",
+    "wallet",
+    "contacts",
 ]
 
 MIDDLEWARE = [
-    'django_prometheus.middleware.PrometheusBeforeMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_prometheus.middleware.PrometheusAfterMiddleware',
+    "django_prometheus.middleware.PrometheusBeforeMiddleware",
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django_prometheus.middleware.PrometheusAfterMiddleware",
 ]
 
 # ============================================================================
 # REST FRAMEWORK CONFIGURATION
 # ============================================================================
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny'
+    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"],
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
     ],
-    'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
-    ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
 }
 
 # ============================================================================
 # URL CONFIGURATION
 # ============================================================================
-ROOT_URLCONF = 'config.urls'
+ROOT_URLCONF = "config.urls"
 
 # ============================================================================
 # TEMPLATE CONFIGURATION
 # ============================================================================
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
@@ -89,38 +85,38 @@ TEMPLATES = [
 # ============================================================================
 # WSGI CONFIGURATION
 # ============================================================================
-WSGI_APPLICATION = 'config.wsgi.application'
+WSGI_APPLICATION = "config.wsgi.application"
 
 # ============================================================================
 # PASSWORD VALIDATION
 # ============================================================================
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
 # ============================================================================
 # INTERNATIONALIZATION
 # ============================================================================
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'America/New_York'
+LANGUAGE_CODE = "en-us"
+TIME_ZONE = "America/New_York"
 USE_I18N = True
 USE_TZ = True
 
 # ============================================================================
 # DEFAULT PRIMARY KEY FIELD TYPE
 # ============================================================================
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # ============================================================================
 # CKEDITOR CONFIGURATION
@@ -134,38 +130,56 @@ CKEDITOR_5_FILE_STORAGE = "config.storage.CKEditor5Storage"
 CKEDITOR_5_CUSTOM_CSS = "admin/css/ckeditor_custom.css"
 
 CKEDITOR_5_CONFIGS = {
-    'default': {
-        'toolbar': {
-            'items': [
-                'heading', '|',
-                'bold', 'italic', 'underline', 'strikethrough', '|',
-                'fontColor', 'fontBackgroundColor', 'highlight', '|',
-                'imageUpload', 'mediaEmbed', 'link', '|',
-                'bulletedList', 'numberedList', 'insertTable', '|',
-                'alignment', 'outdent', 'indent', '|',
-                'fullscreen',
+    "default": {
+        "toolbar": {
+            "items": [
+                "heading",
+                "|",
+                "bold",
+                "italic",
+                "underline",
+                "strikethrough",
+                "|",
+                "fontColor",
+                "fontBackgroundColor",
+                "highlight",
+                "|",
+                "imageUpload",
+                "mediaEmbed",
+                "link",
+                "|",
+                "bulletedList",
+                "numberedList",
+                "insertTable",
+                "|",
+                "alignment",
+                "outdent",
+                "indent",
+                "|",
+                "fullscreen",
             ],
-            'shouldNotGroupWhenFull': True
+            "shouldNotGroupWhenFull": True,
         },
-        'language': 'en',
-        'width': 'auto',
-        'link': {
-            'addTargetToExternalLinks': True,
+        "language": "en",
+        "width": "auto",
+        "link": {
+            "addTargetToExternalLinks": True,
         },
-        'image': {
-            'toolbar': [
-                'imageTextAlternative', '|',
-                'imageStyle:alignLeft',
-                'imageStyle:alignCenter',
-                'imageStyle:alignRight',
+        "image": {
+            "toolbar": [
+                "imageTextAlternative",
+                "|",
+                "imageStyle:alignLeft",
+                "imageStyle:alignCenter",
+                "imageStyle:alignRight",
             ],
-            'styles': [
-                'full',
-                'alignLeft',
-                'alignCenter',
-                'alignRight',
-            ]
-        }
+            "styles": [
+                "full",
+                "alignLeft",
+                "alignCenter",
+                "alignRight",
+            ],
+        },
     }
 }
 # ============================================================================

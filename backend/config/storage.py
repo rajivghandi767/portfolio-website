@@ -5,22 +5,26 @@ from django.core.files.base import ContentFile
 from PIL import Image
 
 # Dynamically inherit from GoogleCloudStorage in production, FileSystemStorage locally
-if os.getenv('GCS_CREDENTIALS'):
+if os.getenv("GCS_CREDENTIALS"):
     from storages.backends.gcloud import GoogleCloudStorage
+
     BaseStorage = GoogleCloudStorage
 else:
     from django.core.files.storage import FileSystemStorage
+
     BaseStorage = FileSystemStorage
+
 
 class WebPOptimizedStorage(BaseStorage):
     """
     Automatically intercepts image uploads, converts them to WebP,
     and forwards them to the underlying storage backend.
     """
+
     def _save(self, name, content):
         # Only process known image extensions
         ext = os.path.splitext(name)[1].lower()
-        if ext in ['.jpg', '.jpeg', '.png']:
+        if ext in [".jpg", ".jpeg", ".png"]:
             try:
                 # Load image into memory with Pillow
                 try:
@@ -28,35 +32,38 @@ class WebPOptimizedStorage(BaseStorage):
                 except AttributeError:
                     pass
                 img = Image.open(content)
-                
+
                 # Prepare output buffer
                 output = io.BytesIO()
-                
+
                 # Handle PNG with transparency
-                if ext == '.png' and (img.mode in ('RGBA', 'LA') or (img.mode == 'P' and 'transparency' in img.info)):
-                    img.save(output, format='WEBP', quality=85, lossless=True)
+                if ext == ".png" and (
+                    img.mode in ("RGBA", "LA")
+                    or (img.mode == "P" and "transparency" in img.info)
+                ):
+                    img.save(output, format="WEBP", quality=85, lossless=True)
                 else:
                     # Convert standard JPEGs/PNGs to RGB if needed
-                    if img.mode != 'RGB':
-                        img = img.convert('RGB')
-                    img.save(output, format='WEBP', quality=85)
-                
+                    if img.mode != "RGB":
+                        img = img.convert("RGB")
+                    img.save(output, format="WEBP", quality=85)
+
                 # Seek buffer back to start
                 output.seek(0)
-                
+
                 # Replace the original content with the WebP binary
                 content = ContentFile(output.read())
-                
+
                 # Replace the filename extension with .webp
-                name = os.path.splitext(name)[0] + '.webp'
-            except Exception as e:
+                name = os.path.splitext(name)[0] + ".webp"
+            except Exception:
                 try:
                     content.seek(0)
                 except AttributeError:
                     pass
                 # If Pillow fails for any reason, safely fall back to the original image
                 pass
-                
+
         return super()._save(name, content)
 
 

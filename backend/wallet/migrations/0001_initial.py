@@ -5,26 +5,51 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Card',
+            name="Card",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('card_name', models.CharField(max_length=100)),
-                ('description', django_ckeditor_5.fields.CKEditor5Field(verbose_name='Text')),
-                ('annual_fee', models.CharField(blank=True, max_length=20, verbose_name='Annual Fee')),
-                ('referral_link', models.URLField(blank=True, verbose_name='Referral Link')),
-                ('image', models.ImageField(blank=True, null=True, upload_to='card_images/')),
-                ('order', models.PositiveIntegerField(default=0, help_text='Set the display order of cards.')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("card_name", models.CharField(max_length=100)),
+                (
+                    "description",
+                    django_ckeditor_5.fields.CKEditor5Field(verbose_name="Text"),
+                ),
+                (
+                    "annual_fee",
+                    models.CharField(
+                        blank=True, max_length=20, verbose_name="Annual Fee"
+                    ),
+                ),
+                (
+                    "referral_link",
+                    models.URLField(blank=True, verbose_name="Referral Link"),
+                ),
+                (
+                    "image",
+                    models.ImageField(blank=True, null=True, upload_to="card_images/"),
+                ),
+                (
+                    "order",
+                    models.PositiveIntegerField(
+                        default=0, help_text="Set the display order of cards."
+                    ),
+                ),
             ],
             options={
-                'ordering': ['order'],
+                "ordering": ["order"],
             },
         ),
     ]

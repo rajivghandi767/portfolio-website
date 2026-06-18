@@ -4,20 +4,25 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('projects', '0002_tag_project_tags'),
+        ("projects", "0002_tag_project_tags"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='project',
-            name='color',
-            field=models.CharField(blank=True, help_text='Tailwind color classes for project switcher', max_length=100),
+            model_name="project",
+            name="color",
+            field=models.CharField(
+                blank=True,
+                help_text="Tailwind color classes for project switcher",
+                max_length=100,
+            ),
         ),
         migrations.AddField(
-            model_name='project',
-            name='emoji',
-            field=models.CharField(blank=True, help_text='Emoji icon for project switcher', max_length=10),
+            model_name="project",
+            name="emoji",
+            field=models.CharField(
+                blank=True, help_text="Emoji icon for project switcher", max_length=10
+            ),
         ),
     ]

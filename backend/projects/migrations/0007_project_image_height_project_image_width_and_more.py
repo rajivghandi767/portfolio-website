@@ -4,25 +4,33 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('projects', '0006_project_is_visible_switcher_project_switcher_order_and_more'),
+        (
+            "projects",
+            "0006_project_is_visible_switcher_project_switcher_order_and_more",
+        ),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='project',
-            name='image_height',
+            model_name="project",
+            name="image_height",
             field=models.PositiveIntegerField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='project',
-            name='image_width',
+            model_name="project",
+            name="image_width",
             field=models.PositiveIntegerField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name='project',
-            name='thumbnail',
-            field=models.ImageField(blank=True, height_field='image_height', null=True, upload_to='project_thumbnails/', width_field='image_width'),
+            model_name="project",
+            name="thumbnail",
+            field=models.ImageField(
+                blank=True,
+                height_field="image_height",
+                null=True,
+                upload_to="project_thumbnails/",
+                width_field="image_width",
+            ),
         ),
     ]

@@ -9,77 +9,63 @@ class Info(models.Model):
     site_header = models.CharField(
         max_length=100,
         default="Portfolio Website",
-        help_text="Site Header - Full Name, Site Title, etc.")
+        help_text="Site Header - Full Name, Site Title, etc.",
+    )
     professional_title = models.CharField(
         max_length=100,
         default="Software Developer",
-        help_text="Professional Title (displayed under Site Header)")
+        help_text="Professional Title (displayed under Site Header)",
+    )
     image_width = models.PositiveIntegerField(null=True, blank=True)
     image_height = models.PositiveIntegerField(null=True, blank=True)
     profile_photo = models.ImageField(
-        upload_to='profile_photos/', 
-        blank=True, 
+        upload_to="profile_photos/",
+        blank=True,
         null=True,
-        width_field='image_width',
-        height_field='image_height'
+        width_field="image_width",
+        height_field="image_height",
     )
     greeting = models.CharField(
-        max_length=100,
-        default="Hello!",
-        help_text="Homepage Greeting"
+        max_length=100, default="Hello!", help_text="Homepage Greeting"
     )
-    bio = models.TextField(
-        help_text="Bio"
-    )
+    bio = models.TextField(help_text="Bio")
     github = models.URLField(
-        blank=True,
-        null=True,
-        help_text="GitHub Profile URL (optional)"
+        blank=True, null=True, help_text="GitHub Profile URL (optional)"
     )
     linkedin = models.URLField(
-        blank=True,
-        null=True,
-        help_text="Linkedin Profile URL (optional)"
+        blank=True, null=True, help_text="Linkedin Profile URL (optional)"
     )
     substack = models.URLField(
-        blank=True,
-        null=True,
-        help_text="Substack Profile URL (optional)"
+        blank=True, null=True, help_text="Substack Profile URL (optional)"
     )
-    email = models.EmailField(
-        blank=True,
-        null=True,
-        help_text="Public Contact Email"
-    )
+    email = models.EmailField(blank=True, null=True, help_text="Public Contact Email")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = "Profile Information"
         verbose_name_plural = "Profile Information"
-        ordering = ['-updated_at']
+        ordering = ["-updated_at"]
 
     def __str__(self):
         return f"Profile - {self.greeting}"
 
     def clean(self):
         super().clean()
-        if self.github and not self.github.startswith(('http://', 'https://')):
-            raise ValidationError({
-                'github': 'GitHub URL must start with http:// or https://'
-            })
-        if self.linkedin and not self.linkedin.startswith(('http://', 'https://')):
-            raise ValidationError({
-                'linkedin': 'Linkedin URL must start with http:// or https://'
-            })
-        if self.substack and not self.substack.startswith(('http://', 'https://')):
-            raise ValidationError({
-                'substack': 'Substack URL must start with http:// or https://'
-            })
+        if self.github and not self.github.startswith(("http://", "https://")):
+            raise ValidationError(
+                {"github": "GitHub URL must start with http:// or https://"}
+            )
+        if self.linkedin and not self.linkedin.startswith(("http://", "https://")):
+            raise ValidationError(
+                {"linkedin": "Linkedin URL must start with http:// or https://"}
+            )
+        if self.substack and not self.substack.startswith(("http://", "https://")):
+            raise ValidationError(
+                {"substack": "Substack URL must start with http:// or https://"}
+            )
         if len(self.bio) < 10:
-            raise ValidationError({
-                'bio': 'Bio must be at least 10 characters long.'
-            })
+            raise ValidationError({"bio": "Bio must be at least 10 characters long."})
 
     def save(self, *args, **kwargs):
         is_new = self.pk is None
@@ -101,24 +87,23 @@ class Info(models.Model):
         if self.profile_photo:
             try:
                 return self.profile_photo.url
-            except:
+            except Exception:
                 return None
         return None
 
 
 class Resume(models.Model):
-    file = models.FileField(upload_to='resumes/', blank=True, null=True)
+    file = models.FileField(upload_to="resumes/", blank=True, null=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(
-        default=True,
-        help_text="Only one resume can be active at a time"
+        default=True, help_text="Only one resume can be active at a time"
     )
 
     class Meta:
         verbose_name = "Resume"
         verbose_name_plural = "Resume Uploads"
-        ordering = ['-uploaded_at']
+        ordering = ["-uploaded_at"]
 
     def __str__(self):
         status = "ACTIVE" if self.is_active else "Inactive"
@@ -129,7 +114,7 @@ class Resume(models.Model):
     def clean(self):
         super().clean()
         if not self.file:
-            raise ValidationError({'file': 'Resume file is required.'})
+            raise ValidationError({"file": "Resume file is required."})
 
     def save(self, *args, **kwargs):
         is_new = self.pk is None
@@ -137,15 +122,16 @@ class Resume(models.Model):
             if self.is_active:
                 Resume.objects.exclude(pk=self.pk).update(is_active=False)
                 logger.info(
-                    f"Deactivated other resumes for new active resume: {self.file.name if self.file else 'N/A'}")
+                    f"Deactivated other resumes for new active resume: {self.file.name if self.file else 'N/A'}"
+                )
             self.full_clean()
             super().save(*args, **kwargs)
             action = "uploaded" if is_new else "updated"
             logger.info(
-                f"Resume {action}: {self.file.name if self.file else 'N/A'} (Active: {self.is_active})")
+                f"Resume {action}: {self.file.name if self.file else 'N/A'} (Active: {self.is_active})"
+            )
         except Exception as e:
-            logger.error(
-                f"Error saving Resume object: {str(e)}", exc_info=True)
+            logger.error(f"Error saving Resume object: {str(e)}", exc_info=True)
             raise
 
     def delete(self, *args, **kwargs):
@@ -154,8 +140,7 @@ class Resume(models.Model):
             super().delete(*args, **kwargs)
             logger.info(f"Resume deleted: {filename}")
         except Exception as e:
-            logger.error(
-                f"Error deleting Resume object: {str(e)}", exc_info=True)
+            logger.error(f"Error deleting Resume object: {str(e)}", exc_info=True)
             raise
 
     @property
@@ -184,14 +169,14 @@ class Resume(models.Model):
         if self.file:
             try:
                 return self.file.url
-            except:
+            except Exception:
                 return None
         return None
 
     @classmethod
     def get_active_resume(cls):
         try:
-            return cls.objects.filter(is_active=True).latest('uploaded_at')
+            return cls.objects.filter(is_active=True).latest("uploaded_at")
         except cls.DoesNotExist:
             return None
 
@@ -203,7 +188,8 @@ class Resume(models.Model):
             resume.is_active = True
             resume.save()
             logger.info(
-                f"Resume activated: {resume.file.name if resume.file else 'N/A'}")
+                f"Resume activated: {resume.file.name if resume.file else 'N/A'}"
+            )
             return resume
         except cls.DoesNotExist:
             logger.error(f"Resume with ID {resume_id} not found")
@@ -211,6 +197,3 @@ class Resume(models.Model):
         except Exception as e:
             logger.error(f"Error activating resume: {str(e)}")
             raise
-
-
-

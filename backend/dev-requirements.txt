@@ -61,14 +61,20 @@ googleapis-common-protos==1.75.0
     # via google-api-core
 idna==3.10
     # via requests
+iniconfig==2.3.0
+    # via pytest
 packaging==25.0
-    # via build
+    # via
+    #   build
+    #   pytest
 pillow==11.3.0
     # via
     #   -r common.in
     #   django-ckeditor-5
 pip-tools==7.5.0
     # via -r dev-requirements.in
+pluggy==1.6.0
+    # via pytest
 prometheus-client==0.23.1
     # via django-prometheus
 proto-plus==1.28.0
@@ -88,10 +94,18 @@ pyasn1-modules==0.4.2
     # via google-auth
 pycparser==3.0
     # via cffi
+pygments==2.20.0
+    # via pytest
 pyproject-hooks==1.2.0
     # via
     #   build
     #   pip-tools
+pytest==9.1.0
+    # via
+    #   -r dev-requirements.in
+    #   pytest-django
+pytest-django==4.12.0
+    # via -r dev-requirements.in
 redis==5.2.1
     # via -r common.in
 requests==2.32.5

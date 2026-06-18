@@ -9,7 +9,7 @@ from django.views.decorators.cache import cache_page
 from django.conf import settings
 from rest_framework import viewsets
 from rest_framework.generics import get_object_or_404
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
 from rest_framework.exceptions import PermissionDenied
 from django.core.signing import TimestampSigner, BadSignature, SignatureExpired
 from .models import Category, Post
@@ -22,6 +22,7 @@ class PostPreviewViewSet(viewsets.ReadOnlyModelViewSet):
     Serves blog posts and drafts for previewing by authenticated users (admins).
     Not cached.
     """
+
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [AllowAny]
@@ -30,13 +31,15 @@ class PostPreviewViewSet(viewsets.ReadOnlyModelViewSet):
         queryset = self.get_queryset()
         lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
         lookup = self.kwargs.get(lookup_url_kwarg)
-        
+
         # Validate secure preview token
-        token = self.request.query_params.get('token')
+        token = self.request.query_params.get("token")
         if not token:
             # Fallback for admin browser if no token
             if not self.request.user.is_authenticated:
-                raise PermissionDenied("Authentication or secure preview token required.")
+                raise PermissionDenied(
+                    "Authentication or secure preview token required."
+                )
         else:
             try:
                 signer = TimestampSigner()
@@ -44,65 +47,69 @@ class PostPreviewViewSet(viewsets.ReadOnlyModelViewSet):
                 signer.unsign(token, max_age=7200)
             except (BadSignature, SignatureExpired):
                 raise PermissionDenied("Invalid or expired preview token.")
-        
+
         try:
             lookup_int = int(lookup)
             obj = get_object_or_404(queryset, Q(pk=lookup_int) | Q(slug=lookup))
         except ValueError:
             obj = get_object_or_404(queryset, slug=lookup)
-            
+
         self.check_object_permissions(self.request, obj)
         return obj
 
 
-@method_decorator(cache_page(settings.CACHE_TTL), name='dispatch')
+@method_decorator(cache_page(settings.CACHE_TTL), name="dispatch")
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     """
     Serves blog category definitions.
-    
+
     Wrapped with cache_page to intercept the Django dispatch cycle and serve responses
     directly from Redis, drastically reducing DB load for public read-only traffic.
     """
+
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 
-@method_decorator(cache_page(settings.CACHE_TTL), name='dispatch')
+@method_decorator(cache_page(settings.CACHE_TTL), name="dispatch")
 class PostViewSet(viewsets.ReadOnlyModelViewSet):
     """
     Serves blog posts and their metadata.
-    
+
     Wrapped with cache_page to serve serialized post data directly from memory.
     """
+
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
-        return Post.objects.filter(status='published', publish_date__lte=timezone.now())
+        return Post.objects.filter(status="published", publish_date__lte=timezone.now())
 
     def get_object(self):
         queryset = self.get_queryset()
         lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
         lookup = self.kwargs.get(lookup_url_kwarg)
-        
+
         try:
             lookup_int = int(lookup)
             obj = get_object_or_404(queryset, Q(pk=lookup_int) | Q(slug=lookup))
         except ValueError:
             obj = get_object_or_404(queryset, slug=lookup)
-            
+
         self.check_object_permissions(self.request, obj)
         return obj
+
+
 def seo_blog_post(request, slug):
     try:
         try:
             lookup_int = int(slug)
-            post = Post.objects.get(Q(pk=lookup_int) | Q(slug=slug), status='published')
+            post = Post.objects.get(Q(pk=lookup_int) | Q(slug=slug), status="published")
         except ValueError:
-            post = Post.objects.get(slug=slug, status='published')
-            
+            post = Post.objects.get(slug=slug, status="published")
+
         if post.publish_date and post.publish_date > timezone.now():
             raise Http404()
     except Post.DoesNotExist:
@@ -118,8 +125,8 @@ def seo_blog_post(request, slug):
     canonical_url = f"{settings.SITE_URL}/blog/{post_slug}/"
 
     # Strip HTML tags from CKEditor body (stored as HTML) to produce a plain-text excerpt
-    plain_body = re.sub(r'<[^>]+>', '', post.body)
-    plain_body = re.sub(r'\s+', ' ', plain_body).strip()
+    plain_body = re.sub(r"<[^>]+>", "", post.body)
+    plain_body = re.sub(r"\s+", " ", plain_body).strip()
     description = plain_body[:160] if plain_body else post.title
 
     # article:author — Post model has no author field; pull name from Info.site_header

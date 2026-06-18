@@ -4,23 +4,24 @@ from django_ckeditor_5.fields import CKEditor5Field
 
 class Card(models.Model):
     card_name = models.CharField(max_length=100)
-    description = CKEditor5Field('Text', config_name='default')
+    description = CKEditor5Field("Text", config_name="default")
     annual_fee = models.CharField(("Annual Fee"), max_length=20, blank=True)
     referral_link = models.URLField(("Referral Link"), blank=True)
     image_width = models.PositiveIntegerField(null=True, blank=True)
     image_height = models.PositiveIntegerField(null=True, blank=True)
     image = models.ImageField(
-        upload_to='card_images/', 
-        blank=True, 
+        upload_to="card_images/",
+        blank=True,
         null=True,
-        width_field='image_width',
-        height_field='image_height'
+        width_field="image_width",
+        height_field="image_height",
     )
     order = models.PositiveIntegerField(
-        default=0, help_text="Set the display order of cards.")
+        default=0, help_text="Set the display order of cards."
+    )
 
     class Meta:
-        ordering = ['order']
+        ordering = ["order"]
 
     def __str__(self):
         return self.card_name
