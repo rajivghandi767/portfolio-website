@@ -185,17 +185,7 @@ const Bio = () => {
                 </div>
               )}
             </div>
-            {/* Replaced .border-default */}
-            <div className="border-t-2 border-gray-200 dark:border-neutral-800 p-4 flex justify-end items-center">
-              <button
-                onClick={() => { void handleDownload(); }}
-                disabled={isDownloading || !resumeUrl}
-                // Replaced .btn .btn-primary
-                className="inline-flex items-center justify-center bg-brand-light dark:bg-brand-dark text-bg-light dark:text-bg-dark hover:bg-neutral-800 dark:hover:bg-gray-200 transition-colors duration-200 px-4 py-2 text-sm rounded-md disabled:opacity-50"
-              >
-                {isDownloading ? "Downloading..." : "Download PDF"}
-              </button>
-            </div>
+
           </div>
         </div>
       )}
