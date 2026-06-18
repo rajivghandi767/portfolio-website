@@ -3,14 +3,13 @@ import { render, screen } from '@testing-library/react';
 import DataLoader from './DataLoader';
 
 describe('DataLoader Component', () => {
-  test('renders spinner when isLoading is true', () => {
+  test('renders loading container when isLoading is true', () => {
     const { container } = render(
-      <DataLoader isLoading={true} error={null} data={null}>
+      <DataLoader isLoading={true} error={null} data={null} skeleton={<div data-testid="skeleton" />}>
         {(data: unknown[]) => <div>{String(data[0])}</div>}
       </DataLoader>
     );
-    const spinner = container.querySelector('.animate-spin');
-    expect(spinner).not.toBeNull();
+    expect(screen.getByTestId('skeleton')).toBeDefined();
   });
 
   test('renders error message when error is present', () => {
