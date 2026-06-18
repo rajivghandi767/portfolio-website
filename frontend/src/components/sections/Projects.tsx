@@ -34,7 +34,8 @@ const Projects = ({ limit = 3 }: PageProps) => {
         skeleton={
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-w-4xl mx-auto">
             {Array.from({ length: limit }).map((_, i) => (
-              <CardSkeleton key={i} />
+              // eslint-disable-next-line @eslint-react/no-array-index-key
+              <CardSkeleton key={`skeleton-${i}`} />
             ))}
           </div>
         }

@@ -42,9 +42,9 @@ export const BlogPostCard = ({ post }: BlogPostCardProps) => {
 
         {post.tags && post.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-4">
-            {post.tags.map((tag, index) => (
+            {post.tags.slice(0, 3).map((tag) => (
               <Link
-                key={index}
+                key={`${post.id}-${tag}`}
                 to={`/blog?tag=${encodeURIComponent(tag)}`}
                 className="px-2 py-1 bg-gray-100 dark:bg-neutral-900 text-xs rounded-full border border-gray-200 dark:border-neutral-800 hover:bg-gray-200 dark:hover:bg-neutral-800 transition-colors z-10 relative"
                 onClick={(e) => e.stopPropagation()}

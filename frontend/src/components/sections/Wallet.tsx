@@ -36,7 +36,8 @@ const Wallet = ({ limit = 4 }: { limit?: number }) => {
         skeleton={
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
             {Array.from({ length: limit }).map((_, i) => (
-              <CardSkeleton key={i} />
+              // eslint-disable-next-line @eslint-react/no-array-index-key
+              <CardSkeleton key={`skeleton-${i}`} />
             ))}
           </div>
         }

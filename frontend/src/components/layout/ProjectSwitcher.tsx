@@ -69,9 +69,9 @@ export function ProjectSwitcher({ align = "right" }: ProjectSwitcherProps) {
           </div>
 
           <div className="p-2 grid gap-1">
-            {projects.map((project, idx) => (
+            {projects.map((project) => (
               <a
-                key={idx}
+                key={project.id}
                 href={project.deployed_url || project.repo}
                 target="_blank"
                 rel="noreferrer"

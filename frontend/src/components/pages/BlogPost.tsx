@@ -28,7 +28,7 @@ const BlogPost = () => {
   useEffect(() => {
     if (post) {
       // Use setTimeout to ensure the DOM has fully rendered the dangerouslySetInnerHTML content
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         const proseContainer = document.querySelector('.prose');
         if (proseContainer) {
           const links = proseContainer.querySelectorAll('a');
@@ -39,10 +39,9 @@ const BlogPost = () => {
               link.setAttribute('rel', 'noopener noreferrer');
             }
           });
-
-          // Lightbox event delegation handled by the wrapper div onClick now
         }
       }, 0);
+      return () => clearTimeout(timer);
     }
   }, [post]);
 
@@ -129,9 +128,9 @@ const BlogPost = () => {
                 <div className="mt-12 pt-6 border-t border-gray-200 dark:border-neutral-800">
                   <h3 className="text-sm font-semibold mb-3">Tags:</h3>
                   <div className="flex flex-wrap gap-2 mb-8">
-                    {singlePost.tags.map((tag, index) => (
+                    {singlePost.tags.map((tag) => (
                       <Link
-                        key={index}
+                        key={tag}
                         to={`/blog?tag=${encodeURIComponent(tag)}`}
                         className="px-3 py-1 bg-gray-100 dark:bg-neutral-900 text-sm rounded-full border border-gray-200 dark:border-neutral-800 hover:bg-gray-200 dark:hover:bg-neutral-800 transition-colors"
                       >

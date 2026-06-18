@@ -82,7 +82,8 @@ const BlogPage = () => {
         skeleton={
           <div className="space-y-8">
             {Array.from({ length: 3 }).map((_, i) => (
-              <BlogPostSkeleton key={i} />
+              // eslint-disable-next-line @eslint-react/no-array-index-key
+              <BlogPostSkeleton key={`skeleton-${i}`} />
             ))}
           </div>
         }
