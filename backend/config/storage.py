@@ -23,6 +23,10 @@ class WebPOptimizedStorage(BaseStorage):
         if ext in ['.jpg', '.jpeg', '.png']:
             try:
                 # Load image into memory with Pillow
+                try:
+                    content.seek(0)
+                except AttributeError:
+                    pass
                 img = Image.open(content)
                 
                 # Prepare output buffer
@@ -46,6 +50,10 @@ class WebPOptimizedStorage(BaseStorage):
                 # Replace the filename extension with .webp
                 name = os.path.splitext(name)[0] + '.webp'
             except Exception as e:
+                try:
+                    content.seek(0)
+                except AttributeError:
+                    pass
                 # If Pillow fails for any reason, safely fall back to the original image
                 pass
                 
