@@ -26,7 +26,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <main className="pb-16 grow">
         <Suspense
           fallback={
-            <div className="flex justify-center items-center pt-12">
+            <div className="flex justify-center items-center pt-12 min-h-[60vh]">
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-light dark:border-brand-dark"></div>
             </div>
           }
