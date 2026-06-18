@@ -51,10 +51,11 @@ const Wallet = ({ limit = 4 }: { limit?: number }) => {
           return (
             <>
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
-                {displayedCards.map((card) => (
+                {displayedCards.map((card, index) => (
                   <CreditCard
                     key={card.id}
                     card={card}
+                    isEager={index < limit}
                     onClick={() => setSelectedCard(card)}
                   />
                 ))}
@@ -87,9 +88,11 @@ const Wallet = ({ limit = 4 }: { limit?: number }) => {
 
 const CreditCard = ({
   card,
+  isEager = false,
   onClick,
 }: {
   card: CardType;
+  isEager?: boolean;
   onClick: () => void;
 }) => {
   const thumbnailUrl = imageUtils.getImageUrl(card.image_url, "card");
@@ -105,6 +108,8 @@ const CreditCard = ({
           alt={card.card_name}
           width={card.image_width}
           height={card.image_height}
+          loading={isEager ? "eager" : "lazy"}
+          decoding="async"
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </div>

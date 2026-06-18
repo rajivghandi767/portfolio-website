@@ -37,8 +37,8 @@ const Blog = ({ limit = 3 }: PageProps) => {
           return (
             <>
               <div className="max-w-4xl mx-auto space-y-6">
-                {displayedPosts.map((post) => (
-                  <BlogPostCard key={post.id} post={post} />
+                {displayedPosts.map((post, index) => (
+                  <BlogPostCard key={post.id} post={post} isEager={index < limit} />
                 ))}
               </div>
 
