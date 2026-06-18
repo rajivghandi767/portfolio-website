@@ -5,6 +5,7 @@ import apiService from "../../services/api";
 import useApi from "../../hooks/useApi";
 import imageUtils from "../../utils/imageUtils";
 import DataLoader from "../common/DataLoader";
+import { Skeleton } from "../common/Skeleton";
 
 const Bio = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -91,6 +92,20 @@ const Bio = () => {
         error={error}
         data={info}
         emptyMessage="Bio Coming Soon!"
+        skeleton={
+          <div className="mx-auto p-4 md:flex md:w-5/6 lg:w-7/12 items-center gap-6">
+            <Skeleton className="w-44 h-44 rounded-full shrink-0 mx-auto md:mx-0" />
+            <div className="w-full flex flex-col gap-4 mt-6 md:mt-0">
+              <Skeleton className="h-8 w-48 mx-auto md:mx-0" />
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-5/6" />
+              </div>
+              <Skeleton className="h-10 w-32 mt-2 mx-auto md:mx-0" />
+            </div>
+          </div>
+        }
       >
         {(infoData) => {
           const bioInfo = infoData[0];
@@ -157,8 +172,9 @@ const Bio = () => {
             </div>
             <div className="flex-1 min-h-0">
               {isLoadingResume ? (
-                <div className="h-full flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-light dark:border-brand-dark"></div>
+                <div className="h-full flex flex-col items-center justify-center p-8 gap-4">
+                  <Skeleton className="w-full h-12" />
+                  <Skeleton className="w-full grow" />
                 </div>
               ) : resumeError ? (
                 <div className="h-full flex items-center justify-center p-4 text-center">

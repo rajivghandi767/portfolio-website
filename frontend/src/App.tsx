@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
+import { Skeleton } from "./components/common/Skeleton";
 
 // Lazy-loaded page components
 const HomePage = lazy(() => import("./components/pages/HomePage"));
@@ -26,8 +27,13 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <main className="pb-16 grow">
         <Suspense
           fallback={
-            <div className="flex justify-center items-center pt-12 min-h-[60vh]">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-light dark:border-brand-dark"></div>
+            <div className="flex flex-col gap-8 max-w-4xl mx-auto px-4 pt-12 min-h-[60vh] w-full">
+              <Skeleton className="h-10 w-48 mx-auto" />
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <Skeleton className="h-64 w-full" />
+                <Skeleton className="h-64 w-full" />
+                <Skeleton className="h-64 w-full hidden lg:block" />
+              </div>
             </div>
           }
         >
