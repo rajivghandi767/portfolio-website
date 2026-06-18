@@ -132,42 +132,12 @@ export interface ThemeContextType {
 }
 
 /**
- * Banner props
- */
-export interface BannerProps {
-  isMenuOpen: boolean;
-  toggleMenu: () => void;
-}
-
-/**
- * NavBar props
- */
-export interface NavBarProps {
-  isMenuOpen: boolean;
-}
-
-/**
- * Resume Modal props
- */
-export interface ResumeModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-/**
  * Section components props
  */
 export interface SectionProps {
   id?: string;
   title?: string;
   className?: string;
-  children: React.ReactNode;
-}
-
-/**
- * Layout component props
- */
-export interface LayoutProps {
   children: React.ReactNode;
 }
 
