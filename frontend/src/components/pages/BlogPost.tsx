@@ -106,7 +106,7 @@ const BlogPost = () => {
                       singlePost.image_url,
                       "blogPost",
                     )}
-                    alt={singlePost.title}
+                    alt={singlePost.title || "Blog post image"}
                     className="max-w-full h-auto max-h-[70vh] object-contain rounded-lg"
                   />
                 </div>
@@ -152,8 +152,9 @@ const BlogPost = () => {
         {lightboxImage && (
           <img
             src={lightboxImage}
-            alt="Fullscreen view"
-            className="max-h-[90vh] max-w-full object-contain rounded-md"
+            alt="Expanded blog image"
+            className="max-w-full max-h-[90vh] object-contain cursor-zoom-out"
+            onClick={() => setLightboxImage(null)}
           />
         )}
       </Modal>
