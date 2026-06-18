@@ -6,6 +6,7 @@ import apiService from "../../services/api";
 import useApi from "../../hooks/useApi";
 import imageUtils from "../../utils/imageUtils";
 import DataLoader from "../common/DataLoader";
+import { CardSkeleton } from "../common/Skeleton";
 
 const Wallet = ({ limit = 4 }: { limit?: number }) => {
   const [selectedCard, setSelectedCard] = useState<CardType | null>(null);
@@ -32,6 +33,13 @@ const Wallet = ({ limit = 4 }: { limit?: number }) => {
         error={error}
         data={cards}
         emptyMessage="My latest card collection is being revamped 🤭. Stay tuned for updates!"
+        skeleton={
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
+            {Array.from({ length: limit }).map((_, i) => (
+              <CardSkeleton key={i} />
+            ))}
+          </div>
+        }
       >
         {(allCards) => {
           const displayedCards = isWalletPage

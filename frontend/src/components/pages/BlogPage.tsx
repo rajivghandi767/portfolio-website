@@ -6,6 +6,7 @@ import { BlogPostCard } from "../common/BlogPostCard";
 import apiService from "../../services/api";
 import useApi from "../../hooks/useApi";
 import DataLoader from "../common/DataLoader";
+import { BlogPostSkeleton } from "../common/Skeleton";
 
 const BlogPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -78,6 +79,13 @@ const BlogPage = () => {
         error={error}
         data={posts}
         emptyMessage="No blog posts available at this time."
+        skeleton={
+          <div className="space-y-8">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <BlogPostSkeleton key={i} />
+            ))}
+          </div>
+        }
       >
         {(allPosts) => {
           const filteredPosts = allPosts.filter(

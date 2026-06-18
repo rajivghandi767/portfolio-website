@@ -5,6 +5,7 @@ import apiService from "../../services/api";
 import useApi from "../../hooks/useApi";
 import imageUtils from "../../utils/imageUtils";
 import DataLoader from "../common/DataLoader";
+import { CardSkeleton } from "../common/Skeleton";
 
 const Projects = ({ limit = 3 }: PageProps) => {
   const {
@@ -30,6 +31,13 @@ const Projects = ({ limit = 3 }: PageProps) => {
         error={error}
         data={projects}
         emptyMessage="Stay Tuned! But if you cant wait, check out my GitHub (github.com/rajivghandi767) for my latest work."
+        skeleton={
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-w-4xl mx-auto">
+            {Array.from({ length: limit }).map((_, i) => (
+              <CardSkeleton key={i} />
+            ))}
+          </div>
+        }
       >
         {(allProjects) => {
           const homepageProjects = allProjects

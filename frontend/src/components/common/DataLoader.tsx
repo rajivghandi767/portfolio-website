@@ -4,6 +4,7 @@ interface DataLoaderProps<T> {
   data: T[] | null | undefined;
   children: (data: T[]) => React.ReactNode;
   emptyMessage?: string;
+  skeleton?: React.ReactNode;
 }
 
 const DataLoader = <T,>({
@@ -12,8 +13,12 @@ const DataLoader = <T,>({
   data,
   children,
   emptyMessage = "No items available at this time.",
+  skeleton,
 }: DataLoaderProps<T>) => {
   if (isLoading) {
+    if (skeleton) {
+      return <>{skeleton}</>;
+    }
     return (
       <div className="flex justify-center items-center py-12 min-h-[60vh]">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-light dark:border-brand-dark"></div>
