@@ -75,60 +75,7 @@ export interface Tag {
   name: string;
 }
 
-export interface Experience {
-  id: number;
-  company: string;
-  role: string;
-  start_date: string;
-  end_date: string | null;
-  description: string;
-  order: number;
-}
 
-export interface Education {
-  id: number;
-  institution: string;
-  degree: string;
-  year: string;
-  order: number;
-}
-
-export interface Certification {
-  id: number;
-  name: string;
-  issuer: string;
-  date_issued: string;
-  url: string | null;
-  order: number;
-}
-
-export interface Skill {
-  id: number;
-  name: string;
-  order: number;
-}
-
-export interface SkillCategory {
-  id: number;
-  name: string;
-  order: number;
-  skills: Skill[];
-}
-
-export interface GlobalLink {
-  id: number;
-  name: string;
-  url: string;
-  icon_name: string;
-  short_description?: string;
-  order: number;
-}
-
-export interface BrandAsset {
-  id: number;
-  name: string;
-  logo_url: string;
-}
 
 /**
  * Credit card type for wallet section

@@ -83,6 +83,8 @@ const Image = ({
     }
   }
 
+  const isHighPriority = props.fetchPriority === "high";
+
   // If progressive loading is enabled and we have a low quality source
   if (enableProgressiveLoading) {
     return (
@@ -108,7 +110,7 @@ const Image = ({
         <img
           src={src}
           alt={alt}
-          loading="lazy" // Add native lazy loading
+          loading={isHighPriority ? "eager" : "lazy"}
           className={cn(
             "w-full h-full transition-all duration-300",
             objectFitClasses[objectFit],
@@ -128,7 +130,7 @@ const Image = ({
     <img
       src={src}
       alt={alt}
-      loading="lazy"
+      loading={isHighPriority ? "eager" : "lazy"}
       className={cn(
         aspectRatioClasses[aspectRatio],
         objectFitClasses[objectFit],

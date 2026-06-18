@@ -108,6 +108,10 @@ const Bio = () => {
                     src={imageUrl}
                     alt={`Profile photo of ${bioInfo.greeting || "user"}`}
                     className="object-cover object-top w-full h-full"
+                    width="176"
+                    height="176"
+                    fetchPriority="high"
+                    loading="eager"
                   />
                 </div>
               </div>
