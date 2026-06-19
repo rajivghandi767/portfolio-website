@@ -1,9 +1,13 @@
+from __future__ import annotations
+
+from typing import Any
+
 from django.db.models.signals import pre_save, post_delete
-from django.db.models import FileField
+from django.db.models import FileField, Model
 from django.core.files.storage import default_storage
 
 
-def _delete_file(file_name):
+def _delete_file(file_name: str) -> None:
     try:
         if file_name and default_storage.exists(file_name):
             default_storage.delete(file_name)
@@ -11,7 +15,7 @@ def _delete_file(file_name):
         pass
 
 
-def setup_cleanup_signals():
+def setup_cleanup_signals() -> None:
     """
     Dynamically attaches pre_save and post_delete signals to all models
     that have FileField or ImageField.
@@ -26,36 +30,40 @@ def setup_cleanup_signals():
         if not file_fields:
             continue
 
-        def delete_old_file_on_save(sender, instance, **kwargs):
-            if not instance.pk:
-                return
+        def make_delete_old_file(fields: list) -> Any:
+            def delete_old_file_on_save(sender: Any, instance: Any, **kwargs: Any) -> None:
+                if not instance.pk:
+                    return
 
-            try:
-                old_instance = sender.objects.get(pk=instance.pk)
-            except sender.DoesNotExist:
-                return
+                try:
+                    old_instance = sender.objects.get(pk=instance.pk)
+                except sender.DoesNotExist:
+                    return
 
-            for field in file_fields:
-                old_file = getattr(old_instance, field.name)
-                new_file = getattr(instance, field.name)
+                for field in fields:
+                    old_file = getattr(old_instance, field.name)
+                    new_file = getattr(instance, field.name)
 
-                if old_file and old_file != new_file:
-                    _delete_file(old_file.name)
+                    if old_file and old_file != new_file:
+                        _delete_file(old_file.name)
+            return delete_old_file_on_save
 
-        def delete_file_on_delete(sender, instance, **kwargs):
-            for field in file_fields:
-                file_field = getattr(instance, field.name)
-                if file_field:
-                    _delete_file(file_field.name)
+        def make_delete_file_on_delete(fields: list) -> Any:
+            def delete_file_on_delete(sender: Any, instance: Any, **kwargs: Any) -> None:
+                for field in fields:
+                    file_field = getattr(instance, field.name)
+                    if file_field:
+                        _delete_file(file_field.name)
+            return delete_file_on_delete
 
         # Connect signals
         pre_save.connect(
-            delete_old_file_on_save,
+            make_delete_old_file(file_fields),
             sender=model,
             dispatch_uid=f"{model.__name__}_cleanup_pre_save",
         )
         post_delete.connect(
-            delete_file_on_delete,
+            make_delete_file_on_delete(file_fields),
             sender=model,
             dispatch_uid=f"{model.__name__}_cleanup_post_delete",
         )

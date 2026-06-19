@@ -1,6 +1,10 @@
+from __future__ import annotations
+
 import html
 import logging
-from django.http import FileResponse, HttpResponse
+from typing import Any, Union
+
+from django.http import FileResponse, HttpRequest, HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.conf import settings
@@ -8,6 +12,8 @@ from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.request import Request
+
 from .models import Info, Resume
 from .serializers import InfoSerializer, ResumeSerializer, ResumeListSerializer
 
@@ -15,23 +21,25 @@ logger = logging.getLogger(__name__)
 
 
 @method_decorator(cache_page(settings.CACHE_TTL), name="dispatch")
-class InfoViewSet(viewsets.ReadOnlyModelViewSet):
+class InfoViewSet(viewsets.ReadOnlyModelViewSet):  # type: ignore[type-arg]
     queryset = Info.objects.all()
     serializer_class = InfoSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 @method_decorator(cache_page(settings.CACHE_TTL), name="dispatch")
-class ResumeViewSet(viewsets.ReadOnlyModelViewSet):
+class ResumeViewSet(viewsets.ReadOnlyModelViewSet):  # type: ignore[type-arg]
     queryset = Resume.objects.all().order_by("-uploaded_at")
     permission_classes = [IsAuthenticatedOrReadOnly]
 
-    def get_serializer_class(self):
+    def get_serializer_class(self) -> type:
         if self.action == "list":
             return ResumeListSerializer
         return ResumeSerializer
 
-    def _serve_file(self, request, as_attachment):
+    def _serve_file(
+        self, request: Request, as_attachment: bool
+    ) -> Union[FileResponse, Response]:
         try:
             resume = Resume.get_active_resume()
             if not resume or not resume.is_file_accessible:
@@ -46,13 +54,13 @@ class ResumeViewSet(viewsets.ReadOnlyModelViewSet):
             try:
                 file_handle = resume.file.open("rb")
 
-                response = FileResponse(
+                response: FileResponse = FileResponse(
                     file_handle,
                     content_type="application/pdf",
                     as_attachment=as_attachment,
                 )
 
-                filename = resume.download_filename
+                filename: str = resume.download_filename
                 if as_attachment:
                     response["Content-Disposition"] = (
                         f'attachment; filename="{filename}"'
@@ -68,7 +76,7 @@ class ResumeViewSet(viewsets.ReadOnlyModelViewSet):
 
             except FileNotFoundError:
                 logger.error(
-                    f"File not found on storage for resume ID {resume.id}: {resume.file.name}"
+                    f"File not found on storage for resume ID {resume.pk}: {resume.file.name}"
                 )
                 return Response(
                     {
@@ -78,7 +86,7 @@ class ResumeViewSet(viewsets.ReadOnlyModelViewSet):
                 )
             except Exception as e:
                 logger.error(
-                    f"Error serving file for resume ID {resume.id}: {str(e)}",
+                    f"Error serving file for resume ID {resume.pk}: {str(e)}",
                     exc_info=True,
                 )
                 return Response(
@@ -97,20 +105,20 @@ class ResumeViewSet(viewsets.ReadOnlyModelViewSet):
             )
 
     @action(detail=False, methods=["get"])
-    def view(self, request):
+    def view(self, request: Request) -> Union[FileResponse, Response]:
         return self._serve_file(request, as_attachment=False)
 
     @action(detail=False, methods=["get"])
-    def download(self, request):
+    def download(self, request: Request) -> Union[FileResponse, Response]:
         return self._serve_file(request, as_attachment=True)
 
     @action(detail=False, methods=["get"])
-    def status(self, request):
+    def status(self, request: Request) -> Response:
         try:
-            total_resumes = Resume.objects.count()
+            total_resumes: int = Resume.objects.count()
             active_resume = Resume.get_active_resume()
 
-            status_info = {
+            status_info: dict[str, Any] = {
                 "total_resumes": total_resumes,
                 "active_resumes": 1 if active_resume else 0,
                 "has_active_resume": bool(active_resume),
@@ -119,7 +127,7 @@ class ResumeViewSet(viewsets.ReadOnlyModelViewSet):
             if active_resume:
                 status_info.update(
                     {
-                        "active_resume_id": active_resume.id,
+                        "active_resume_id": active_resume.pk,
                         "active_resume_filename": active_resume.file.name
                         if active_resume.file
                         else None,
@@ -138,17 +146,17 @@ class ResumeViewSet(viewsets.ReadOnlyModelViewSet):
             )
 
 
-def seo_home_page(request):
+def seo_home_page(request: HttpRequest) -> HttpResponse:
     info = Info.objects.first()
 
     # og:title — mapped from info.site_header and info.professional_title
-    site_header = info.site_header if info else "Rajiv Wallace"
-    professional_title = info.professional_title if info else "Software Developer"
+    site_header: str = info.site_header if info else "Rajiv Wallace"
+    professional_title: str = info.professional_title if info else "Software Developer"
     title = f"{site_header} | {professional_title}"
 
     # og:description — mapped from info.bio
-    bio = info.bio if info and info.bio else "Software Developer Portfolio"
-    description = bio[:160]
+    bio: str = info.bio if info and info.bio else "Software Developer Portfolio"
+    description: str = bio[:160]
 
     # og:image — mapped from info.profile_photo (GCS returns an absolute URL)
     image_url = ""

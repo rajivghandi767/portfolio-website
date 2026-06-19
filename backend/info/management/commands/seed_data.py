@@ -1,4 +1,9 @@
+from __future__ import annotations
+
+from typing import Any
+
 from django.core.management.base import BaseCommand
+
 from info.models import Info
 from projects.models import Project, Tag
 from blog.models import Post, Category
@@ -8,7 +13,7 @@ from wallet.models import Card
 class Command(BaseCommand):
     help = "Seeds the database with dummy data for all new portfolio sections"
 
-    def handle(self, *args, **kwargs):
+    def handle(self, *args: Any, **kwargs: Any) -> None:
 
         self.stdout.write(self.style.NOTICE("Seeding Info..."))
         if not Info.objects.exists():
@@ -24,24 +29,25 @@ class Command(BaseCommand):
             )
         else:
             info = Info.objects.first()
-            updated = False
-            if not info.email:
-                info.email = "dev@rajivwallace.com"
-                updated = True
-            if not info.substack:
-                info.substack = "https://rajiv.substack.com"
-                updated = True
-            if updated:
-                info.save()
+            if info is not None:
+                updated = False
+                if not info.email:
+                    info.email = "dev@rajivwallace.com"  # type: ignore[assignment]
+                    updated = True
+                if not info.substack:
+                    info.substack = "https://rajiv.substack.com"  # type: ignore[assignment]
+                    updated = True
+                if updated:
+                    info.save()
 
         self.stdout.write(self.style.NOTICE("Seeding Project Tags and Projects..."))
         tag_names = ["Frontend", "Backend", "Full Stack", "Machine Learning"]
-        tags = []
+        tags: list[Tag] = []
         for tag_name in tag_names:
             tag, _ = Tag.objects.update_or_create(name=tag_name)
             tags.append(tag)
 
-        projects = [
+        projects: list[dict[str, Any]] = [
             {
                 "title": "Portfolio v2",
                 "description": "My personal portfolio website built with React and Django.",
@@ -107,7 +113,7 @@ class Command(BaseCommand):
         cat_life, _ = Category.objects.update_or_create(name="Life")
         cat_tech, _ = Category.objects.update_or_create(name="Tech")
 
-        posts = [
+        posts: list[dict[str, Any]] = [
             {
                 "title": "My Journey into Tech",
                 "body": "<p>This is a story about how I started coding.</p>",
@@ -141,7 +147,7 @@ class Command(BaseCommand):
                     post.categories.add(cat_dev)
 
         self.stdout.write(self.style.NOTICE("Seeding Wallet Cards..."))
-        cards = [
+        cards: list[dict[str, Any]] = [
             {
                 "card_name": "Chase Sapphire Preferred",
                 "description": "Great starter travel card with excellent transfer partners.",

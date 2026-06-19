@@ -1,14 +1,19 @@
+from __future__ import annotations
+
+from typing import Any
+
 from django.core.management.base import BaseCommand
+
 from wallet.models import Card
 
 
 class Command(BaseCommand):
     help = "Seeds initial portfolio data including credit cards."
 
-    def handle(self, *args, **kwargs):
+    def handle(self, *args: Any, **kwargs: Any) -> None:
         self.stdout.write("Seeding wallet (credit cards) data...")
 
-        cards_data = [
+        cards_data: list[dict[str, Any]] = [
             {
                 "card_name": "Chase Sapphire Preferred",
                 "description": "<p>A great starter travel card with valuable points.</p>",

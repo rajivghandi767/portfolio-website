@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 import requests
 from django.db import models
@@ -14,13 +16,13 @@ class Contact(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     is_read = models.BooleanField(default=False)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Message from {self.name} ({self.created_at.strftime('%Y-%m-%d')})"
 
     class Meta:
         ordering = ["-created_at"]  # Newest messages first
 
-    def send_notifications(self):
+    def send_notifications(self) -> dict[str, bool]:
         """
         Send all relevant notifications (Discord) for this contact.
         Returns a dictionary of notification statuses.
@@ -29,17 +31,17 @@ class Contact(models.Model):
 
         return {"discord": discord_sent}
 
-    def _get_site_url(self):
+    def _get_site_url(self) -> str:
         return getattr(settings, "SITE_URL", "https://rajivwallace.com")
 
-    def _send_discord_notification(self):
-        webhook_url = getattr(settings, "DISCORD_WEBHOOK_URL", None)
+    def _send_discord_notification(self) -> bool:
+        webhook_url: str | None = getattr(settings, "DISCORD_WEBHOOK_URL", None)
         if not webhook_url:
             logger.warning("Discord webhook URL not configured")
             return False
 
         try:
-            embed = {
+            embed: dict = {
                 "title": "🔔 New Contact Form Submission",
                 "color": 0x00FF00,
                 "fields": [
@@ -56,7 +58,7 @@ class Contact(models.Model):
                 "timestamp": self.created_at.isoformat(),
             }
 
-            payload = {
+            payload: dict = {
                 "username": "Portfolio Bot",
                 "avatar_url": f"{self._get_site_url()}/static/images/bot-avatar.png",
                 "embeds": [embed],

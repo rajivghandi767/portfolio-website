@@ -1,9 +1,11 @@
+from __future__ import annotations
+
 from django.test import SimpleTestCase
 from django.urls import reverse
 
 
 class HealthCheckTests(SimpleTestCase):
-    def test_health_check(self):
+    def test_health_check(self) -> None:
         # Using name 'health_simple' as defined in config/urls.py
         url = reverse("health_simple")
         response = self.client.get(url)

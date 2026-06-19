@@ -87,7 +87,7 @@ if os.getenv("GCS_CREDENTIALS"):
     from google.oauth2 import service_account
 
     try:
-        creds_dict = json.loads(gcs_creds, strict=False)
+        creds_dict = json.loads(gcs_creds, strict=False)  # type: ignore[arg-type]
         GS_CREDENTIALS = service_account.Credentials.from_service_account_info(
             creds_dict
         )
@@ -207,10 +207,10 @@ REST_FRAMEWORK.update(
         "DEFAULT_RENDERER_CLASSES": [
             "rest_framework.renderers.JSONRenderer",
         ],
-        "DEFAULT_THROTTLE_RATES": {
+        "DEFAULT_THROTTLE_RATES": {  # type: ignore[dict-item]
             "contact": "20/hour",
         },
-        "DEFAULT_PAGINATION_CLASS": None,
+        "DEFAULT_PAGINATION_CLASS": None,  # type: ignore[dict-item]
     }
 )
 

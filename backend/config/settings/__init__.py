@@ -2,6 +2,6 @@
 import os
 
 if os.getenv("DJANGO_ENV") == "production":
-    from .production import *
+    from .production import *  # type: ignore[assignment]
 else:
-    from .local import *
+    from .local import *  # type: ignore[assignment]

@@ -1,4 +1,6 @@
-from django.http import JsonResponse
+from __future__ import annotations
+
+from django.http import HttpRequest, JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.db import connection
@@ -9,11 +11,11 @@ import os
 
 @csrf_exempt
 @require_http_methods(["GET"])
-def health_detailed(request):
+def health_detailed(request: HttpRequest) -> JsonResponse:
     """
     Comprehensive health check for production monitoring
     """
-    health_data = {
+    health_data: dict = {
         "status": "healthy",
         "timestamp": time.time(),
         "service": "portfolio-backend",
@@ -34,7 +36,7 @@ def health_detailed(request):
 
     # Static files check
     try:
-        static_root = getattr(settings, "STATIC_ROOT", None)
+        static_root: str | None = getattr(settings, "STATIC_ROOT", None)
         if static_root and os.path.exists(static_root):
             health_data["checks"]["static_files"] = {"status": "healthy"}
         else:
@@ -54,7 +56,7 @@ def health_detailed(request):
 
 @csrf_exempt
 @require_http_methods(["GET"])
-def health_simple(request):
+def health_simple(request: HttpRequest) -> JsonResponse:
     """
     Simple health check for load balancers
     """

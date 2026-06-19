@@ -1,14 +1,20 @@
-from django.contrib import admin
-from django.utils.html import format_html
-from django.contrib import messages
+from __future__ import annotations
+
 import logging
+from typing import Any
+
+from django.contrib import admin
+from django.contrib import messages
+from django.http import HttpRequest
+from django.utils.html import format_html
+
 from .models import Info, Resume
 
 logger = logging.getLogger(__name__)
 
 
 @admin.register(Info)
-class InfoAdmin(admin.ModelAdmin):
+class InfoAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
     list_display = (
         "id",
         "site_header",
@@ -24,7 +30,7 @@ class InfoAdmin(admin.ModelAdmin):
     search_fields = ("greeting", "bio")
     readonly_fields = ("profile_photo_preview",)
 
-    def profile_photo_preview(self, obj):
+    def profile_photo_preview(self, obj: Info) -> Any:
         if obj.profile_photo:
             return format_html(
                 '<img src="{}" width="50" height="50" style="border-radius: 50%; object-fit: cover;" title="{}"/>',
@@ -33,26 +39,26 @@ class InfoAdmin(admin.ModelAdmin):
             )
         return "No photo"
 
-    profile_photo_preview.short_description = "Photo"
+    profile_photo_preview.short_description = "Photo"  # type: ignore[attr-defined]
 
-    def has_github(self, obj):
+    def has_github(self, obj: Info) -> bool:
         return bool(obj.github)
 
-    has_github.boolean = True
+    has_github.boolean = True  # type: ignore[attr-defined]
 
-    def has_linkedin(self, obj):
+    def has_linkedin(self, obj: Info) -> bool:
         return bool(obj.linkedin)
 
-    has_linkedin.boolean = True
+    has_linkedin.boolean = True  # type: ignore[attr-defined]
 
-    def bio_preview(self, obj):
+    def bio_preview(self, obj: Info) -> str:
         return f"{obj.bio[:100]}..." if len(obj.bio) > 100 else obj.bio
 
-    bio_preview.short_description = "Bio"
+    bio_preview.short_description = "Bio"  # type: ignore[attr-defined]
 
 
 @admin.register(Resume)
-class ResumeAdmin(admin.ModelAdmin):
+class ResumeAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
     list_display = (
         "id",
         "filename_display",
@@ -85,14 +91,14 @@ class ResumeAdmin(admin.ModelAdmin):
         ),
     )
 
-    def filename_display(self, obj):
+    def filename_display(self, obj: Resume) -> Any:
         if obj.file:
             return obj.file.name
         return format_html('<span style="color: #999;">No file attached</span>')
 
-    filename_display.short_description = "Filename"
+    filename_display.short_description = "Filename"  # type: ignore[attr-defined]
 
-    def file_info_display(self, obj):
+    def file_info_display(self, obj: Resume) -> Any:
         if obj.file:
             try:
                 return format_html(
@@ -110,18 +116,20 @@ class ResumeAdmin(admin.ModelAdmin):
                 return format_html('<span style="color: red;">Error: {}</span>', str(e))
         return "No file uploaded"
 
-    file_info_display.short_description = "File Details"
+    file_info_display.short_description = "File Details"  # type: ignore[attr-defined]
 
-    def status_indicator(self, obj):
+    def status_indicator(self, obj: Resume) -> Any:
         color = "green" if obj.is_active else "#999"
         text = "ACTIVE" if obj.is_active else "Inactive"
         return format_html(
             '<span style="color: {}; font-weight: bold;">● {}</span>', color, text
         )
 
-    status_indicator.short_description = "Status"
+    status_indicator.short_description = "Status"  # type: ignore[attr-defined]
 
-    def save_model(self, request, obj, form, change):
+    def save_model(
+        self, request: HttpRequest, obj: Resume, form: Any, change: bool
+    ) -> None:
         try:
             if obj.is_active:
                 Resume.objects.exclude(pk=obj.pk).update(is_active=False)
@@ -133,28 +141,28 @@ class ResumeAdmin(admin.ModelAdmin):
             self.message_user(request, f"Error saving resume: {str(e)}", messages.ERROR)
             raise
 
-    def make_active(self, request, queryset):
+    def make_active(self, request: HttpRequest, queryset: Any) -> None:
         if queryset.count() != 1:
             self.message_user(
                 request, "Please select exactly one resume to activate.", messages.ERROR
             )
             return
 
-        resume = queryset.first()
+        resume: Resume = queryset.first()
         Resume.objects.exclude(pk=resume.pk).update(is_active=False)
-        resume.is_active = True
+        resume.is_active = True  # type: ignore[assignment]
         resume.save()
         self.message_user(
             request, f"Resume '{resume.file.name}' is now active.", messages.SUCCESS
         )
         logger.info(f"Resume activated via admin action: {resume.file.name}")
 
-    make_active.short_description = "Activate selected resume"
+    make_active.short_description = "Activate selected resume"  # type: ignore[attr-defined]
 
-    def make_inactive(self, request, queryset):
-        updated = queryset.update(is_active=False)
+    def make_inactive(self, request: HttpRequest, queryset: Any) -> None:
+        updated: int = queryset.update(is_active=False)
         self.message_user(
             request, f"{updated} resume(s) deactivated.", messages.SUCCESS
         )
 
-    make_inactive.short_description = "Deactivate selected resumes"
+    make_inactive.short_description = "Deactivate selected resumes"  # type: ignore[attr-defined]

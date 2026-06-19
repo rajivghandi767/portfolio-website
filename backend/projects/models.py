@@ -1,10 +1,12 @@
+from __future__ import annotations
+
 from django.db import models
 
 
 class Tag(models.Model):
     name = models.CharField(max_length=50)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 
@@ -43,5 +45,5 @@ class Project(models.Model):
     class Meta:
         ordering = ["order"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.title

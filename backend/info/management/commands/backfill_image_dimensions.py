@@ -1,6 +1,11 @@
+from __future__ import annotations
+
 import logging
 import re
+from typing import Any, Union
+
 from django.core.management.base import BaseCommand
+
 from projects.models import Project
 from blog.models import Post
 from wallet.models import Card
@@ -8,12 +13,15 @@ from info.models import Info
 
 logger = logging.getLogger(__name__)
 
+# Concrete model types that this command works with
+_ModelType = Union[type[Project], type[Post], type[Card], type[Info]]
+
 
 class Command(BaseCommand):
     help = "Backfills image_width and image_height for all existing images, and fixes missing alt attributes in HTML"
 
-    def handle(self, *args, **kwargs):
-        models_to_check = [
+    def handle(self, *args: Any, **kwargs: Any) -> None:
+        models_to_check: list[tuple[_ModelType, str]] = [
             (Project, "thumbnail"),
             (Post, "image"),
             (Card, "image"),
@@ -26,7 +34,7 @@ class Command(BaseCommand):
             items = model.objects.all()
             for item in items:
                 updated = False
-                update_fields = []
+                update_fields: list[str] = []
 
                 # Fix missing alt attributes in HTML fields (body, description)
                 html_fields = ["body", "description"]
@@ -51,13 +59,13 @@ class Command(BaseCommand):
                 image_field = getattr(item, field_name)
 
                 # Check if image exists and dimensions are missing
-                if image_field and (not item.image_width or not item.image_height):
+                if image_field and (not item.image_width or not item.image_height):  # type: ignore[attr-defined]
                     try:
-                        width = image_field.width
-                        height = image_field.height
+                        width: int = image_field.width
+                        height: int = image_field.height
 
-                        item.image_width = width
-                        item.image_height = height
+                        item.image_width = width  # type: ignore[attr-defined]
+                        item.image_height = height  # type: ignore[attr-defined]
 
                         update_fields.extend(["image_width", "image_height"])
                         updated = True

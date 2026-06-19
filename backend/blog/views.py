@@ -1,8 +1,11 @@
+from __future__ import annotations
+
 import html
 import re
+from typing import Any
 
-from django.db.models import Q
-from django.http import HttpResponse, Http404
+from django.db.models import Q, QuerySet
+from django.http import HttpRequest, HttpResponse, Http404
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
@@ -16,12 +19,13 @@ from rest_framework.response import Response
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from django.core.signing import TimestampSigner, BadSignature, SignatureExpired
+
 from .models import Category, Post
 from .serializers import CategorySerializer, PostSerializer
 from info.models import Info
 
 
-class PostPreviewViewSet(viewsets.ReadOnlyModelViewSet):
+class PostPreviewViewSet(viewsets.ReadOnlyModelViewSet):  # type: ignore[type-arg]
     """
     Serves blog posts and drafts for previewing by authenticated users (admins).
     Not cached.
@@ -31,13 +35,13 @@ class PostPreviewViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [AllowAny]
 
-    def get_object(self):
-        queryset = self.get_queryset()
-        lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
-        lookup = self.kwargs.get(lookup_url_kwarg)
+    def get_object(self) -> Post:
+        queryset: QuerySet[Post] = self.get_queryset()
+        lookup_url_kwarg: str = self.lookup_url_kwarg or self.lookup_field
+        lookup: Any = self.kwargs.get(lookup_url_kwarg)
 
         # Validate secure preview token
-        token = self.request.query_params.get("token")
+        token: Any = self.request.query_params.get("token")
         if not token:
             # Fallback for admin browser if no token
             if not self.request.user.is_authenticated:
@@ -54,7 +58,7 @@ class PostPreviewViewSet(viewsets.ReadOnlyModelViewSet):
 
         try:
             lookup_int = int(lookup)
-            obj = get_object_or_404(queryset, Q(pk=lookup_int) | Q(slug=lookup))
+            obj: Post = get_object_or_404(queryset, Q(pk=lookup_int) | Q(slug=lookup))
         except ValueError:
             obj = get_object_or_404(queryset, slug=lookup)
 
@@ -63,7 +67,7 @@ class PostPreviewViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 @method_decorator(cache_page(settings.CACHE_TTL), name="dispatch")
-class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
+class CategoryViewSet(viewsets.ReadOnlyModelViewSet):  # type: ignore[type-arg]
     """
     Serves blog category definitions.
 
@@ -77,7 +81,7 @@ class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 @method_decorator(cache_page(settings.CACHE_TTL), name="dispatch")
-class PostViewSet(viewsets.ReadOnlyModelViewSet):
+class PostViewSet(viewsets.ReadOnlyModelViewSet):  # type: ignore[type-arg]
     """
     Serves blog posts and their metadata.
 
@@ -95,22 +99,22 @@ class PostViewSet(viewsets.ReadOnlyModelViewSet):
     filterset_fields = {'categories__name': ['exact']}
     search_fields = ['title', 'body', 'categories__name']
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet[Post]:
         return Post.objects.filter(status="published", publish_date__lte=timezone.now()).distinct()
 
     @action(detail=False)
-    def tags(self, request):
+    def tags(self, request: HttpRequest) -> Response:
         tags_list = self.get_queryset().exclude(categories__isnull=True).values_list('categories__name', flat=True).distinct()
         return Response(sorted([t for t in tags_list if t]))
 
-    def get_object(self):
-        queryset = self.get_queryset()
-        lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
-        lookup = self.kwargs.get(lookup_url_kwarg)
+    def get_object(self) -> Post:
+        queryset: QuerySet[Post] = self.get_queryset()
+        lookup_url_kwarg: str = self.lookup_url_kwarg or self.lookup_field
+        lookup: Any = self.kwargs.get(lookup_url_kwarg)
 
         try:
             lookup_int = int(lookup)
-            obj = get_object_or_404(queryset, Q(pk=lookup_int) | Q(slug=lookup))
+            obj: Post = get_object_or_404(queryset, Q(pk=lookup_int) | Q(slug=lookup))
         except ValueError:
             obj = get_object_or_404(queryset, slug=lookup)
 
@@ -118,7 +122,7 @@ class PostViewSet(viewsets.ReadOnlyModelViewSet):
         return obj
 
 
-def seo_blog_post(request, slug):
+def seo_blog_post(request: HttpRequest, slug: str) -> HttpResponse:
     try:
         try:
             lookup_int = int(slug)
@@ -137,17 +141,17 @@ def seo_blog_post(request, slug):
         image_url = request.build_absolute_uri(post.image.url)
 
     # Canonical URL — always resolves to the public frontend domain, never the API subdomain
-    post_slug = post.slug or str(post.pk)
+    post_slug: str = post.slug or str(post.pk)
     canonical_url = f"{settings.SITE_URL}/blog/{post_slug}/"
 
     # Strip HTML tags from CKEditor body (stored as HTML) to produce a plain-text excerpt
     plain_body = re.sub(r"<[^>]+>", "", post.body)
     plain_body = re.sub(r"\s+", " ", plain_body).strip()
-    description = plain_body[:160] if plain_body else post.title
+    description: str = plain_body[:160] if plain_body else post.title
 
     # article:author — Post model has no author field; pull name from Info.site_header
     info = Info.objects.first()
-    author_name = info.site_header if info else "Rajiv Wallace"
+    author_name: str = info.site_header if info else "Rajiv Wallace"
 
     # Escape all dynamic content before embedding in HTML attributes
     safe_title = html.escape(post.title)
@@ -158,7 +162,7 @@ def seo_blog_post(request, slug):
 
     # Build optional article timestamp / category tags from actual model fields:
     # post.publish_date, post.last_modified, post.categories (M2M -> Category.name)
-    optional_tags = []
+    optional_tags: list[str] = []
     if post.publish_date:
         optional_tags.append(
             f'    <meta property="article:published_time" content="{html.escape(post.publish_date.isoformat())}" />'

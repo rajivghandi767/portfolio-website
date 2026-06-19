@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
@@ -10,7 +12,7 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = "categories"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 
@@ -35,7 +37,7 @@ class Post(models.Model):
         width_field="image_width",
         height_field="image_height",
     )
-    categories = models.ManyToManyField("Category", related_name="posts")
+    categories: models.ManyToManyField = models.ManyToManyField("Category", related_name="posts")
     order = models.PositiveIntegerField(
         default=0,
         help_text="Manually set order for blog posts. Default is newest first.",
@@ -44,10 +46,10 @@ class Post(models.Model):
     class Meta:
         ordering = ["-order", "-publish_date"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.title
 
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         from django.conf import settings
         from django.core.signing import TimestampSigner
         from django.utils import timezone
@@ -68,7 +70,7 @@ class Post(models.Model):
 
         return f"{settings.SITE_URL.rstrip('/')}{path}"
 
-    def save(self, *args, **kwargs):
+    def save(self, *args: object, **kwargs: object) -> None:  # type: ignore[override]
         if not self.slug:
-            self.slug = slugify(self.title)
-        super().save(*args, **kwargs)
+            self.slug = slugify(self.title)  # type: ignore[assignment]
+        super().save(*args, **kwargs)  # type: ignore[arg-type]

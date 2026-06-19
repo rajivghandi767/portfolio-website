@@ -1,12 +1,18 @@
+from __future__ import annotations
+
 import logging
+from typing import Any, Optional
+
 from rest_framework import serializers
+from rest_framework.request import Request
 from django.urls import reverse
+
 from .models import Info, Resume
 
 logger = logging.getLogger(__name__)
 
 
-class InfoSerializer(serializers.ModelSerializer):
+class InfoSerializer(serializers.ModelSerializer):  # type: ignore[type-arg]
     profile_photo_url = serializers.SerializerMethodField()
 
     class Meta:
@@ -29,16 +35,16 @@ class InfoSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ("created_at", "updated_at")
 
-    def get_profile_photo_url(self, obj):
+    def get_profile_photo_url(self, obj: Info) -> Optional[str]:
         if obj.profile_photo and hasattr(obj.profile_photo, "url"):
-            request = self.context.get("request")
+            request: Optional[Request] = self.context.get("request")
             if request:
                 return request.build_absolute_uri(obj.profile_photo.url)
             return obj.profile_photo.url
         return None
 
 
-class ResumeSerializer(serializers.ModelSerializer):
+class ResumeSerializer(serializers.ModelSerializer):  # type: ignore[type-arg]
     filename = serializers.CharField(source="file.name", read_only=True)
     file_size_display = serializers.CharField(
         source="file_size_display", read_only=True
@@ -75,26 +81,26 @@ class ResumeSerializer(serializers.ModelSerializer):
         )
         extra_kwargs = {"file": {"write_only": True}}
 
-    def get_view_url(self, obj):
-        request = self.context.get("request")
+    def get_view_url(self, obj: Resume) -> str:
+        request: Optional[Request] = self.context.get("request")
         if request:
             return request.build_absolute_uri(reverse("resume-view"))
         return reverse("resume-view")
 
-    def get_download_url(self, obj):
-        request = self.context.get("request")
+    def get_download_url(self, obj: Resume) -> str:
+        request: Optional[Request] = self.context.get("request")
         if request:
             return request.build_absolute_uri(reverse("resume-download"))
         return reverse("resume-download")
 
-    def get_status_url(self, obj):
-        request = self.context.get("request")
+    def get_status_url(self, obj: Resume) -> str:
+        request: Optional[Request] = self.context.get("request")
         if request:
             return request.build_absolute_uri(reverse("resume-status"))
         return reverse("resume-status")
 
 
-class ResumeListSerializer(serializers.ModelSerializer):
+class ResumeListSerializer(serializers.ModelSerializer):  # type: ignore[type-arg]
     filename = serializers.CharField(source="file.name", read_only=True)
     file_size_display = serializers.CharField(
         source="file_size_display", read_only=True

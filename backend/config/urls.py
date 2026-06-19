@@ -1,8 +1,12 @@
-from django.contrib import admin
+from __future__ import annotations
+
+from typing import Any
+
+from django.http import HttpRequest, JsonResponse
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
-from django.http import JsonResponse
+from django.contrib import admin
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.cache import cache_control
 from rest_framework.routers import DefaultRouter
@@ -22,11 +26,11 @@ from health_check.views import health_detailed, health_simple
 # before the function execution begins.
 @require_http_methods(["GET"])
 @cache_control(max_age=settings.CACHE_TTL)
-def api_root(request):
+def api_root(request: HttpRequest) -> JsonResponse:
     """
     Dynamically generates the base API URL and returns a JSON directory of available endpoints.
     """
-    base_url = request.build_absolute_uri("/")
+    base_url: str = request.build_absolute_uri("/")
 
     return JsonResponse(
         {

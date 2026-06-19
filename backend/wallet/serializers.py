@@ -1,8 +1,14 @@
+from __future__ import annotations
+
+from typing import Optional
+
 from rest_framework import serializers
+from rest_framework.request import Request
+
 from .models import Card
 
 
-class CardSerializer(serializers.ModelSerializer):
+class CardSerializer(serializers.ModelSerializer):  # type: ignore[type-arg]
     image_url = serializers.SerializerMethodField()
 
     class Meta:
@@ -19,9 +25,9 @@ class CardSerializer(serializers.ModelSerializer):
             "order",
         ]
 
-    def get_image_url(self, obj):
+    def get_image_url(self, obj: Card) -> Optional[str]:
         if obj.image and hasattr(obj.image, "url"):
-            request = self.context.get("request")
+            request: Optional[Request] = self.context.get("request")
             if request:
                 return request.build_absolute_uri(obj.image.url)
             return obj.image.url

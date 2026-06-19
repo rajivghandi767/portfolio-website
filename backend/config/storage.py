@@ -1,29 +1,30 @@
+from __future__ import annotations
+
 import os
 import io
 from datetime import date
+from typing import Any
+
 from django.core.files.base import ContentFile
-from PIL import Image
 
 # Dynamically inherit from GoogleCloudStorage in production, FileSystemStorage locally
 if os.getenv("GCS_CREDENTIALS"):
-    from storages.backends.gcloud import GoogleCloudStorage
-
-    BaseStorage = GoogleCloudStorage
+    from storages.backends.gcloud import GoogleCloudStorage as _BaseStorage
 else:
-    from django.core.files.storage import FileSystemStorage
-
-    BaseStorage = FileSystemStorage
+    from django.core.files.storage import FileSystemStorage as _BaseStorage
 
 
-class WebPOptimizedStorage(BaseStorage):
+class WebPOptimizedStorage(_BaseStorage):  # type: ignore[misc]
     """
     Automatically intercepts image uploads, converts them to WebP,
     and forwards them to the underlying storage backend.
     """
 
-    def _save(self, name, content):
+    def _save(self, name: str, content: Any) -> str:
+        from PIL import Image
+
         # Only process known image extensions
-        ext = os.path.splitext(name)[1].lower()
+        ext: str = os.path.splitext(name)[1].lower()
         if ext in [".jpg", ".jpeg", ".png"]:
             try:
                 # Load image into memory with Pillow
@@ -45,7 +46,7 @@ class WebPOptimizedStorage(BaseStorage):
                 else:
                     # Convert standard JPEGs/PNGs to RGB if needed
                     if img.mode != "RGB":
-                        img = img.convert("RGB")
+                        img = img.convert("RGB")  # type: ignore[assignment]
                     img.save(output, format="WEBP", quality=85)
 
                 # Seek buffer back to start
@@ -64,7 +65,7 @@ class WebPOptimizedStorage(BaseStorage):
                 # If Pillow fails for any reason, safely fall back to the original image
                 pass
 
-        return super()._save(name, content)
+        return super()._save(name, content)  # type: ignore[misc]
 
 
 class CKEditor5Storage(WebPOptimizedStorage):
@@ -82,7 +83,7 @@ class CKEditor5Storage(WebPOptimizedStorage):
     (post_images/, profile_photos/, resumes/, etc.).
     """
 
-    def _save(self, name, content):
+    def _save(self, name: str, content: Any) -> str:
         today = date.today()
         folder = f"blog_images/{today.year}/{today.month:02d}"
         name = os.path.join(folder, os.path.basename(name))

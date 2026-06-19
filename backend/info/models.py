@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 import logging
+from typing import Any, Optional
 from django.db import models
 from django.core.exceptions import ValidationError
 
@@ -47,10 +50,10 @@ class Info(models.Model):
         verbose_name_plural = "Profile Information"
         ordering = ["-updated_at"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Profile - {self.greeting}"
 
-    def clean(self):
+    def clean(self) -> None:
         super().clean()
         if self.github and not self.github.startswith(("http://", "https://")):
             raise ValidationError(
@@ -67,11 +70,11 @@ class Info(models.Model):
         if len(self.bio) < 10:
             raise ValidationError({"bio": "Bio must be at least 10 characters long."})
 
-    def save(self, *args, **kwargs):
+    def save(self, *args: Any, **kwargs: Any) -> None:  # type: ignore[override]
         is_new = self.pk is None
         try:
             self.full_clean()
-            super().save(*args, **kwargs)
+            super().save(*args, **kwargs)  # type: ignore[arg-type]
             action = "created" if is_new else "updated"
             logger.info(f"Info object {action}: {self.greeting}")
         except Exception as e:
@@ -79,11 +82,11 @@ class Info(models.Model):
             raise
 
     @property
-    def has_profile_photo(self):
+    def has_profile_photo(self) -> bool:
         return bool(self.profile_photo)
 
     @property
-    def profile_photo_url(self):
+    def profile_photo_url(self) -> Optional[str]:
         if self.profile_photo:
             try:
                 return self.profile_photo.url
@@ -105,18 +108,18 @@ class Resume(models.Model):
         verbose_name_plural = "Resume Uploads"
         ordering = ["-uploaded_at"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         status = "ACTIVE" if self.is_active else "Inactive"
         if self.file:
             return f"Resume - {self.file.name} ({status})"
         return f"Resume - (No file) ({status})"
 
-    def clean(self):
+    def clean(self) -> None:
         super().clean()
         if not self.file:
             raise ValidationError({"file": "Resume file is required."})
 
-    def save(self, *args, **kwargs):
+    def save(self, *args: Any, **kwargs: Any) -> None:  # type: ignore[override]
         is_new = self.pk is None
         try:
             if self.is_active:
@@ -125,7 +128,7 @@ class Resume(models.Model):
                     f"Deactivated other resumes for new active resume: {self.file.name if self.file else 'N/A'}"
                 )
             self.full_clean()
-            super().save(*args, **kwargs)
+            super().save(*args, **kwargs)  # type: ignore[arg-type]
             action = "uploaded" if is_new else "updated"
             logger.info(
                 f"Resume {action}: {self.file.name if self.file else 'N/A'} (Active: {self.is_active})"
@@ -134,24 +137,25 @@ class Resume(models.Model):
             logger.error(f"Error saving Resume object: {str(e)}", exc_info=True)
             raise
 
-    def delete(self, *args, **kwargs):
+    def delete(self, *args: Any, **kwargs: Any) -> tuple[int, dict[str, int]]:  # type: ignore[override]
         filename = self.file.name if self.file else "Unknown file"
         try:
-            super().delete(*args, **kwargs)
+            result = super().delete(*args, **kwargs)  # type: ignore[arg-type]
             logger.info(f"Resume deleted: {filename}")
+            return result
         except Exception as e:
             logger.error(f"Error deleting Resume object: {str(e)}", exc_info=True)
             raise
 
     @property
-    def download_filename(self):
+    def download_filename(self) -> str:
         """Returns the filename to be used when downloading the resume."""
         return "Rajiv_Wallace_Resume.pdf"
 
     @property
-    def file_size_display(self):
+    def file_size_display(self) -> str:
         if self.file and self.file.size:
-            size = self.file.size
+            size: int = self.file.size
             if size < 1024:
                 return f"{size} bytes"
             elif size < 1024 * 1024:
@@ -161,11 +165,11 @@ class Resume(models.Model):
         return "Unknown size"
 
     @property
-    def is_file_accessible(self):
+    def is_file_accessible(self) -> bool:
         return bool(self.file)
 
     @property
-    def file_url(self):
+    def file_url(self) -> Optional[str]:
         if self.file:
             try:
                 return self.file.url
@@ -174,18 +178,18 @@ class Resume(models.Model):
         return None
 
     @classmethod
-    def get_active_resume(cls):
+    def get_active_resume(cls) -> Optional["Resume"]:
         try:
             return cls.objects.filter(is_active=True).latest("uploaded_at")
         except cls.DoesNotExist:
             return None
 
     @classmethod
-    def activate_resume(cls, resume_id):
+    def activate_resume(cls, resume_id: int) -> "Resume":
         try:
             cls.objects.update(is_active=False)
             resume = cls.objects.get(pk=resume_id)
-            resume.is_active = True
+            resume.is_active = True  # type: ignore[assignment]
             resume.save()
             logger.info(
                 f"Resume activated: {resume.file.name if resume.file else 'N/A'}"

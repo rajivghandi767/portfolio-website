@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from django.db import models
 from django_ckeditor_5.fields import CKEditor5Field
 
@@ -5,7 +7,7 @@ from django_ckeditor_5.fields import CKEditor5Field
 class Card(models.Model):
     """
     Card Model
-    
+
     Highly educational note: This model represents a credit card in the portfolio. 
     Notice the use of `CKEditor5Field` for the description instead of a standard `TextField`. 
     This allows the admin user to input rich text (HTML) directly from the Django admin interface, 
@@ -37,5 +39,5 @@ class Card(models.Model):
         """
         ordering = ["order"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.card_name

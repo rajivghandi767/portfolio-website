@@ -64,7 +64,7 @@ CSRF_COOKIE_HTTPONLY = False
 POSTGRES_HOST = os.getenv("POSTGRES_HOST")
 POSTGRES_PORT = os.getenv("POSTGRES_PORT")
 
-if is_service_available(POSTGRES_HOST, POSTGRES_PORT):
+if is_service_available(POSTGRES_HOST, POSTGRES_PORT):  # type: ignore[arg-type]
     print(f"✅ Connected to Postgres at {POSTGRES_HOST}:{POSTGRES_PORT}")
     DATABASES = {
         "default": {
@@ -81,7 +81,7 @@ else:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",  # type: ignore[dict-item]
         }
     }
 
@@ -98,8 +98,8 @@ try:
 except ValueError:
     pass
 
-if is_service_available(redis_host, redis_port):
-    print(f"✅ Connected to Redis at {redis_host}:{redis_port}")
+if is_service_available(redis_host, redis_port):  # type: ignore[arg-type]
+    print(f"✅ Connected to Redis at {redis_host}:{redis_port}")  # type: ignore[str-bytes-safe]
     CACHES = {
         "default": {
             "BACKEND": "django.core.cache.backends.redis.RedisCache",
@@ -181,7 +181,7 @@ REST_FRAMEWORK.update(
             "rest_framework.renderers.BrowsableAPIRenderer",
         ],
         "DEFAULT_THROTTLE_CLASSES": [],
-        "DEFAULT_THROTTLE_RATES": {},
+        "DEFAULT_THROTTLE_RATES": {},  # type: ignore[dict-item]
     }
 )
 
