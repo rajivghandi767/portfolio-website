@@ -25,6 +25,7 @@ django==5.2.6
     #   -r common.in
     #   django-ckeditor-5
     #   django-cors-headers
+    #   django-filter
     #   django-prometheus
     #   django-storages
     #   djangorestframework
@@ -32,6 +33,8 @@ django-ckeditor-5==0.2.18
     # via -r common.in
 django-cors-headers==4.9.0
     # via -r dev-requirements.in
+django-filter==25.2
+    # via -r common.in
 django-prometheus==2.4.1
     # via -r common.in
 django-storages[google]==1.14.6
