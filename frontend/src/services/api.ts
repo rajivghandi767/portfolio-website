@@ -29,7 +29,14 @@ function getApiUrl(): string {
 
 const API_URL = getApiUrl();
 
-// Enhanced fetch function that returns ApiResponse<T>
+/**
+ * Enhanced fetch function that wraps native `fetch` to add custom timeout, retry logic,
+ * exponential backoff, and robust error handling.
+ * 
+ * Highly educational note: We use an `AbortController` to handle explicit timeouts instead of
+ * relying on browser defaults. The exponential backoff (delaying subsequent retries progressively)
+ * prevents our frontend from hammering an already struggling backend server during outages.
+ */
 async function fetchApi<T>(
   endpoint: string,
   options: RequestInit = {},
@@ -168,7 +175,14 @@ async function fetchApi<T>(
   }
 }
 
-// Blob fetch function for file downloads
+/**
+ * Dedicated fetch function for downloading blob files (like PDFs).
+ * 
+ * Highly educational note: Standard JSON APIs return text structures, but binary files (like resumes)
+ * need to be parsed as Blobs. This function maintains the same robust timeout and error handling as
+ * `fetchApi`, but skips the JSON parsing and retries, as file downloads are typically heavier and
+ * should be explicitly re-triggered by the user if they fail.
+ */
 async function fetchBlob(
   endpoint: string,
   options: RequestInit = {}

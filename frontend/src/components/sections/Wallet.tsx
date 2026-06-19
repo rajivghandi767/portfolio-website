@@ -8,6 +8,14 @@ import imageUtils from "../../utils/imageUtils";
 import DataLoader from "../common/DataLoader";
 import { CardSkeleton } from "../common/Skeleton";
 
+/**
+ * Wallet Component
+ * 
+ * Highly educational note: This component serves as the main container for the credit card collection.
+ * It demonstrates how to fetch and render data while maintaining loading and error states via the
+ * `DataLoader` component. The use of an optional `limit` prop allows this component to be highly
+ * reusable—functioning as a brief preview on the homepage when limited, or a full page when unlimited.
+ */
 const Wallet = ({ limit = 4 }: { limit?: number }) => {
   const [selectedCard, setSelectedCard] = useState<CardType | null>(null);
   const {
@@ -86,6 +94,13 @@ const Wallet = ({ limit = 4 }: { limit?: number }) => {
   );
 };
 
+/**
+ * CreditCard Component
+ * 
+ * Highly educational note: This is a presentational component that renders an individual card.
+ * Notice the `isEager` prop. In performance optimization, above-the-fold images should be loaded eagerly
+ * to improve Largest Contentful Paint (LCP), while off-screen images should be deferred using lazy loading.
+ */
 const CreditCard = ({
   card,
   isEager = false,
@@ -147,6 +162,14 @@ const CreditCard = ({
   );
 };
 
+/**
+ * CardDetailModal Component
+ * 
+ * Highly educational note: This component renders a modal overlay for card details.
+ * Notice how `onClick` is used on the backdrop to trigger `onClose`, but it strictly checks
+ * `e.target === e.currentTarget` to prevent click events inside the modal content from bubbling up
+ * and accidentally closing the modal. This pattern is essential for accessible and robust modal designs.
+ */
 const CardDetailModal = ({
   card,
   isOpen,
