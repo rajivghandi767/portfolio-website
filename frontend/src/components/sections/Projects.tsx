@@ -8,12 +8,14 @@ import DataLoader from "../common/DataLoader";
 import { CardSkeleton } from "../common/Skeleton";
 
 const Projects = ({ limit = 3 }: PageProps) => {
+  const isProjectsPage = window.location.pathname === "/projects";
   const {
     data: projects,
     isLoading,
     error,
-  } = useApi<Project[]>(() => apiService.projects.getAll());
-  const isProjectsPage = window.location.pathname === "/projects";
+  } = useApi<Project[]>(() => 
+    apiService.projects.getAll(isProjectsPage ? { is_visible: true } : { is_visible: true, limit })
+  );
 
   return (
     <div id="projects" className="mx-auto px-4 py-8">
@@ -40,21 +42,13 @@ const Projects = ({ limit = 3 }: PageProps) => {
           </div>
         }
       >
-        {(allProjects) => {
-          const homepageProjects = allProjects
-            .filter((p) => p.is_visible)
-            .sort((a, b) => (a.order || 0) - (b.order || 0));
-
-          const displayedProjects = isProjectsPage
-            ? homepageProjects
-            : homepageProjects.slice(0, limit);
-          const shouldShowSeeMore =
-            !isProjectsPage && homepageProjects.length > limit;
+        {(projectsList) => {
+          const shouldShowSeeMore = !isProjectsPage;
 
           return (
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-w-4xl mx-auto">
-                {displayedProjects.map((project, index) => (
+                {projectsList.map((project, index) => (
                   <ProjectCard key={project.id} project={project} isEager={index < limit} />
                 ))}
               </div>

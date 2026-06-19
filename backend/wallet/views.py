@@ -21,3 +21,13 @@ class CardViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Card.objects.all()
     serializer_class = CardSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        limit = self.request.query_params.get("limit")
+        if limit:
+            try:
+                queryset = queryset[:int(limit)]
+            except ValueError:
+                pass
+        return queryset

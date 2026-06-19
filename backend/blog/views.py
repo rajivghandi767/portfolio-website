@@ -11,6 +11,10 @@ from rest_framework import viewsets
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
 from rest_framework.exceptions import PermissionDenied
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework.filters import SearchFilter
+from django_filters.rest_framework import DjangoFilterBackend
 from django.core.signing import TimestampSigner, BadSignature, SignatureExpired
 from .models import Category, Post
 from .serializers import CategorySerializer, PostSerializer
@@ -83,9 +87,17 @@ class PostViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_fields = {'tags__name': ['exact']}
+    search_fields = ['title', 'body', 'tags__name']
 
     def get_queryset(self):
-        return Post.objects.filter(status="published", publish_date__lte=timezone.now())
+        return Post.objects.filter(status="published", publish_date__lte=timezone.now()).distinct()
+
+    @action(detail=False)
+    def tags(self, request):
+        tags_list = self.get_queryset().exclude(tags__isnull=True).values_list('tags__name', flat=True).distinct()
+        return Response(sorted([t for t in tags_list if t]))
 
     def get_object(self):
         queryset = self.get_queryset()

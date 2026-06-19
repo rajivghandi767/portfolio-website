@@ -18,12 +18,12 @@ import { CardSkeleton } from "../common/Skeleton";
  */
 const Wallet = ({ limit = 4 }: { limit?: number }) => {
   const [selectedCard, setSelectedCard] = useState<CardType | null>(null);
+  const isWalletPage = window.location.pathname === "/wallet";
   const {
     data: cards,
     isLoading,
     error,
-  } = useApi<CardType[]>(() => apiService.cards.getAll());
-  const isWalletPage = window.location.pathname === "/wallet";
+  } = useApi<CardType[]>(() => apiService.cards.getAll(isWalletPage ? undefined : { limit }));
 
   return (
     <div id="wallet" className="mx-auto px-4 py-8">
@@ -51,15 +51,12 @@ const Wallet = ({ limit = 4 }: { limit?: number }) => {
         }
       >
         {(allCards) => {
-          const displayedCards = isWalletPage
-            ? allCards
-            : allCards.slice(0, limit);
-          const shouldShowSeeMore = !isWalletPage && allCards.length > limit;
+          const shouldShowSeeMore = !isWalletPage;
 
           return (
             <>
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
-                {displayedCards.map((card, index) => (
+                {allCards.map((card, index) => (
                   <CreditCard
                     key={card.id}
                     card={card}

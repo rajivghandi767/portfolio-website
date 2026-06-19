@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { BlogPost } from "../../types";
 import { Search } from "../common/Icons";
@@ -13,19 +13,19 @@ const BlogPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTag = searchParams.get("tag") || "";
 
+  const params: Record<string, string> = {};
+  if (searchTerm) params.search = searchTerm;
+  if (activeTag) params.tags__name = activeTag;
+
   const {
     data: posts,
     isLoading,
     error,
-  } = useApi<BlogPost[]>(() => apiService.blog.getAll());
+  } = useApi<BlogPost[]>(() => apiService.blog.getAll(params), [searchTerm, activeTag]);
 
-  // Extract unique tags for pills
-  const uniqueTags = useMemo(() => {
-    if (!posts) return [];
-    const tags = new Set<string>();
-    posts.forEach(post => post.tags?.forEach(tag => tags.add(tag)));
-    return Array.from(tags).sort();
-  }, [posts]);
+  const {
+    data: tags = [],
+  } = useApi<string[]>(() => apiService.blog.getTags());
 
   const toggleTag = (tag: string) => {
     if (activeTag === tag) {
@@ -55,9 +55,9 @@ const BlogPage = () => {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
         </div>
 
-        {uniqueTags.length > 0 && (
+        {tags.length > 0 && (
           <div className="flex flex-wrap justify-center gap-2 max-w-2xl mx-auto">
-            {uniqueTags.map(tag => (
+            {tags.map(tag => (
               <button
                 key={tag}
                 onClick={() => toggleTag(tag)}
@@ -88,22 +88,7 @@ const BlogPage = () => {
           </div>
         }
       >
-        {(allPosts) => {
-          const filteredPosts = allPosts.filter(
-            (post) => {
-              const matchesSearch = 
-                post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                post.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                (post.tags?.some((tag) =>
-                    tag.toLowerCase().includes(searchTerm.toLowerCase()),
-                  ));
-              
-              const matchesTag = activeTag ? post.tags?.includes(activeTag) : true;
-              
-              return matchesSearch && matchesTag;
-            }
-          );
-
+        {(filteredPosts) => {
           if (filteredPosts.length === 0) {
             return (
               <div className="text-center p-8 text-gray-500">

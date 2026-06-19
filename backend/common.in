@@ -3,6 +3,7 @@
 # Core Framework
 django
 djangorestframework
+django-filter
 
 # Django Apps
 django-prometheus

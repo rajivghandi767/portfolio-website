@@ -283,9 +283,18 @@ const apiService = {
   
   // Blog endpoints
   blog: {
-    getAll: (): Promise<ApiResponse<BlogPost[]>> => {
+    getAll: (params?: Record<string, string | number | boolean>): Promise<ApiResponse<BlogPost[]>> => {
+      const searchParams = new URLSearchParams();
+      if (params) {
+        Object.entries(params).forEach(([key, value]) => searchParams.append(key, String(value)));
+      }
+      const queryString = searchParams.toString() ? `?${searchParams.toString()}` : '';
       if (import.meta.env.DEV) console.log('📝 Fetching blog posts...');
-      return fetchApi<BlogPost[]>('post');
+      return fetchApi<BlogPost[]>(`post${queryString}`);
+    },
+    getTags: (): Promise<ApiResponse<string[]>> => {
+      if (import.meta.env.DEV) console.log('📝 Fetching blog tags...');
+      return fetchApi<string[]>('post/tags');
     },
     getOne: (id: string): Promise<ApiResponse<BlogPost>> => {
       if (import.meta.env.DEV) console.log(`📄 Fetching blog post ${id}...`);
@@ -300,9 +309,14 @@ const apiService = {
   
   // Project Endpoints
   projects: {
-    getAll: (): Promise<ApiResponse<Project[]>> => {
+    getAll: (params?: Record<string, string | number | boolean>): Promise<ApiResponse<Project[]>> => {
+      const searchParams = new URLSearchParams();
+      if (params) {
+        Object.entries(params).forEach(([key, value]) => searchParams.append(key, String(value)));
+      }
+      const queryString = searchParams.toString() ? `?${searchParams.toString()}` : '?all=true';
       if (import.meta.env.DEV) console.log('🚀 Fetching projects...');
-      return fetchApi<Project[]>('projects?all=true');
+      return fetchApi<Project[]>(`projects${queryString}`);
     },
     getOne: (id: string): Promise<ApiResponse<Project>> => {
       if (import.meta.env.DEV) console.log(`🔍 Fetching project ${id}...`);
@@ -347,9 +361,14 @@ const apiService = {
   
   // Cards/Wallet Endpoint
   cards: {
-    getAll: (): Promise<ApiResponse<Card[]>> => {
+    getAll: (params?: Record<string, string | number | boolean>): Promise<ApiResponse<Card[]>> => {
+      const searchParams = new URLSearchParams();
+      if (params) {
+        Object.entries(params).forEach(([key, value]) => searchParams.append(key, String(value)));
+      }
+      const queryString = searchParams.toString() ? `?${searchParams.toString()}` : '';
       if (import.meta.env.DEV) console.log('💳 Fetching cards...');
-      return fetchApi<Card[]>('cards');
+      return fetchApi<Card[]>(`cards${queryString}`);
     }
   },
 

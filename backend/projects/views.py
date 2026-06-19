@@ -8,13 +8,39 @@ from .models import Project
 from .serializers import ProjectSerializer
 
 
+from rest_framework.filters import OrderingFilter
+
 @method_decorator(cache_page(settings.CACHE_TTL), name="dispatch")
 class ProjectViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ProjectSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+    filter_backends = [OrderingFilter]
+    ordering_fields = ['order']
+    ordering = ['order']
 
     def get_queryset(self):
+        """
+        Educational Note: Moving filtering and slicing from the React frontend to the 
+        Django backend allows the database to do the heavy lifting, saving network 
+        bandwidth and preventing client-side performance bottlenecks.
+        """
         queryset = Project.objects.all()
-        if self.request.query_params.get("all") == "true":
-            return queryset.filter(Q(is_visible=True) | Q(is_visible_switcher=True))
-        return queryset.filter(is_visible_switcher=True)
+        
+        is_visible = self.request.query_params.get("is_visible")
+        get_all = self.request.query_params.get("all")
+        
+        if is_visible == "true":
+            queryset = queryset.filter(is_visible=True)
+        elif get_all == "true":
+            queryset = queryset.filter(Q(is_visible=True) | Q(is_visible_switcher=True))
+        else:
+            queryset = queryset.filter(is_visible_switcher=True)
+            
+        limit = self.request.query_params.get("limit")
+        if limit:
+            try:
+                queryset = queryset[:int(limit)]
+            except ValueError:
+                pass
+                
+        return queryset
