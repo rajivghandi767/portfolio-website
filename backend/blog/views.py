@@ -88,6 +88,10 @@ class PostViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [DjangoFilterBackend, SearchFilter]
+    # django-filter requires actual model field names. The Post model stores
+    # categories via a ManyToManyField named 'categories'. 'tags' is only a
+    # SerializerMethodField alias computed at serialization time — it doesn't
+    # exist in the database and cannot be used for ORM filtering.
     filterset_fields = {'categories__name': ['exact']}
     search_fields = ['title', 'body', 'categories__name']
 
