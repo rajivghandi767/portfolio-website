@@ -95,7 +95,7 @@ const ProjectCard = ({ project, isEager = false }: ProjectCardProps) => {
           height={project.image_height}
           loading={isEager ? "eager" : "lazy"}
           fetchPriority={isEager ? "high" : "auto"}
-          decoding="async"
+          decoding={isEager ? "sync" : "async"}
           className="w-full h-auto md:absolute md:inset-0 md:h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </div>
