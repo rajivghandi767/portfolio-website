@@ -55,9 +55,9 @@ const BlogPage = () => {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
         </div>
 
-        {tags.length > 0 && (
+        {(tags || []).length > 0 && (
           <div className="flex flex-wrap justify-center gap-2 max-w-2xl mx-auto">
-            {tags.map(tag => (
+            {(tags || []).map(tag => (
               <button
                 key={tag}
                 onClick={() => toggleTag(tag)}
