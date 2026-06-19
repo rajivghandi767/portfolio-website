@@ -15,6 +15,7 @@ class Project(models.Model):
     description = models.TextField()
     repo = models.URLField(("Link to Repo"))
     deployed_url = models.URLField(("Link to Deployed App"), blank=True)
+    slug = models.SlugField(max_length=100, unique=True, blank=True, null=True)
     image_width = models.PositiveIntegerField(null=True, blank=True)
     image_height = models.PositiveIntegerField(null=True, blank=True)
     thumbnail = models.ImageField(
@@ -47,3 +48,9 @@ class Project(models.Model):
 
     def __str__(self) -> str:
         return self.title
+
+    def save(self, *args: object, **kwargs: object) -> None:
+        from django.utils.text import slugify
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
