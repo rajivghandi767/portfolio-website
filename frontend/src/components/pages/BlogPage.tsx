@@ -15,7 +15,7 @@ const BlogPage = () => {
 
   const params: Record<string, string> = {};
   if (searchTerm) params.search = searchTerm;
-  if (activeTag) params.tags__name = activeTag;
+  if (activeTag) params.categories__name = activeTag;
 
   const {
     data: posts,

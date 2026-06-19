@@ -88,15 +88,15 @@ class PostViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [DjangoFilterBackend, SearchFilter]
-    filterset_fields = {'tags__name': ['exact']}
-    search_fields = ['title', 'body', 'tags__name']
+    filterset_fields = {'categories__name': ['exact']}
+    search_fields = ['title', 'body', 'categories__name']
 
     def get_queryset(self):
         return Post.objects.filter(status="published", publish_date__lte=timezone.now()).distinct()
 
     @action(detail=False)
     def tags(self, request):
-        tags_list = self.get_queryset().exclude(tags__isnull=True).values_list('tags__name', flat=True).distinct()
+        tags_list = self.get_queryset().exclude(categories__isnull=True).values_list('categories__name', flat=True).distinct()
         return Response(sorted([t for t in tags_list if t]))
 
     def get_object(self):
