@@ -26,7 +26,7 @@ export const BlogPostCard = ({ post, isEager = false }: BlogPostCardProps) => {
           width={post.image_width}
           height={post.image_height}
           loading={isEager ? "eager" : "lazy"}
-          decoding="async"
+          decoding={isEager ? "sync" : "async"}
           className="w-full h-auto md:absolute md:inset-0 md:h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </div>
