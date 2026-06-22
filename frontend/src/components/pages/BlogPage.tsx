@@ -57,7 +57,7 @@ const BlogPage = () => {
 
         {(tags || []).length > 0 && (
           <div className="flex flex-wrap justify-center gap-2 max-w-2xl mx-auto">
-            {(tags || []).map(tag => (
+            {Array.from(new Set(tags || [])).map(tag => (
               <button
                 key={tag}
                 onClick={() => toggleTag(tag)}

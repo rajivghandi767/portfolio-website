@@ -19,7 +19,7 @@ export const BlogPostCard = ({ post, isEager = false }: BlogPostCardProps) => {
 
   return (
     <div className="bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark border-2 border-gray-200 dark:border-neutral-800 rounded-lg overflow-hidden shadow-sm transition-all duration-200 hover:shadow-md hover:scale-[1.02] md:flex group">
-      <div className="bg-transparent flex items-center justify-center w-full md:w-1/3 md:aspect-[4/3] flex-shrink-0 overflow-hidden relative">
+      <div className="bg-transparent flex items-center justify-center w-full md:w-1/3 flex-shrink-0 overflow-hidden relative">
         <img
           src={imageUtils.getImageUrl(post.image_url, "blogCard")}
           alt={post.title}
@@ -27,7 +27,7 @@ export const BlogPostCard = ({ post, isEager = false }: BlogPostCardProps) => {
           height={post.image_height}
           loading={isEager ? "eager" : "lazy"}
           decoding={isEager ? "sync" : "async"}
-          className="w-full h-auto md:absolute md:inset-0 md:h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="w-full h-auto transition-transform duration-500 group-hover:scale-105"
         />
       </div>
 
