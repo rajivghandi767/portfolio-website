@@ -114,7 +114,7 @@ const CreditCard = ({
       className="bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark border-2 border-gray-200 dark:border-neutral-800 rounded-lg overflow-hidden shadow-sm transition-all duration-200 hover:shadow-md hover:scale-[1.02] cursor-pointer flex flex-col group"
       onClick={onClick}
     >
-      <div className="bg-transparent flex items-center justify-center w-full md:aspect-[16/9] overflow-hidden relative">
+      <div className="bg-transparent flex items-center justify-center w-full md:aspect-[4/3] overflow-hidden relative">
         <img
           src={thumbnailUrl}
           alt={card.card_name}
@@ -189,7 +189,7 @@ const CardDetailModal = ({
       <div className="bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark border-2 border-gray-200 dark:border-neutral-800 rounded-lg shadow-xl w-full max-w-xl max-h-[90vh] overflow-hidden flex flex-col relative">
         
         {/* Full width hero image spanning the top */}
-        <div className="w-full sm:aspect-[16/9] relative bg-transparent overflow-hidden flex-shrink-0">
+        <div className="w-full sm:aspect-[4/3] relative bg-transparent overflow-hidden flex-shrink-0">
           <img
             src={imageUrl}
             alt={card.card_name}
