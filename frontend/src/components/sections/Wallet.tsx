@@ -114,13 +114,7 @@ const CreditCard = ({
       className="bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark border-2 border-gray-200 dark:border-neutral-800 rounded-lg overflow-hidden shadow-sm transition-all duration-200 hover:shadow-md hover:scale-[1.02] cursor-pointer flex flex-col group"
       onClick={onClick}
     >
-      <div className="bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center w-full aspect-[4/3] overflow-hidden relative">
-        <img
-          src={thumbnailUrl}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover blur-xl opacity-50 scale-110"
-          aria-hidden="true"
-        />
+      <div className="bg-transparent flex items-center justify-center w-full overflow-hidden relative">
         <img
           src={thumbnailUrl}
           alt={card.card_name}
@@ -128,7 +122,7 @@ const CreditCard = ({
           height={card.image_height}
           loading={isEager ? "eager" : "lazy"}
           decoding={isEager ? "sync" : "async"}
-          className="absolute inset-0 w-full h-full object-contain z-10 transition-transform duration-500 group-hover:scale-105"
+          className="w-full h-auto transition-transform duration-500 group-hover:scale-105"
         />
       </div>
       <div className="p-4 flex flex-col flex-grow text-center">
@@ -195,19 +189,13 @@ const CardDetailModal = ({
       <div className="bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark border-2 border-gray-200 dark:border-neutral-800 rounded-lg shadow-xl w-full max-w-xl max-h-[90vh] overflow-hidden flex flex-col relative">
         
         {/* Full width hero image spanning the top */}
-        <div className="w-full aspect-[4/3] sm:aspect-[16/9] relative bg-neutral-100 dark:bg-neutral-900 overflow-hidden flex-shrink-0">
-          <img
-            src={imageUrl}
-            alt=""
-            className="absolute inset-0 w-full h-full object-cover blur-xl opacity-50 scale-110"
-            aria-hidden="true"
-          />
+        <div className="w-full relative bg-transparent overflow-hidden flex-shrink-0">
           <img
             src={imageUrl}
             alt={card.card_name}
             width={card.image_width}
             height={card.image_height}
-            className="absolute inset-0 w-full h-full object-contain z-10"
+            className="w-full h-auto"
           />
           <button
             onClick={onClose}
