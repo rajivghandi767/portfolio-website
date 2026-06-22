@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "blog",
     "wallet",
     "contacts",
+    "django_cleanup.apps.CleanupConfig",
 ]
 
 MIDDLEWARE = [

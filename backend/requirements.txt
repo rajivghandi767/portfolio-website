@@ -24,6 +24,8 @@ django==5.2.6
     #   djangorestframework
 django-ckeditor-5==0.2.18
     # via -r common.in
+django-cleanup==9.0.0
+    # via -r common.in
 django-filter==25.2
     # via -r common.in
 django-prometheus==2.4.1
