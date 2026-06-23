@@ -36,6 +36,17 @@ class Contact(models.Model):
 
     def _send_discord_notification(self) -> bool:
         webhook_url: str | None = getattr(settings, "DISCORD_WEBHOOK_URL", None)
+        
+        # Print to console in local development
+        if getattr(settings, "DEBUG", False) and not webhook_url:
+            print("\n" + "=" * 50)
+            print("📨 NEW CONTACT FORM SUBMISSION (LOCAL DEV)")
+            print(f"Name: {self.name}")
+            print(f"Email: {self.email}")
+            print(f"Message:\n{self.message}")
+            print("=" * 50 + "\n")
+            return True
+
         if not webhook_url:
             logger.warning("Discord webhook URL not configured")
             return False

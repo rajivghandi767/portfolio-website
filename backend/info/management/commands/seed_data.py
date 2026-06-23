@@ -51,7 +51,6 @@ class Command(BaseCommand):
             {
                 "title": "Portfolio v2",
                 "description": "My personal portfolio website built with React and Django.",
-                "technology": "React, Django, Tailwind",
                 "repo": "https://github.com/rajivghandi767/portfolio-website",
                 "deployed_url": "https://rajivwallace.com",
                 "order": 1,
@@ -59,7 +58,6 @@ class Command(BaseCommand):
             {
                 "title": "Country Trivia API",
                 "description": "A RESTful API serving geographic trivia data.",
-                "technology": "Django, PostgreSQL",
                 "repo": "https://github.com/rajivghandi767/country-trivia",
                 "deployed_url": "https://trivia.rajivwallace.com",
                 "order": 2,
@@ -67,7 +65,6 @@ class Command(BaseCommand):
             {
                 "title": "Prop & Ferry",
                 "description": "A fast and efficient booking engine for island hopping.",
-                "technology": "Next.js, Node.js",
                 "repo": "https://github.com/rajivghandi767/prop-ferry",
                 "deployed_url": "https://prop-ferry.rajivwallace.com",
                 "order": 3,
@@ -75,7 +72,6 @@ class Command(BaseCommand):
             {
                 "title": "Machine Learning Model Server",
                 "description": "An API server wrapping computer vision models.",
-                "technology": "Python, FastAPI",
                 "repo": "https://github.com/rajivghandi767/ml-server",
                 "deployed_url": "",
                 "order": 4,
@@ -83,7 +79,6 @@ class Command(BaseCommand):
             {
                 "title": "Chat App",
                 "description": "A real-time chat application with web sockets.",
-                "technology": "React, Socket.io",
                 "repo": "https://github.com/rajivghandi767/chat-app",
                 "deployed_url": "",
                 "order": 5,
@@ -91,7 +86,6 @@ class Command(BaseCommand):
             {
                 "title": "Data Visualization Dashboard",
                 "description": "An interactive dashboard for complex datasets.",
-                "technology": "Vue.js, D3.js",
                 "repo": "https://github.com/rajivghandi767/data-dashboard",
                 "deployed_url": "",
                 "order": 6,
@@ -117,22 +111,50 @@ class Command(BaseCommand):
             {
                 "title": "My Journey into Tech",
                 "body": "<p>This is a story about how I started coding.</p>",
+                "status": "published",
                 "order": 1,
             },
             {
                 "title": "React vs Angular",
                 "body": "<p>A deep dive into frontend frameworks.</p>",
+                "status": "published",
                 "order": 2,
             },
             {
                 "title": "Building a REST API with Django",
                 "body": "<p>Learn how to build a scalable API.</p>",
+                "status": "published",
                 "order": 3,
             },
             {
                 "title": "Why I Love TypeScript",
                 "body": "<p>Static typing brings sanity to JavaScript.</p>",
+                "status": "published",
                 "order": 4,
+            },
+            {
+                "title": "Mastering CSS Grid",
+                "body": "<p>A comprehensive guide to creating complex layouts easily with CSS Grid.</p>",
+                "status": "published",
+                "order": 5,
+            },
+            {
+                "title": "Deploying Django with Docker",
+                "body": "<p>Step-by-step instructions for containerizing and deploying your Django application.</p>",
+                "status": "published",
+                "order": 6,
+            },
+            {
+                "title": "The Power of Tailwind CSS",
+                "body": "<p>How utility-first CSS changed the way I style web applications.</p>",
+                "status": "published",
+                "order": 7,
+            },
+            {
+                "title": "State Management in React",
+                "body": "<p>Comparing Context API, Redux, and Zustand for state management.</p>",
+                "status": "published",
+                "order": 8,
             },
         ]
 
