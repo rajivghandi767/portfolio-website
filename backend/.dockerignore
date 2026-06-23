@@ -14,8 +14,11 @@ Thumbs.db
 
 # Ignore virtual environments
 venv/
+.venv/
 .env/
 env/
+.mypy_cache/
+.pytest_cache/
 
 # Backend (Django DRF) specific
 migrations/
