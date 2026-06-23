@@ -17,8 +17,7 @@ venv/
 .venv/
 .env/
 env/
-.mypy_cache/
-.pytest_cache/
+.*_cache/
 
 # Backend (Django DRF) specific
 migrations/
