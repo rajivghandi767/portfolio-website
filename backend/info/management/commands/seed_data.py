@@ -14,6 +14,13 @@ class Command(BaseCommand):
     help = "Seeds the database with dummy data for all new portfolio sections"
 
     def handle(self, *args: Any, **kwargs: Any) -> None:
+        self.stdout.write("🧹 Wiping existing data to ensure a fresh state...")
+        Info.objects.all().delete()
+        Project.objects.all().delete()
+        Tag.objects.all().delete()
+        Post.objects.all().delete()
+        Category.objects.all().delete()
+        Card.objects.all().delete()
 
         self.stdout.write(self.style.NOTICE("Seeding Info..."))
         if not Info.objects.exists():
