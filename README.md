@@ -8,14 +8,14 @@ This repository contains the source code for my portfolio website and the **cent
 
 More than just a digital resume, this application serves as a live demonstration of my ability to own the entire software development lifecycle—from writing code to managing bare-metal infrastructure. It highlights my capability to build, containerize, deploy, and monitor full-stack applications independently.
 
-The application is built with a **Django REST backend** and a **React TypeScript frontend**. The entire stack is self-hosted on a bare-metal **Raspberry Pi 4B** in my [Home Lab](https://github.com/rajivghandi767/homelab-iac), orchestrated with **Docker**, and features a complete CI/CD pipeline using **Jenkins** for automated builds and zero-downtime deployments. Secrets are dynamically managed by **HashiCorp Vault**, and system health is monitored via **Prometheus** and **Grafana**.
+The application is built with a **Django REST backend** and a **React TypeScript frontend**. The entire stack is self-hosted on a bare-metal **Raspberry Pi 4B** in my [Home Lab](https://github.com/rajivghandi767/homelab-iac), orchestrated with **Docker**, and features a complete CI/CD pipeline using **GitHub Actions** for automated builds and zero-downtime deployments. Secrets are dynamically managed by **HashiCorp Vault**, and system health is monitored via **Prometheus** and **Grafana**.
 
 ## 🌟 Features & Technical Highlights
 
 - **🚀 Central Django REST API**: A scalable backend architecture serving dynamic content for my projects, blog, contact forms, and powering external applications.
 - **⚛️ React & TypeScript**: A modern, responsive, and strongly-typed frontend built for performance and maintainability.
 - **🐳 DevOps & Containerization**: Both frontend and backend are fully containerized, ensuring perfect parity between development and production environments.
-- **🤖 Automated CI/CD (Jenkins)**: A robust pipeline that automatically runs tests, builds Docker images, and deploys updates to my production server upon merging to `main`.
+- **🤖 Automated CI/CD (GitHub Actions)**: A robust pipeline that automatically runs tests, builds Docker images, and deploys updates to my production server upon merging to `main`.
 - **🔐 Enterprise-Grade Secrets Management**: Integration with HashiCorp Vault to securely inject environment variables dynamically, completely eliminating hardcoded secrets.
 - **🔴 Aggressive Redis Caching**: Bypasses ORM lookups and JSON rendering to accelerate API response times (see Performance Optimization below).
 - **🥧 Bare-Metal Self-Hosting**: Production environment successfully runs on constrained hardware (Raspberry Pi 4B running DietPi) within a highly segmented Ubiquiti network.
@@ -51,7 +51,7 @@ As a public-facing portfolio and blog, traffic is overwhelmingly read-heavy. The
 ### **DevOps & Infrastructure**
 
 - 🐳 Docker & Docker Compose
-- 🤖 Jenkins (CI/CD)
+- 🤖 GitHub Actions (CI/CD)
 - 🔐 HashiCorp Vault
 - 🌐 Nginx Proxy Manager & Cloudflare (Ingress & DNS)
 - 📈 Prometheus, Grafana & Alertmanager
@@ -80,8 +80,6 @@ As a public-facing portfolio and blog, traffic is overwhelmingly read-heavy. The
 │   └── 🐳 Dockerfile
 ├── 🐳 docker-compose.yml
 ├── 📄 env.example
-├── 🤖 Jenkinsfile
-├── 🤖 Jenkinsfile.deploy
 └── 📄 README.md
 ```
 
@@ -100,7 +98,13 @@ This project is deployed in a custom [Home Lab](https://github.com/rajivghandi76
 
 ### CI/CD Pipeline
 
-**Jenkins** monitors the `main` branch. On commit:
+> [!NOTE]
+> **CI/CD Evolution:** This project was recently migrated from a centralized Jenkins/JVM monolith to a decentralized **GitHub Actions** edge runner to optimize compute overhead and security. 
+> The legacy Groovy pipelines have been preserved for historical context in the [`archive/jenkins-pipeline`](https://github.com/rajivghandi767/portfolio-website/tree/archive/jenkins-pipeline) branch.
+
+
+
+**GitHub Actions** monitors the `main` branch. On commit:
 
 1.  Automated tests are executed to ensure code integrity.
 2.  Docker images are built, tagged, and pushed to a **Private GitHub Container Registry**.
