@@ -49,6 +49,8 @@ jobs:
             secret/data/portfolio-prod ADMIN_URL | ADMIN_URL ;
             secret/data/portfolio-prod DISCORD_WEBHOOK_URL | DISCORD_WEBHOOK_URL ;
             secret/data/portfolio-prod REDIS_URL | REDIS_URL ;
+            secret/data/portfolio-prod GCS_CREDENTIALS | GCS_CREDENTIALS ;
+            secret/data/portfolio-prod GS_BUCKET_NAME | GS_BUCKET_NAME ;
 
       - name: Generate .env.prod
         run: |
@@ -66,6 +68,7 @@ jobs:
           echo "DISCORD_WEBHOOK_URL='${{ env.DISCORD_WEBHOOK_URL }}'" >> .env.prod
           echo "REDIS_URL='${{ env.REDIS_URL }}'" >> .env.prod
           echo "GS_BUCKET_NAME='${{ env.GS_BUCKET_NAME }}'" >> .env.prod
+          echo "GCS_CREDENTIALS='${{ env.GCS_CREDENTIALS }}'" >> .env.prod
 
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.9.0
