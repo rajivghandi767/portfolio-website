@@ -49,6 +49,8 @@ jobs:
             secret/data/portfolio-prod ADMIN_URL | ADMIN_URL ;
             secret/data/portfolio-prod DISCORD_WEBHOOK_URL | DISCORD_WEBHOOK_URL ;
             secret/data/portfolio-prod REDIS_URL | REDIS_URL ;
+            secret/data/portfolio-prod GS_BUCKET_NAME | GS_BUCKET_NAME ;
+            secret/data/portfolio-prod GCS_CREDENTIALS | GCS_CREDENTIALS ;
 
       - name: Generate .env.prod
         run: |
