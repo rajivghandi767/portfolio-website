@@ -99,7 +99,7 @@ This project is deployed in a custom [Home Lab](https://github.com/rajivghandi76
 ### CI/CD Pipeline
 
 > [!NOTE]
-> **CI/CD Evolution:** This project was recently migrated from a centralized Jenkins/JVM monolith to a decentralized **GitHub Actions** edge runner to optimize compute overhead and security. 
+> **CI/CD Evolution:** This project is deployed using a decentralized **GitHub Actions** edge runner, having migrated from a legacy Jenkins/JVM monolith to optimize compute overhead and security. 
 > The legacy Groovy pipelines have been preserved for historical context in the [`archive/jenkins-pipeline`](https://github.com/rajivghandi767/portfolio-website/tree/archive/jenkins-pipeline) branch.
 
 
