@@ -150,7 +150,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ## 👤 Author
 
 **Rajiv Wallace**  
-Self-taught Software Engineer based in NYC (originally from Dominica 🇩🇲). Aviation nerd, Chelsea FC supporter, and passionate about robust Backend Development and bare-metal DevOps.
+Self-taught Software Engineer based in NYC (originally from Dominica 🇩🇲). Aviation nerd, Formula One fan, Chelsea FC supporter, and passionate about robust Backend Development and bare-metal DevOps.
 
 - **LinkedIn**: [linkedin.com/in/rajiv-wallace](https://www.linkedin.com/in/rajiv-wallace)
 - **Email**: [dev@rajivwallace.com](mailto:dev@rajivwallace.com)
