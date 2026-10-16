@@ -53,4 +53,8 @@ class Project(models.Model):
         from django.utils.text import slugify
         if not self.slug:
             self.slug = slugify(self.title)
+        from config.utils import ensure_image_dimensions
+
+        ensure_image_dimensions(self, "thumbnail")
         super().save(*args, **kwargs)
+
