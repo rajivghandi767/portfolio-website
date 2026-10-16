@@ -1,9 +1,10 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
+  useLocation,
 } from "react-router-dom";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
@@ -20,10 +21,21 @@ const ContactPage = lazy(() => import("./components/pages/ContactPage"));
 
 // Layout component for all pages
 const Layout = ({ children }: { children: React.ReactNode }) => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "instant",
+    });
+  }, [pathname]);
+
   return (
     // Replaced hardcoded text/bg colors with theme tokens
     <div className="min-h-screen m-auto font-mono scroll-smooth pt-2 pb-2 flex flex-col bg-bg-light dark:bg-bg-dark text-brand-light dark:text-brand-dark transition-colors duration-200">
       <Header />
+
       <main className="pb-16 grow">
         <Suspense
           fallback={
