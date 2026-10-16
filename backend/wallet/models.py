@@ -41,3 +41,10 @@ class Card(models.Model):
 
     def __str__(self) -> str:
         return self.card_name
+
+    def save(self, *args: object, **kwargs: object) -> None:
+        from config.utils import ensure_image_dimensions
+
+        ensure_image_dimensions(self, "image")
+        super().save(*args, **kwargs)
+

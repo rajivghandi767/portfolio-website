@@ -73,4 +73,8 @@ class Post(models.Model):
     def save(self, *args: object, **kwargs: object) -> None:  # type: ignore[override]
         if not self.slug:
             self.slug = slugify(self.title)  # type: ignore[assignment]
+        from config.utils import ensure_image_dimensions
+
+        ensure_image_dimensions(self, "image")
         super().save(*args, **kwargs)  # type: ignore[arg-type]
+

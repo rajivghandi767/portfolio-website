@@ -74,12 +74,16 @@ class Info(models.Model):
         is_new = self.pk is None
         try:
             self.full_clean()
+            from config.utils import ensure_image_dimensions
+
+            ensure_image_dimensions(self, "profile_photo")
             super().save(*args, **kwargs)  # type: ignore[arg-type]
             action = "created" if is_new else "updated"
             logger.info(f"Info object {action}: {self.greeting}")
         except Exception as e:
             logger.error(f"Error saving Info object: {str(e)}", exc_info=True)
             raise
+
 
     @property
     def has_profile_photo(self) -> bool:
