@@ -587,7 +587,7 @@ prod = [
 
 [package.metadata]
 requires-dist = [
-    { name = "django", specifier = ">=5.2,<7.0" },
+    { name = "django" },
     { name = "django-ckeditor-5" },
     { name = "django-cleanup" },
     { name = "django-filter" },
