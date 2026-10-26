@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Backend API for Portfolio Website"
 requires-python = ">=3.14"
 dependencies = [
-    "django>=5.2,<6.0",
+    "django",
     "django-ckeditor-5",
     "django-cleanup",
     "django-filter",
