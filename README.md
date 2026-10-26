@@ -36,6 +36,7 @@ As a public-facing portfolio and blog, traffic is overwhelmingly read-heavy. The
 
 - 🐍 Python
 - 🚀 Django & Django REST Framework
+- ⚡ uv (Deterministic Package & Dependency Management)
 
 ### **Frontend**
 
@@ -71,6 +72,8 @@ As a public-facing portfolio and blog, traffic is overwhelmingly read-heavy. The
 │   ├── 🏗️ projects/
 │   ├── 💳 wallet/
 │   ├── ⚙️ config/
+│   ├── 📦 pyproject.toml
+│   ├── 🔒 uv.lock
 │   ├── 🐳 Dockerfile.prod
 │   └── 🚀 manage.py
 ├── 📁 frontend/
