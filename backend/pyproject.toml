@@ -1,0 +1,29 @@
+[project]
+name = "portfolio-backend"
+version = "0.1.0"
+description = "Backend API for Portfolio Website"
+requires-python = ">=3.14"
+dependencies = [
+    "django>=5.2,<6.0",
+    "django-ckeditor-5",
+    "django-cleanup",
+    "django-filter",
+    "django-prometheus",
+    "django-storages[google]",
+    "djangorestframework",
+    "pillow",
+    "redis",
+    "requests",
+]
+
+[dependency-groups]
+prod = [
+    "gunicorn",
+    "psycopg",
+]
+dev = [
+    "django-cors-headers",
+    "psycopg[binary]",
+    "pytest",
+    "pytest-django",
+]
