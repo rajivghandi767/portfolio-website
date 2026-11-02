@@ -80,19 +80,23 @@ const Header = () => {
   };
 
   const scrollToSection = (ref: string): void => {
-    const section = document.getElementById(ref);
-    if (section) {
-      const header = document.querySelector(".sticky");
-      const headerHeight = header ? header.getBoundingClientRect().height : 0;
-      const sectionPosition = section.getBoundingClientRect().top;
-      const offsetPosition =
-        sectionPosition + window.pageYOffset - headerHeight;
+    window.dispatchEvent(new CustomEvent("lazysection:reveal", { detail: { id: ref } }));
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
-    }
+    requestAnimationFrame(() => {
+      const section = document.getElementById(ref);
+      if (section) {
+        const header = document.querySelector(".sticky");
+        const headerHeight = header ? header.getBoundingClientRect().height : 0;
+        const sectionPosition = section.getBoundingClientRect().top;
+        const offsetPosition =
+          sectionPosition + window.pageYOffset - headerHeight;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth",
+        });
+      }
+    });
   };
 
   const renderNavLinks = (items: NavigationItem[], isMobile = false) => (

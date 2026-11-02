@@ -10,13 +10,13 @@ const HomePage = () => {
     <>
       <Bio />
       <Projects limit={3} />
-      <LazySection>
+      <LazySection id="blog">
         <Blog limit={3} />
       </LazySection>
-      <LazySection>
+      <LazySection id="wallet">
         <Wallet limit={4} />
       </LazySection>
-      <LazySection>
+      <LazySection id="contact-form">
         <Contact />
       </LazySection>
     </>
