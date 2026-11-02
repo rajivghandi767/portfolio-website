@@ -12,8 +12,8 @@ The application is built with a **Django REST backend** and a **React TypeScript
 
 ## 🌟 Features & Technical Highlights
 
-- **🚀 Central Django REST API (Smart Server)**: A scalable backend architecture serving dynamic, server-sorted content for my projects, blog, contact forms, and powering external applications, with full static type checking (`mypy` + `django-stubs` + `djangorestframework-stubs`).
-- **⚛️ React & TypeScript (Dumb Client)**: A modern, responsive, and strictly-typed frontend (`typescript-eslint` type-checked rules) built for performance, request deduplication, and maintainability.
+- **🚀 Central Django REST API (Smart Server)**: A scalable backend architecture serving dynamic, server-sorted content (`switcher_order`) for my projects, blog, and wallet, with N+1 query prefetching (`.prefetch_related("categories", "tags")`), shared slug/PK resolution (`get_object_by_pk_or_slug`), `POST`-only rate-limited contact submissions (`20/hour`), and full static type checking (`mypy` + `django-stubs` + `djangorestframework-stubs`).
+- **⚛️ React & TypeScript (Dumb Client)**: A modern, responsive, and strictly-typed frontend (`typescript-eslint` type-checked rules across `src/` and tests) built for performance, in-flight API request deduplication (`useApi`), and anchor-aware lazy section mounting (`LazySection`).
 - **🐳 Consolidated Production Containerization**: In production, a multi-stage `portfolio-nginx` container builds and serves the compiled React SPA directly while reverse-proxying `/api/`, `/admin/`, `/health/`, and social-crawler SEO endpoints to `portfolio-backend`. Local development preserves hot-reloading containers via `docker-compose.yml`.
 - **🤖 Automated CI/CD (GitHub Actions)**: A robust pipeline that automatically runs tests, builds Docker images, and deploys updates to my production server upon merging to `main`.
 - **🔐 Enterprise-Grade Secrets Management**: Integration with HashiCorp Vault to securely inject environment variables dynamically, completely eliminating hardcoded secrets.
@@ -72,6 +72,7 @@ As a public-facing portfolio and blog, traffic is overwhelmingly read-heavy. The
 │   ├── 🏗️ projects/
 │   ├── 💳 wallet/
 │   ├── ⚙️ config/
+│   ├── 🔍 mypy.ini
 │   ├── 📦 pyproject.toml
 │   ├── 🔒 uv.lock
 │   ├── 🐳 Dockerfile.prod
