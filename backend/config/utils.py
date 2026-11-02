@@ -1,8 +1,18 @@
+from __future__ import annotations
+
 import socket
 from contextlib import closing
+from typing import Any, TypeVar
+
+from django.db.models import Model, Q, QuerySet
+from rest_framework.generics import get_object_or_404
+
+_M = TypeVar("_M", bound=Model)
 
 
-def is_service_available(host: str, port: int, timeout: int = 1) -> bool:
+def is_service_available(
+    host: str | None, port: int | str | None, timeout: int = 1
+) -> bool:
     """
     Executes a socket connection test to verify if downstream services
     (like Postgres or Redis) are actively accepting connections.
@@ -13,8 +23,20 @@ def is_service_available(host: str, port: int, timeout: int = 1) -> bool:
         sock.settimeout(timeout)
         try:
             return sock.connect_ex((host, int(port))) == 0
-        except (socket.gaierror, TypeError):
+        except (socket.gaierror, TypeError, ValueError):
             return False
+
+
+def get_object_by_pk_or_slug(queryset: QuerySet[_M], lookup: Any) -> _M:
+    """
+    Resolves a model instance from a queryset by numeric primary key or slug.
+    """
+    try:
+        lookup_int = int(lookup)
+        return get_object_or_404(queryset, Q(pk=lookup_int) | Q(slug=lookup))
+    except (ValueError, TypeError):
+        return get_object_or_404(queryset, slug=lookup)
+
 
 
 def ensure_image_dimensions(

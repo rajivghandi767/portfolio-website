@@ -17,6 +17,10 @@ class Category(models.Model):
 
 
 class Post(models.Model):
+    class StatusChoices(models.TextChoices):
+        DRAFT = "draft", "Draft"
+        PUBLISHED = "published", "Published"
+
     STATUS_CHOICES = (
         ("draft", "Draft"),
         ("published", "Published"),
@@ -24,7 +28,9 @@ class Post(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True, blank=True, null=True)
     body = CKEditor5Field("Text", config_name="default")
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="draft")
+    status = models.CharField(
+        max_length=10, choices=STATUS_CHOICES, default=StatusChoices.DRAFT
+    )
     publish_date = models.DateTimeField(default=timezone.now)
     created_on = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
@@ -55,8 +61,8 @@ class Post(models.Model):
         from django.utils import timezone
 
         # True if it's a draft OR if it's published but scheduled for the future
-        is_preview = self.status == "draft" or (
-            self.status == "published"
+        is_preview = self.status == self.StatusChoices.DRAFT or (
+            self.status == self.StatusChoices.PUBLISHED
             and self.publish_date
             and self.publish_date > timezone.now()
         )

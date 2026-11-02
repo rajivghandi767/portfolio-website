@@ -20,6 +20,13 @@ from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from django.core.signing import TimestampSigner, BadSignature, SignatureExpired
 
+from config.constants import (
+    OG_IMAGE_HEIGHT,
+    OG_IMAGE_WIDTH,
+    PREVIEW_TOKEN_MAX_AGE,
+    SEO_DESCRIPTION_MAX_LENGTH,
+)
+from config.utils import get_object_by_pk_or_slug
 from .models import Category, Post
 from .serializers import CategorySerializer, PostSerializer
 from info.models import Info
@@ -31,7 +38,7 @@ class PostPreviewViewSet(viewsets.ReadOnlyModelViewSet):  # type: ignore[type-ar
     Not cached.
     """
 
-    queryset = Post.objects.all()
+    queryset = Post.objects.prefetch_related("categories").all()
     serializer_class = PostSerializer
     permission_classes = [AllowAny]
 
@@ -52,16 +59,11 @@ class PostPreviewViewSet(viewsets.ReadOnlyModelViewSet):  # type: ignore[type-ar
             try:
                 signer = TimestampSigner()
                 # Tokens expire in 2 hours
-                signer.unsign(token, max_age=7200)
+                signer.unsign(token, max_age=PREVIEW_TOKEN_MAX_AGE)
             except (BadSignature, SignatureExpired):
                 raise PermissionDenied("Invalid or expired preview token.")
 
-        try:
-            lookup_int = int(lookup)
-            obj: Post = get_object_or_404(queryset, Q(pk=lookup_int) | Q(slug=lookup))
-        except ValueError:
-            obj = get_object_or_404(queryset, slug=lookup)
-
+        obj = get_object_by_pk_or_slug(queryset, lookup)
         self.check_object_permissions(self.request, obj)
         return obj
 
@@ -100,7 +102,13 @@ class PostViewSet(viewsets.ReadOnlyModelViewSet):  # type: ignore[type-arg]
     search_fields = ['title', 'body', 'categories__name']
 
     def get_queryset(self) -> QuerySet[Post]:
-        return Post.objects.filter(status="published", publish_date__lte=timezone.now()).distinct()
+        return (
+            Post.objects.filter(
+                status=Post.StatusChoices.PUBLISHED, publish_date__lte=timezone.now()
+            )
+            .prefetch_related("categories")
+            .distinct()
+        )
 
     @action(detail=False)
     def tags(self, request: HttpRequest) -> Response:
@@ -112,12 +120,7 @@ class PostViewSet(viewsets.ReadOnlyModelViewSet):  # type: ignore[type-arg]
         lookup_url_kwarg: str = self.lookup_url_kwarg or self.lookup_field
         lookup: Any = self.kwargs.get(lookup_url_kwarg)
 
-        try:
-            lookup_int = int(lookup)
-            obj: Post = get_object_or_404(queryset, Q(pk=lookup_int) | Q(slug=lookup))
-        except ValueError:
-            obj = get_object_or_404(queryset, slug=lookup)
-
+        obj = get_object_by_pk_or_slug(queryset, lookup)
         self.check_object_permissions(self.request, obj)
         return obj
 
@@ -126,9 +129,13 @@ def seo_blog_post(request: HttpRequest, slug: str) -> HttpResponse:
     try:
         try:
             lookup_int = int(slug)
-            post = Post.objects.get(Q(pk=lookup_int) | Q(slug=slug), status="published")
+            post = Post.objects.prefetch_related("categories").get(
+                Q(pk=lookup_int) | Q(slug=slug), status=Post.StatusChoices.PUBLISHED
+            )
         except ValueError:
-            post = Post.objects.get(slug=slug, status="published")
+            post = Post.objects.prefetch_related("categories").get(
+                slug=slug, status=Post.StatusChoices.PUBLISHED
+            )
 
         if post.publish_date and post.publish_date > timezone.now():
             raise Http404()
@@ -147,7 +154,9 @@ def seo_blog_post(request: HttpRequest, slug: str) -> HttpResponse:
     # Strip HTML tags from CKEditor body (stored as HTML) to produce a plain-text excerpt
     plain_body = re.sub(r"<[^>]+>", "", post.body)
     plain_body = re.sub(r"\s+", " ", plain_body).strip()
-    description: str = plain_body[:160] if plain_body else post.title
+    description: str = (
+        plain_body[:SEO_DESCRIPTION_MAX_LENGTH] if plain_body else post.title
+    )
 
     # article:author — Post model has no author field; pull name from Info.site_header
     info = Info.objects.first()
@@ -193,8 +202,8 @@ def seo_blog_post(request: HttpRequest, slug: str) -> HttpResponse:
     <meta property="og:description" content="{safe_description}" />
     <meta property="og:image" content="{safe_image_url}" />
     <meta property="og:image:alt" content="{safe_title}" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    <meta property="og:image:width" content="{OG_IMAGE_WIDTH}" />
+    <meta property="og:image:height" content="{OG_IMAGE_HEIGHT}" />
 
     <!-- Article metadata (post.publish_date, post.last_modified, post.categories) -->
     <meta property="article:author" content="{safe_author}" />

@@ -18,7 +18,7 @@ const Bio = () => {
     data: info,
     isLoading,
     error,
-  } = useApi<Info[]>(() => apiService.info.get());
+  } = useApi<Info[]>(() => apiService.info.get(), [], "info");
 
   useEffect(() => {
     return () => {

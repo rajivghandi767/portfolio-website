@@ -12,9 +12,9 @@ The application is built with a **Django REST backend** and a **React TypeScript
 
 ## 🌟 Features & Technical Highlights
 
-- **🚀 Central Django REST API**: A scalable backend architecture serving dynamic content for my projects, blog, contact forms, and powering external applications.
-- **⚛️ React & TypeScript**: A modern, responsive, and strongly-typed frontend built for performance and maintainability.
-- **🐳 DevOps & Containerization**: Both frontend and backend are fully containerized, ensuring perfect parity between development and production environments.
+- **🚀 Central Django REST API (Smart Server)**: A scalable backend architecture serving dynamic, server-sorted content for my projects, blog, contact forms, and powering external applications, with full static type checking (`mypy` + `django-stubs` + `djangorestframework-stubs`).
+- **⚛️ React & TypeScript (Dumb Client)**: A modern, responsive, and strictly-typed frontend (`typescript-eslint` type-checked rules) built for performance, request deduplication, and maintainability.
+- **🐳 Consolidated Production Containerization**: In production, a multi-stage `portfolio-nginx` container builds and serves the compiled React SPA directly while reverse-proxying `/api/`, `/admin/`, `/health/`, and social-crawler SEO endpoints to `portfolio-backend`. Local development preserves hot-reloading containers via `docker-compose.yml`.
 - **🤖 Automated CI/CD (GitHub Actions)**: A robust pipeline that automatically runs tests, builds Docker images, and deploys updates to my production server upon merging to `main`.
 - **🔐 Enterprise-Grade Secrets Management**: Integration with HashiCorp Vault to securely inject environment variables dynamically, completely eliminating hardcoded secrets.
 - **🔴 Aggressive Redis Caching**: Bypasses ORM lookups and JSON rendering to accelerate API response times (see Performance Optimization below).
@@ -78,11 +78,13 @@ As a public-facing portfolio and blog, traffic is overwhelmingly read-heavy. The
 │   └── 🚀 manage.py
 ├── 📁 frontend/
 │   ├── 📁 src/
-│   └── 🐳 Dockerfile.prod
+│   └── 🐳 Dockerfile
 ├── 📁 nginx/
+│   ├── 🌐 nginx.conf
 │   └── 🐳 Dockerfile
 ├── 🐳 docker-compose.yml
-├── 📄 env.example
+├── 🐳 docker-compose.prod.yml
+├── 📄 .env.example
 └── 📄 README.md
 ```
 
