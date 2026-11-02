@@ -37,8 +37,8 @@ describe('DataLoader Component', () => {
       <DataLoader isLoading={false} error={null} data={items}>
         {(data: string[]) => (
           <ul>
-            {data.map((item, idx) => (
-              <li key={idx}>{item}</li>
+            {data.map((item) => (
+              <li key={item}>{item}</li>
             ))}
           </ul>
         )}

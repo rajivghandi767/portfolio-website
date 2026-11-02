@@ -23,7 +23,9 @@ prod = [
 ]
 dev = [
     "django-cors-headers",
+    "django-stubs[compatible-mypy]",
+    "djangorestframework-stubs[compatible-mypy]",
+    "mypy",
     "psycopg[binary]",
-    "pytest",
-    "pytest-django",
+    "types-requests",
 ]

@@ -7,6 +7,8 @@ from typing import Any
 
 from django.core.files.base import ContentFile
 
+from config.constants import WEBP_QUALITY
+
 # Dynamically inherit from GoogleCloudStorage in production, FileSystemStorage locally
 if os.getenv("GCS_CREDENTIALS"):
     from storages.backends.gcloud import GoogleCloudStorage as _BaseStorage
@@ -42,12 +44,12 @@ class WebPOptimizedStorage(_BaseStorage):  # type: ignore[misc]
                     img.mode in ("RGBA", "LA")
                     or (img.mode == "P" and "transparency" in img.info)
                 ):
-                    img.save(output, format="WEBP", quality=85, lossless=True)
+                    img.save(output, format="WEBP", quality=WEBP_QUALITY, lossless=True)
                 else:
                     # Convert standard JPEGs/PNGs to RGB if needed
                     if img.mode != "RGB":
                         img = img.convert("RGB")  # type: ignore[assignment]
-                    img.save(output, format="WEBP", quality=85)
+                    img.save(output, format="WEBP", quality=WEBP_QUALITY)
 
                 # Seek buffer back to start
                 output.seek(0)

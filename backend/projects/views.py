@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Optional
+from typing import Any, Optional
 
 from django.db.models import Q, QuerySet
 from django.utils.decorators import method_decorator
@@ -10,9 +10,8 @@ from django.http import HttpResponseRedirect, Http404, HttpRequest
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from rest_framework.response import Response
-from typing import Any
 
+from config.utils import get_object_by_pk_or_slug
 from .models import Project
 from .serializers import ProjectSerializer
 
@@ -28,7 +27,9 @@ class ProjectViewSet(viewsets.ReadOnlyModelViewSet):  # type: ignore[type-arg]
         after get_queryset() returns. Slicing a queryset before ordering raises a Django
         TypeError, so we must call .order_by() first, then apply the limit slice last.
         """
-        queryset: QuerySet[Project] = Project.objects.order_by('order')
+        queryset: QuerySet[Project] = Project.objects.prefetch_related("tags").order_by(
+            "order"
+        )
 
         is_visible: Optional[str] = self.request.query_params.get("is_visible")
         get_all: Optional[str] = self.request.query_params.get("all")
@@ -38,7 +39,9 @@ class ProjectViewSet(viewsets.ReadOnlyModelViewSet):  # type: ignore[type-arg]
         elif get_all == "true":
             queryset = queryset.filter(Q(is_visible=True) | Q(is_visible_switcher=True))
         else:
-            queryset = queryset.filter(is_visible_switcher=True)
+            queryset = queryset.filter(is_visible_switcher=True).order_by(
+                "switcher_order", "order"
+            )
 
         limit: Optional[str] = self.request.query_params.get("limit")
         if limit:
@@ -54,13 +57,7 @@ class ProjectViewSet(viewsets.ReadOnlyModelViewSet):  # type: ignore[type-arg]
         lookup_url_kwarg: str = self.lookup_url_kwarg or self.lookup_field
         lookup: Any = self.kwargs.get(lookup_url_kwarg)
 
-        from django.shortcuts import get_object_or_404
-        try:
-            lookup_int = int(lookup)
-            obj: Project = get_object_or_404(queryset, Q(pk=lookup_int) | Q(slug=lookup))
-        except ValueError:
-            obj = get_object_or_404(queryset, slug=lookup)
-
+        obj = get_object_by_pk_or_slug(queryset, lookup)
         self.check_object_permissions(self.request, obj)
         return obj
 

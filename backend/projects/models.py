@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Any
+
 from django.db import models
 
 
@@ -49,7 +51,7 @@ class Project(models.Model):
     def __str__(self) -> str:
         return self.title
 
-    def save(self, *args: object, **kwargs: object) -> None:
+    def save(self, *args: Any, **kwargs: Any) -> None:
         from django.utils.text import slugify
         if not self.slug:
             self.slug = slugify(self.title)

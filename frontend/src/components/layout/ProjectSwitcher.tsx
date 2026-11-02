@@ -12,10 +12,12 @@ export function ProjectSwitcher({ align = "right" }: ProjectSwitcherProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   
-  const { data: projectsData } = useApi<Project[]>(() => apiService.projects.getAll());
-  const projects = (projectsData || [])
-    .filter((p) => p.is_visible_switcher)
-    .sort((a, b) => (a.switcher_order || 0) - (b.switcher_order || 0));
+  const { data: projectsData } = useApi<Project[]>(
+    () => apiService.projects.getAll({ is_visible_switcher: true }),
+    [],
+    "projects-switcher",
+  );
+  const projects = projectsData ?? [];
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {

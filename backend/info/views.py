@@ -14,6 +14,11 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.request import Request
 
+from config.constants import (
+    OG_IMAGE_HEIGHT,
+    OG_IMAGE_WIDTH,
+    SEO_DESCRIPTION_MAX_LENGTH,
+)
 from .models import Info, Resume
 from .serializers import InfoSerializer, ResumeSerializer, ResumeListSerializer
 
@@ -156,7 +161,7 @@ def seo_home_page(request: HttpRequest) -> HttpResponse:
 
     # og:description — mapped from info.bio
     bio: str = info.bio if info and info.bio else "Software Developer Portfolio"
-    description: str = bio[:160]
+    description: str = bio[:SEO_DESCRIPTION_MAX_LENGTH]
 
     # og:image — mapped from info.profile_photo (GCS returns an absolute URL)
     image_url = ""
@@ -189,8 +194,8 @@ def seo_home_page(request: HttpRequest) -> HttpResponse:
     <meta property="og:description"  content="{safe_description}" />
     <meta property="og:image"        content="{safe_image_url}" />
     <meta property="og:image:alt"    content="{safe_site_name}" />
-    <meta property="og:image:width"  content="1200" />
-    <meta property="og:image:height" content="630" />
+    <meta property="og:image:width"  content="{OG_IMAGE_WIDTH}" />
+    <meta property="og:image:height" content="{OG_IMAGE_HEIGHT}" />
 
     <!-- Twitter / X Card -->
     <meta name="twitter:card"        content="summary_large_image" />

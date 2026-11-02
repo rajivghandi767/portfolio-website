@@ -46,7 +46,7 @@ const imageUtils = {
     }
 
     // For relative paths, prepend the API base URL
-    const baseUrl = (typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_API_URL : '') || '';
+    const baseUrl = (import.meta.env?.VITE_API_URL as string | undefined) || '';
     // Ensure there's no double slash between the base URL and the image path
     return `${baseUrl.replace(/\/$/, '')}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
   }

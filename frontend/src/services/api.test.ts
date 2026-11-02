@@ -15,10 +15,10 @@ describe('apiService', () => {
     const mockResponse = {
       ok: true,
       status: 200,
-      json: async () => mockProjects
+      json: () => Promise.resolve(mockProjects)
     };
 
-    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(mockResponse as any);
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(mockResponse as unknown as Response);
 
     const result = await apiService.projects.getAll();
 
@@ -33,10 +33,10 @@ describe('apiService', () => {
       ok: false,
       status: 500,
       statusText: 'Internal Server Error',
-      text: async () => 'Database error'
+      text: () => Promise.resolve('Database error')
     };
 
-    vi.spyOn(globalThis, 'fetch').mockResolvedValue(mockResponse as any);
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(mockResponse as unknown as Response);
 
     const result = await apiService.projects.getAll();
 

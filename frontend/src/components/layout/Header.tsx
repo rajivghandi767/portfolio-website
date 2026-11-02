@@ -59,7 +59,7 @@ const Header = () => {
   const currentPath = location.pathname;
   const isHomePage = currentPath === "/";
 
-  const { data: info } = useApi<Info[]>(() => apiService.info.get());
+  const { data: info } = useApi<Info[]>(() => apiService.info.get(), [], "info");
   const infoData = info?.[0];
 
   const navItems: NavigationItem[] = isHomePage

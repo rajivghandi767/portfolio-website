@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Any
+
 from django.http import HttpRequest, JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
@@ -15,7 +17,7 @@ def health_detailed(request: HttpRequest) -> JsonResponse:
     """
     Comprehensive health check for production monitoring
     """
-    health_data: dict = {
+    health_data: dict[str, Any] = {
         "status": "healthy",
         "timestamp": time.time(),
         "service": "portfolio-backend",

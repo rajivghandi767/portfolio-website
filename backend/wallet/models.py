@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Any
+
 from django.db import models
 from django_ckeditor_5.fields import CKEditor5Field
 
@@ -42,7 +44,7 @@ class Card(models.Model):
     def __str__(self) -> str:
         return self.card_name
 
-    def save(self, *args: object, **kwargs: object) -> None:
+    def save(self, *args: Any, **kwargs: Any) -> None:
         from config.utils import ensure_image_dimensions
 
         ensure_image_dimensions(self, "image")

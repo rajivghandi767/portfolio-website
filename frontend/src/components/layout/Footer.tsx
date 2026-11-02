@@ -6,7 +6,7 @@ import { Info } from "../../types";
 const currentYear = new Date().getFullYear();
 
 const Footer = () => {
-  const { data: info } = useApi<Info[]>(() => apiService.info.get());
+  const { data: info } = useApi<Info[]>(() => apiService.info.get(), [], "info");
   const infoData = info?.[0];
 
   return (

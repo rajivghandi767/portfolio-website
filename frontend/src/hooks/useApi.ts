@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { ApiResponse } from '../types';
 
-// Simple in-memory cache
+// Simple in-memory cache and in-flight request deduplication
 const apiCache: Record<string, { data: unknown; timestamp: number }> = {};
+const inFlightRequests: Record<string, Promise<ApiResponse<unknown>> | undefined> = {};
 const CACHE_TTL = import.meta.env.DEV ? 0 : 5 * 60 * 1000; // 0 in dev, 5 mins in prod
 
 /**
@@ -51,7 +52,20 @@ function useApi<T>(
     }
     
     try {
-      const result = await apiCallRef.current();
+      let requestPromise: Promise<ApiResponse<T>>;
+      if (cacheKey && !skipCache) {
+        const existingInFlight = inFlightRequests[cacheKey] as Promise<ApiResponse<T>> | undefined;
+        if (existingInFlight) {
+          requestPromise = existingInFlight;
+        } else {
+          requestPromise = apiCallRef.current();
+          inFlightRequests[cacheKey] = requestPromise;
+        }
+      } else {
+        requestPromise = apiCallRef.current();
+      }
+
+      const result = await requestPromise;
       
       if (result.error) {
         throw new Error(result.error);
@@ -72,6 +86,9 @@ function useApi<T>(
       }
       setError(err instanceof Error ? err.message : 'An unknown error occurred');
     } finally {
+      if (cacheKey) {
+        delete inFlightRequests[cacheKey];
+      }
       setIsLoading(false);
     }
   };

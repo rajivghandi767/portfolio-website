@@ -1,10 +1,14 @@
 from __future__ import annotations
 
 import logging
+from typing import Any
+
 import requests
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
+
+from config.constants import DISCORD_MESSAGE_PREVIEW_LENGTH, DISCORD_WEBHOOK_TIMEOUT
 
 logger = logging.getLogger(__name__)
 
@@ -52,7 +56,7 @@ class Contact(models.Model):
             return False
 
         try:
-            embed: dict = {
+            embed: dict[str, Any] = {
                 "title": "🔔 New Contact Form Submission",
                 "color": 0x00FF00,
                 "fields": [
@@ -60,8 +64,12 @@ class Contact(models.Model):
                     {"name": "📧 Email", "value": self.email, "inline": True},
                     {
                         "name": "💬 Message",
-                        "value": self.message[:1000]
-                        + ("..." if len(self.message) > 1000 else ""),
+                        "value": self.message[:DISCORD_MESSAGE_PREVIEW_LENGTH]
+                        + (
+                            "..."
+                            if len(self.message) > DISCORD_MESSAGE_PREVIEW_LENGTH
+                            else ""
+                        ),
                         "inline": False,
                     },
                 ],
@@ -69,13 +77,15 @@ class Contact(models.Model):
                 "timestamp": self.created_at.isoformat(),
             }
 
-            payload: dict = {
+            payload: dict[str, Any] = {
                 "username": "Portfolio Bot",
                 "avatar_url": f"{self._get_site_url()}/static/images/bot-avatar.png",
                 "embeds": [embed],
             }
 
-            response = requests.post(webhook_url, json=payload, timeout=10)
+            response = requests.post(
+                webhook_url, json=payload, timeout=DISCORD_WEBHOOK_TIMEOUT
+            )
             if response.status_code == 204:
                 logger.info("Discord notification sent successfully")
                 return True

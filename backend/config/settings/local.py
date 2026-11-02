@@ -64,7 +64,7 @@ CSRF_COOKIE_HTTPONLY = False
 POSTGRES_HOST = os.getenv("POSTGRES_HOST")
 POSTGRES_PORT = os.getenv("POSTGRES_PORT")
 
-if is_service_available(POSTGRES_HOST, POSTGRES_PORT):  # type: ignore[arg-type]
+if is_service_available(POSTGRES_HOST, POSTGRES_PORT):
     print(f"✅ Connected to Postgres at {POSTGRES_HOST}:{POSTGRES_PORT}")
     DATABASES = {
         "default": {
@@ -89,17 +89,19 @@ else:
 # CACHING FALLBACK LOGIC
 # ============================================================================
 REDIS_URL = os.getenv("REDIS_URL")
-redis_host, redis_port = None, None
+redis_host: str | None = None
+redis_port: int | None = None
 
-try:
-    parsed_url = urlparse(REDIS_URL)
-    redis_host = parsed_url.hostname
-    redis_port = parsed_url.port or 6379
-except ValueError:
-    pass
+if REDIS_URL:
+    try:
+        parsed_url = urlparse(REDIS_URL)
+        redis_host = parsed_url.hostname
+        redis_port = parsed_url.port or 6379
+    except ValueError:
+        pass
 
-if is_service_available(redis_host, redis_port):  # type: ignore[arg-type]
-    print(f"✅ Connected to Redis at {redis_host}:{redis_port}")  # type: ignore[str-bytes-safe]
+if is_service_available(redis_host, redis_port):
+    print(f"✅ Connected to Redis at {redis_host}:{redis_port}")
     CACHES = {
         "default": {
             "BACKEND": "django.core.cache.backends.redis.RedisCache",
@@ -181,7 +183,6 @@ REST_FRAMEWORK.update(
             "rest_framework.renderers.BrowsableAPIRenderer",
         ],
         "DEFAULT_THROTTLE_CLASSES": [],
-        "DEFAULT_THROTTLE_RATES": {},  # type: ignore[dict-item]
     }
 )
 

@@ -44,23 +44,7 @@ services:
       retries: 3
       start_period: 60s
 
-  portfolio-frontend:
-    image: ghcr.io/rajivghandi767/portfolio-frontend:${IMAGE_TAG:-latest}
-    container_name: portfolio-frontend
-    restart: unless-stopped
-    networks:
-      - core
-      - portfolio
-    depends_on:
-      portfolio-backend:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost/"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  # Single unified nginx service
+  # Single unified nginx service (serves SPA static assets + reverse-proxies API)
   portfolio-nginx:
     image: ghcr.io/rajivghandi767/portfolio-nginx:${IMAGE_TAG:-latest}
     container_name: portfolio-nginx
@@ -70,8 +54,6 @@ services:
       - portfolio
     depends_on:
       portfolio-backend:
-        condition: service_healthy
-      portfolio-frontend:
         condition: service_healthy
     volumes:
       - portfolio_static:/usr/share/nginx/html/static:ro
