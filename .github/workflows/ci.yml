@@ -15,7 +15,6 @@ on:
 
 env:
   APP_NAME: "Portfolio Website"
-  REGISTRY: "ghcr.io"
   IMAGE_BACKEND: "rajivghandi767/portfolio-backend"
   IMAGE_NGINX: "rajivghandi767/portfolio-nginx"
   DISCORD_SUCCESS_COLOR: "3066993"
@@ -104,16 +103,6 @@ jobs:
           }))
           ')
           docker run --rm \
-            -e DJANGO_SETTINGS_MODULE=config.settings.production \
-            -e DJANGO_ENV=production \
-            -e DJANGO_SECRET_KEY=ci-smoke-secret-key \
-            -e ALLOWED_HOSTS=localhost \
-            -e REDIS_URL=redis://127.0.0.1:6379/0 \
-            -e POSTGRES_DB=ci \
-            -e POSTGRES_USER=ci \
-            -e POSTGRES_PASSWORD=ci \
-            -e POSTGRES_HOST=127.0.0.1 \
-            -e POSTGRES_PORT=5432 \
             -e GCS_CREDENTIALS="$DUMMY_GCS_CREDS" \
             portfolio-backend:prod-test \
             gunicorn --check-config \
@@ -150,15 +139,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get Git Commit
-        id: git-commit
-        run: echo "short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-
       - name: Build and Push Backend
         run: |
           docker build -t ghcr.io/rajivghandi767/portfolio-backend:${{ github.run_number }} \
                        -t ghcr.io/rajivghandi767/portfolio-backend:latest \
-                       --label git-commit=${{ steps.git-commit.outputs.short }} \
                        -f backend/Dockerfile.prod ./backend
           docker push ghcr.io/rajivghandi767/portfolio-backend --all-tags
 
@@ -166,7 +150,6 @@ jobs:
         run: |
           docker build -t ghcr.io/rajivghandi767/portfolio-nginx:${{ github.run_number }} \
                        -t ghcr.io/rajivghandi767/portfolio-nginx:latest \
-                       --label git-commit=${{ steps.git-commit.outputs.short }} \
                        --build-arg VITE_API_URL=https://portfolio-api.rajivwallace.com \
                        -f nginx/Dockerfile .
           docker push ghcr.io/rajivghandi767/portfolio-nginx --all-tags
